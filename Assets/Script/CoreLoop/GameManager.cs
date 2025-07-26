@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     {
         if (Instance == null)
             Instance = this;
+
+        InitializeSeatGroupsCache();
     }
 
     // TODO: Make these so that there is no  change, instead a little visual effect plays (particle or animation)
@@ -20,6 +22,7 @@ public class GameManager : MonoBehaviour
     {
         if (!capybara.IsMovable())
         {
+            Debug.Log("Clicked capybara is not movable!");
             return;
         }
 
@@ -33,6 +36,7 @@ public class GameManager : MonoBehaviour
         selectedCapybara.GetComponent<Renderer>().material.color = Color.yellow;
     }
 
+    // Check all groups burdan kaldırıldı. Bu checki seat group bazında capybara.cs den yapıyoruz suan.
     public void OnSeatClicked(Seat seat)
     {
         if (selectedCapybara == null)
@@ -45,8 +49,6 @@ public class GameManager : MonoBehaviour
                 selectedCapybara.color;
             selectedCapybara = null;
         }
-
-        CheckAllGroups();
     }
 
 
@@ -58,11 +60,18 @@ public class GameManager : MonoBehaviour
             group.CheckGroupColor();
     }
 
-    // Use this from SeatGroup if you want to cache the seat group
-    public void CacheSeatGroup(SeatGroup seatGroup)
+    // Cache seat groups for performance
+    public void InitializeSeatGroupsCache()
     {
-        if (!cachedSeatGroups.Contains(seatGroup))
-            cachedSeatGroups.Add(seatGroup);
+        cachedSeatGroups = new List<SeatGroup>();
+
+        SeatGroup[] allGroups = FindObjectsOfType<SeatGroup>();
+
+        foreach (var group in allGroups)
+        {
+            cachedSeatGroups.Add(group);
+            Debug.Log("Cached group: " + group.name);
+        }
     }
 
     public List<SeatGroup> GetCachedSeatGroups()

@@ -17,6 +17,12 @@ public class Seat : MonoBehaviour
         currentCapybara = null;
     }
 
+    public bool IsOccupiedBy(Capybara capy)
+    {
+        return currentCapybara == capy;
+    }
+
+
     private void OnMouseDown()
     {
         if (GameManager.Instance != null)

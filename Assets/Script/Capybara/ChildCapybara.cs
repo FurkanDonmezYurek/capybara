@@ -6,12 +6,14 @@ public class ChildCapybara : Capybara
     public override CapybaraType Type => CapybaraType.Child;
     public override float SeatChangeTime => 0.5f;
 
-    public float moveInterval = 10f;
+    public float minMoveInterval = 10f;
+    public float maxMoveInterval = 20f;
 
     private Coroutine autoMoveRoutine;
 
-    private void Start()
+    public override void Start()
     {
+        base.Start();
         // Start changing seats automatically on start for now. 
         StartAutoMoving();
     }
@@ -31,17 +33,25 @@ public class ChildCapybara : Capybara
 
     IEnumerator AutoMoveCoroutine()
     {
-        while (true)
+        Debug.Log("Started auto move coroutine for: " + name);
+        while (!isLocked)
         {
-            yield return new WaitForSeconds(moveInterval);
+            yield return new WaitForSeconds(Random.Range(minMoveInterval,maxMoveInterval));
 
             if (!IsMovable())
+            {
+                Debug.Log(name + " is not movable!");
                 continue;
+            }
+                
 
             Seat target = GameManager.Instance.GetRandomAvailableSeat();
 
             if (target == null || target == currentSlot)
+            {
+                Debug.Log("Auto move skipped!. Target slot is: " + target.name);
                 continue;
+            }
 
             SitSeat(target);
         }

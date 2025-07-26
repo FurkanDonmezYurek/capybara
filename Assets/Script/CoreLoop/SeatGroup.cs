@@ -9,14 +9,10 @@ public class SeatGroup : MonoBehaviour
     public int groupX; // column index
     public bool IsGroupLocked { get; private set; }
 
-    public void Start()
-    {
-        // Cache this seat to improve performance
-        GameManager.Instance.CacheSeatGroup(this);
-    }
-
     public void CheckGroupColor()
     {
+        Debug.Log("Checking group color for SeatGroup: " + name);
+
         if (IsGroupLocked)
             return;
 
@@ -35,10 +31,12 @@ public class SeatGroup : MonoBehaviour
 
     void LockGroup()
     {
+        Debug.Log("Locking seats in group...");
+
         IsGroupLocked = true;
 
         foreach (var seat in seatsInGroup)
-            seat.currentCapybara?.SetLockState(false);
+            seat.currentCapybara?.Lock();
 
         //koltuk kilitlendi efekti atacaz...
     }

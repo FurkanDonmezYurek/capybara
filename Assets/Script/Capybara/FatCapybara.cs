@@ -8,70 +8,44 @@ public class FatCapybara : Capybara
 
     private Seat secondSlot;
 
-    public override bool IsMovable()
-    {
-        if (currentSlot == null || isLocked || isFrozen)
-            return false;
-
-        Seat neighbor = GameManager.Instance.GetRightNeighborSlot(currentSlot);
-
-        return neighbor != null && currentSlot.IsEmpty == false && neighbor.IsEmpty;
-    }
-    
-    public override void Freeze()
-    {
-        base.Freeze();
-
-        if (iceCubeVisual != null)
-        {
-            iceCubeVisual.transform.localScale = new Vector3(2f, 1f, 1f); // Genişlet
-            iceCubeVisual.SetActive(true);
-        }
-    }
-
-    public override void Unfreeze()
-    {
-        base.Unfreeze();
-
-        if (iceCubeVisual != null)
-        {
-            iceCubeVisual.transform.localScale = Vector3.one; // Geri eski boyuta getir
-            iceCubeVisual.SetActive(false);
-        }
-    }
-
-
     public override void SitSeat(Seat targetSlot)
     {
-        if (!IsMovable() || targetSlot == null)
+        if (targetSlot == null)
             return;
 
         Seat right = GameManager.Instance.GetRightNeighborSlot(targetSlot);
 
-        if (right == null || !targetSlot.IsEmpty || !right.IsEmpty)
+        if (right == null)
             return;
-
+            
+        // Önce varsa eski yerlerden temizle
         currentSlot?.ClearCapybara();
         secondSlot?.ClearCapybara();
 
+        // İki koltuğu da işaretle
         targetSlot.SetCapybara(this);
         right.SetCapybara(this);
 
+        // Konum güncelle
         currentSlot = targetSlot;
         secondSlot = right;
 
+        // Ortasına hareket
         Vector3 center = (targetSlot.transform.position + right.transform.position) / 2f;
-        transform.localScale = new Vector3(2f, 1f, 1f);
-        transform.DOMove(center, SeatChangeTime).SetEase(Ease.OutQuad);
+        transform.localScale = new Vector3(2f, 1f, 1f); // haha funny
+
+        transform.DOMove(center, SeatChangeTime).SetEase(Ease.OutQuad).OnComplete(() =>
+        {
+            CheckTargetSeatMatch(targetSlot); // eşleşme kontrolü
+        });
     }
 
-    public override void SetLockState(bool state)
+
+    public override void Lock()
     {
-        base.SetLockState(state);
-        if (state)
-        {
-            // İkinci slot da kilitlenmiş sayılır
-            secondSlot?.SetCapybara(this); // yine bu capybara ile işaretli kalır
-        }
+        base.Lock();
+        // İkinci slot da kilitlenmiş sayılır
+        secondSlot?.SetCapybara(this); // yine bu capybara ile işaretli kalır
+
     }
 }

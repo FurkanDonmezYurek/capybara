@@ -27,7 +27,10 @@ public class SleepyCapybara : Capybara
         }
 
         // Yavaş hareket
-        transform.DOMove(targetSlot.transform.position, SeatChangeTime).SetEase(Ease.InOutSine);
+        transform.DOMove(targetSlot.transform.position, SeatChangeTime).SetEase(Ease.InOutSine).OnComplete(() =>
+        {
+            CheckTargetSeatMatch(targetSlot);
+        });
     }
 
     private void HideSleepEffect()

@@ -20,6 +20,15 @@ public class Capybara : MonoBehaviour
     public bool IsFrozen => isFrozen;
     public GameObject iceCubeVisual; // Assigned in prefab or instantiated
 
+    public virtual void Start()
+    {
+        // 1/10 Chance to be frozen for testing purposes.
+        if (Random.Range(0, 10) == 0)
+        {
+            Freeze();
+        }
+    }
+
     public virtual void SetSeat(Seat slot)
     {
         currentSlot = slot;
@@ -57,14 +66,26 @@ public class Capybara : MonoBehaviour
 
         currentSlot?.ClearCapybara();
         targetSlot.SetCapybara(this);
-
-        transform.DOMove(targetSlot.transform.position, SeatChangeTime).SetEase(Ease.OutQuad);
         currentSlot = targetSlot;
+
+        transform.DOMove(targetSlot.transform.position, SeatChangeTime).SetEase(Ease.OutQuad).OnComplete(() =>
+        {
+            CheckTargetSeatMatch(targetSlot);
+        });
     }
 
-    public virtual void SetLockState(bool state)
+    public void CheckTargetSeatMatch(Seat targetSlot)
     {
-        isLocked = state;
+        // Seat'in bağlı olduğu group'u bul
+        var group = targetSlot.GetComponentInParent<SeatGroup>();
+        group?.CheckGroupColor();
+
+    }
+
+    public virtual void Lock()
+    {
+        Debug.Log("Locked seat: " + name);
+        isLocked = true;
     }
 
     protected virtual void OnMouseDown()
