@@ -1,12 +1,11 @@
-
 using UnityEngine;
 using DG.Tweening;
+
 public enum CapybaraType
 {
     Normal,
     Fat,
     Child,
-    Frozen, // TO-DO Frozen capybara tipi kaldırılacak ve bu mekanik base capibara scriptine entegre edilecek.
     Sleepy
 }
 
@@ -14,68 +13,65 @@ public class Capybara : MonoBehaviour
 {
     public virtual CapybaraType Type => CapybaraType.Normal;
     public virtual float SeatChangeTime => 1f;
-    public string colorTag;
-    public SeatSlot currentSlot;
-    protected bool isClickable;
+    public Color color;
+    public Seat currentSlot;
+    protected bool isLocked;
+    protected bool isFrozen;
+    public bool IsFrozen => isFrozen;
+    public GameObject iceCubeVisual; // Assigned in prefab or instantiated
 
-    protected virtual void Update()
-    {
-        SetClickable(IsMovable()); // TO-DO Make sure that this check happens in another place instead of the Update method for optimization reasons!
-    }
-
-    public virtual void AssignSlot(SeatSlot slot)
+    public virtual void SetSeat(Seat slot)
     {
         currentSlot = slot;
         transform.position = slot.transform.position;
     }
 
-    public void SetColor(string color)
+    public void SetColor(Color color)
     {
-        colorTag = color;
-        // TO-DO Change to respective capybara color visually here
+        this.color = color;
+        GetComponent<Renderer>().material.color = color;
+    }
+
+    public virtual void Freeze()
+    {
+        isFrozen = true;
+        if (iceCubeVisual != null)
+            iceCubeVisual.SetActive(true);
+    }
+
+    public virtual void Unfreeze()
+    {
+        isFrozen = false;
+        if (iceCubeVisual != null)
+            iceCubeVisual.SetActive(false);
     }
 
     public virtual bool IsMovable()
     {
-        if (currentSlot == null) return false;
-        if (currentSlot.isCorridorSide) return true;
-
-        int frontIndex = currentSlot.isLeftSide ? currentSlot.seatIndex + 1 : currentSlot.seatIndex - 1;
-        var frontSlot = GridManager.Instance.GetSlot(currentSlot.isLeftSide, currentSlot.rowIndex, frontIndex);
-        return frontSlot != null && frontSlot.IsEmpty();
+        return !isLocked && !isFrozen;
     }
 
-    // Moves the capybara from one seat to another, add corridor logic here when seats are done
-    public virtual void MoveTo(SeatSlot targetSlot)
+    public virtual void SitSeat(Seat targetSlot)
     {
         if (!IsMovable() || targetSlot == null) return;
 
-        currentSlot.ClearCapybara();
+        currentSlot?.ClearCapybara();
         targetSlot.SetCapybara(this);
 
         transform.DOMove(targetSlot.transform.position, SeatChangeTime).SetEase(Ease.OutQuad);
+        currentSlot = targetSlot;
     }
 
-    protected virtual void SetClickable(bool clickable)
+    public virtual void SetLockState(bool state)
     {
-        isClickable = clickable;
+        isLocked = state;
     }
 
-    // TO-DO Connect this to the tap input.
-    // Select capybara in capybara move manager, handle the seating logic there after that.
-    protected virtual void OnTapped()
+    protected virtual void OnMouseDown()
     {
-        if (!isClickable) return;
+        if (isLocked || isFrozen)
+            return;
 
-
-        Capybara selectedCapy = CapybaraMoveManager.Instance.GetSelected();
-        if (selectedCapy == this)
-        {
-            SetClickable(false);
-        }
-        else
-        {
-            CapybaraMoveManager.Instance.SelectCapybara(this);
-        }
+        GameManager.Instance.OnCapybaraClicked(this);
     }
 }
