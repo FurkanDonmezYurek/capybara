@@ -13,10 +13,16 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI coinText;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Image timerFill;
+    [SerializeField] private TextMeshProUGUI timerText;
+    [SerializeField] private Image clockIcon;
+    [SerializeField] private Sprite normalClockIcon;
+    [SerializeField] private Sprite frozenClockIcon;
     [SerializeField] private Button settingsButton;
+    private Tween flashTweenTimerText;
 
     [Header("Booster Shortcut")]
     [SerializeField] private Button boosterButton;
+    private Tween boosterButtonTween;
 
     [Header("UI Panels")]
     [SerializeField] private GameObject levelCompletePanel;
@@ -112,7 +118,6 @@ public class UIManager : MonoBehaviour
 
     private bool isSoundOn = false;
     private bool isVibrationOn = false;
-
     #endregion
 
     #region === Unity Events ===
@@ -136,6 +141,11 @@ public class UIManager : MonoBehaviour
 
         CurrencyManager.Instance.OnCoinChanged += UpdateCoin;
         UpdateCoin(CurrencyManager.Instance.Coin);
+
+        GameTimerManager.Instance.OnTimeChanged += UpdateTimer;
+        GameTimerManager.Instance.OnTimeOver += ShowLevelFail;
+
+        StartLevel(); //TODO: Replace with actual level start logic
     }
 
     #endregion
@@ -149,9 +159,35 @@ public class UIManager : MonoBehaviour
     public void UpdateTimer(float progress)
     {
         timerFill.fillAmount = Mathf.Clamp01(progress);
-        timerFill.color = progress < 0.1f ? Color.red :
-                          progress < 0.3f ? Color.yellow :
-                          Color.green;
+
+        if (GameTimerManager.Instance.isFrozen)
+        {
+            timerFill.color = Color.cyan;
+        }
+        else
+        {
+            timerFill.color = progress < 0.2f ? Color.red :
+                              progress < 0.4f ? Color.yellow :
+                              Color.green;
+        }
+
+        float remaining = GameTimerManager.Instance.RemainingTime;
+        int minutes = Mathf.FloorToInt(remaining / 60f);
+        int seconds = Mathf.FloorToInt(remaining % 60f);
+        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+
+        if (remaining <= 10f && flashTweenTimerText == null)
+        {
+            flashTweenTimerText = timerText.transform.DOScale(1.15f, 1f)
+                .SetLoops(-1, LoopType.Yoyo)
+                .SetEase(Ease.InOutSine);
+        }
+        else if (remaining > 10f && flashTweenTimerText != null)
+        {
+            flashTweenTimerText.Kill();
+            flashTweenTimerText = null;
+            timerText.transform.localScale = Vector3.one;
+        }
     }
 
     #endregion
@@ -190,6 +226,12 @@ public class UIManager : MonoBehaviour
 
     public void ShowLevelComplete()
     {
+        if (GameTimerManager.Instance.isFrozen)
+            GameTimerManager.Instance.CancelFreeze();
+
+        UpdateTimer(GameTimerManager.Instance.RemainingTime / GameTimerManager.Instance.totalTime); //For reset timer color
+
+        GameTimerManager.Instance.isRunning = false; 
         HideAllPanels();
         levelCompletePanel.SetActive(true);
 
@@ -202,6 +244,13 @@ public class UIManager : MonoBehaviour
 
     public void ShowLevelFail()
     {
+        if (flashTweenTimerText != null)
+        {
+            flashTweenTimerText.Kill();
+            flashTweenTimerText = null;
+            timerText.transform.localScale = Vector3.one;
+        }
+
         HideAllPanels();
         levelFailPanel.SetActive(true);
 
@@ -292,7 +341,6 @@ public class UIManager : MonoBehaviour
 
     public void ShowBoosterUnlockedPanel()
     {
-        //TODO: Freeze time, make blue timer bar, and change timer bar icon with freezed clock icon
         HideAllPanels();
         boosterUnlockedPanel.SetActive(true);
 
@@ -304,14 +352,16 @@ public class UIManager : MonoBehaviour
         Vector3 originalTextPos = boosterTextImage.transform.localPosition;
         boosterTextImage.transform.localPosition = new Vector3(originalTextPos.x, 50, originalTextPos.z);
 
+
         Sequence seq = DOTween.Sequence();
         seq.Append(boosterUnlockedCG.DOFade(1f, 0.4f));
         seq.Join(boosterUnlockedCG.transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack));
         UIAnimator.RotateLoop(boosterUnlockedBGGlow.transform, 8f);
+        UIAnimator.WobbleRotation(boosterUnlockedIcon.transform);
         seq.Join(boosterUnlockedIcon.DOScale(1f, 0.4f).SetEase(Ease.OutBack));
         seq.Append(boosterTextImage.DOFade(1f, 0.3f));
         seq.Join(boosterTextImage.transform.DOLocalMoveY(originalTextPos.y, 0.3f).SetEase(Ease.OutExpo));
-        seq.AppendInterval(1.5f);
+        seq.AppendInterval(0.5f);
         seq.Append(boosterUnlockedCG.DOFade(0f, 0.3f));
         seq.Join(boosterUnlockedCG.transform.DOScale(0.8f, 0.3f));
         seq.OnComplete(() => boosterUnlockedPanel.SetActive(false));
@@ -319,7 +369,9 @@ public class UIManager : MonoBehaviour
 
     public void ShowPlayOnPanel()
     {
-        //TODO: Ad 30 seconds
+        //TODO: Add 30 seconds
+        GameTimerManager.Instance.AddTime(30f); //TODO: Crate this method in a Function because we will add more different things to add more time
+
         HideAllPanels();
         playOnPanel.SetActive(true);
 
@@ -335,10 +387,11 @@ public class UIManager : MonoBehaviour
         seq.Append(playOnCG.DOFade(1f, 0.4f));
         seq.Join(playOnCG.transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack));
         UIAnimator.RotateLoop(playOnGlow.transform, 8f);
+        UIAnimator.WobbleRotation(playOnIcon.transform);
         seq.Join(playOnIcon.DOScale(1f, 0.4f).SetEase(Ease.OutBack));
         seq.Append(playOnTextImage.DOFade(1f, 0.3f));
         seq.Join(playOnTextImage.transform.DOLocalMoveY(originalTextPos.y, 0.3f).SetEase(Ease.OutExpo));
-        seq.AppendInterval(1.5f);
+        seq.AppendInterval(0.5f);
         seq.Append(playOnCG.DOFade(0f, 0.3f));
         seq.Join(playOnCG.transform.DOScale(0.8f, 0.3f));
         seq.OnComplete(() => playOnPanel.SetActive(false));
@@ -352,6 +405,7 @@ public class UIManager : MonoBehaviour
         if (CurrencyManager.Instance.Coin >= 100)
         {
             CurrencyManager.Instance.SpendCoin(100);
+            GameTimerManager.Instance.Freeze(10f);
             ShowBoosterUnlockedPanel();
         }
         else
@@ -363,9 +417,48 @@ public class UIManager : MonoBehaviour
     public void UnlockBoosterWithAd()
     {
         //TODO: Rewarded Ad Integration
+        GameTimerManager.Instance.Freeze(10f);
         ShowBoosterUnlockedPanel();
     }
 
+    public void SetFrozenState(bool frozen)
+    {
+        if (frozen)
+        {
+            timerFill.color = Color.cyan;
+            clockIcon.sprite = frozenClockIcon;
+            HideBoosterButton();
+        }
+        else
+        {
+            clockIcon.sprite = normalClockIcon;
+            ShowBoosterButton();
+        }
+    }
+
+    private void HideBoosterButton()
+    {
+        boosterButtonTween?.Kill();
+
+        boosterButtonTween = boosterButton.transform.DOScale(0f, 0.3f).SetEase(Ease.InBack)
+            .OnComplete(() =>
+            {
+                boosterButton.interactable = false;
+                boosterButton.gameObject.SetActive(false);
+            });
+    }
+
+    private void ShowBoosterButton()
+    {
+        boosterButton.gameObject.SetActive(true);
+        boosterButton.interactable = true;
+
+        boosterButton.transform.localScale = Vector3.zero;
+
+        boosterButtonTween?.Kill();
+
+        boosterButtonTween = boosterButton.transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack);
+    }
     #endregion
 
     #region === Play On Actions ===
@@ -439,6 +532,15 @@ public class UIManager : MonoBehaviour
         // TODO: Optional restart animation
         UnityEngine.SceneManagement.SceneManager.LoadScene(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+    }
+
+    #endregion
+
+    #region === Debug Methods ===
+    //TODO: Remove or comment out these methods in production
+    void StartLevel()
+    {
+        GameTimerManager.Instance.StartTimer(60f);
     }
 
     #endregion

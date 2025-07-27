@@ -48,4 +48,22 @@ public static class UIAnimator
         image.color = new Color(color.r, color.g, color.b, minAlpha);
         image.DOFade(maxAlpha, duration).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine);
     }
+
+    public static void WobbleRotation(Transform target, float angleOffset = 5f, float duration = 1f)
+    {
+        Sequence seq = DOTween.Sequence();
+        Vector3 originalEuler = target.localEulerAngles;
+
+        seq.Append(target.DOLocalRotate(new Vector3(originalEuler.x, originalEuler.y, originalEuler.z + angleOffset), duration / 2f)
+            .SetEase(Ease.InOutSine));
+        seq.Append(target.DOLocalRotate(new Vector3(originalEuler.x, originalEuler.y, originalEuler.z - angleOffset), duration)
+            .SetEase(Ease.InOutSine));
+        seq.Append(target.DOLocalRotate(originalEuler, duration / 2f)
+            .SetEase(Ease.InOutSine));
+
+        seq.SetLoops(-1);
+        seq.SetId("Wobble_" + target.GetInstanceID());
+    }
+
+
 }
