@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,6 +12,9 @@ public class LevelEditorWindow : EditorWindow
     private int groupHeight = 1;
     private GameObject[] capybaraPrefabs;
     private int selectedCapybaraIndex = 0; // Dropdown için index
+    private CapybaraColors colorPaletteAsset;
+    private int selectedColorIndex = 0;
+    private bool isFrozen = false;
     public GameObject selectedCapybaraPrefab;
     private Color selectedColor = Color.white; // Capybara için seçilen renk
 
@@ -28,7 +32,7 @@ public class LevelEditorWindow : EditorWindow
     private bool isTemporary = true;
     private List<GameObject> placedCapybaras = new List<GameObject>();
 
-    [MenuItem("LevelDesing/Level Editor")]
+    [MenuItem("LevelDesign/Level Editor")]
     public static void ShowWindow()
     {
         GetWindow<LevelEditorWindow>("Level Editor");
@@ -49,6 +53,7 @@ public class LevelEditorWindow : EditorWindow
     {
         // Resources/Capybaras klasöründeki tüm Capybara prefabs'larını al
         capybaraPrefabs = Resources.LoadAll<GameObject>("Capybaras");
+        colorPaletteAsset = Resources.Load<CapybaraColors>("CapybaraColors");
 
         // Eğer Capybara prefab'ları varsa, ilkini varsayılan olarak seç
         if (capybaraPrefabs.Length > 0)
@@ -77,6 +82,12 @@ public class LevelEditorWindow : EditorWindow
             GenerateGrid();
         }
 
+        if (GUILayout.Button("Delete Grid"))
+        {
+            CleanHierarchy();
+            isGridGenerated = false;
+        }
+
         // Capybara seçimi: Dropdown menüsü
         GUILayout.Space(20);
         GUILayout.Label("Capybara Selection", EditorStyles.boldLabel);
@@ -103,7 +114,24 @@ public class LevelEditorWindow : EditorWindow
         }
 
         GUILayout.Label("Capybara Color", EditorStyles.boldLabel);
-        selectedColor = EditorGUILayout.ColorField("Color", selectedColor);
+
+        if (colorPaletteAsset != null && colorPaletteAsset.colorPalette.Length > 0)
+        {
+            string[] colorNames = colorPaletteAsset.colorPalette
+                .Select((c, i) => $"Color {i + 1}")
+                .ToArray();
+
+            selectedColorIndex = EditorGUILayout.Popup("Color", selectedColorIndex, colorNames);
+            selectedColor = colorPaletteAsset.colorPalette[selectedColorIndex];
+        }
+        else
+        {
+            GUILayout.Label("No color palette found in Resources/CapybaraColors!");
+        }
+
+        GUILayout.Label("Capybara Properties", EditorStyles.boldLabel);
+        isFrozen = EditorGUILayout.Toggle("Is Frozen", isFrozen);
+
 
         // Meta bilgilerini doldurabileceğimiz alan
         GUILayout.Space(20);
@@ -257,10 +285,13 @@ public class LevelEditorWindow : EditorWindow
             return;
         }
 
+        bool isFat = selectedCapybaraPrefab.GetComponent<Capybara>().Type == CapybaraType.Fat;
+        Vector3 spawnPos = seat.transform.position;
+
         // Capybara'yı seat'in pozisyonuna yerleştir
         GameObject capybaraObj = Instantiate(
             selectedCapybaraPrefab,
-            seat.transform.position,
+            spawnPos,
             Quaternion.identity
         );
         Capybara capybara = capybaraObj.GetComponent<Capybara>();
@@ -269,6 +300,11 @@ public class LevelEditorWindow : EditorWindow
         {
             seat.currentCapybara = capybara;
             capybara.SitSeat(seat);
+
+            if (isFrozen)
+            {
+                capybara.Freeze();
+            }
         }
 
         Renderer renderer = capybaraObj.GetComponent<Renderer>();
@@ -305,10 +341,15 @@ public class LevelEditorWindow : EditorWindow
             {
                 if (seat.currentCapybara != null)
                 {
+                    Capybara capy = seat.currentCapybara.GetComponent<Capybara>();
+
                     LevelData.CapybaraInfo capyInfo = new LevelData.CapybaraInfo
                     {
                         gridPosition = seat.gridPosition,
+                        type = capy.Type,
+                        isFrozen = capy.IsFrozen,
                         color = seat.currentCapybara.GetComponent<Renderer>().sharedMaterial.color,
+
                     };
                     capybaras.Add(capyInfo);
                 }

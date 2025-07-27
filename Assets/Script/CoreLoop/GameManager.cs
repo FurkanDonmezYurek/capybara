@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 
     private Capybara selectedCapybara;
     List<SeatGroup> cachedSeatGroups;
+    public LevelManager levelManager;
+    [SerializeField] private int startLevelIndex = 0; // For testing, change later
 
     private void Awake()
     {
@@ -16,6 +18,21 @@ public class GameManager : MonoBehaviour
 
         InitializeSeatGroupsCache();
     }
+
+    private void Start()
+    {
+        levelManager = GetComponent<LevelManager>();
+        if (levelManager != null)
+        {
+            levelManager.LoadLevelByIndex(startLevelIndex);
+            Debug.Log($"Loaded level {startLevelIndex}");
+        }
+        else
+        {
+            Debug.LogError("LevelManager reference is missing in GameManager!");
+        }
+    }
+
 
     // TODO: Make these so that there is no  change, instead a little visual effect plays (particle or animation)
     public void OnCapybaraClicked(Capybara capybara)
@@ -41,9 +58,19 @@ public class GameManager : MonoBehaviour
         if (selectedCapybara == null)
             return;
 
-        if (IsCorrectMove(seat, selectedCapybara.currentSlot))
+        if (selectedCapybara is FatCapybara fat)
         {
-            selectedCapybara.SitSeat(seat);
+            if (IsCorrectMoveFat(seat, fat.currentSlot))
+            {
+                fat.SitSeat(seat);
+            }
+        }
+        else
+        {
+            if (IsCorrectMove(seat, selectedCapybara.currentSlot))
+            {
+                selectedCapybara.SitSeat(seat);
+            }
         }
         selectedCapybara.GetComponent<Renderer>().material.color = selectedCapybara.color;
         selectedCapybara = null;
@@ -144,6 +171,26 @@ public class GameManager : MonoBehaviour
             return false;
         }
     }
+
+    public bool IsCorrectMoveFat(Seat targetLeft, Seat currentLeft)
+    {
+        // 1. Hedefin sağındaki koltuk var mı?
+        Seat targetRight = GetNeighborSeatRight(targetLeft);
+        if (targetRight == null || !targetLeft.IsEmpty || !targetRight.IsEmpty)
+            return false;
+
+        // 2. Kaynağın sağ koltuğu
+        Seat currentRight = GetNeighborSeatRight(currentLeft);
+        if (currentRight == null)
+            return false;
+
+        // 3. İki koltuğun da grup geçiş izinleri kontrol edilmeli
+        bool leftMoveValid = IsCorrectMove(targetLeft, currentLeft);
+        bool rightMoveValid = IsCorrectMove(targetRight, currentRight);
+        Debug.Log("Fat capybara is move valid:\nLeft:" + leftMoveValid + "\nRight: " + rightMoveValid);
+        return leftMoveValid || rightMoveValid;
+    }
+
 
     public bool AreNeighbors(Seat a, Seat b)
     {
@@ -260,6 +307,28 @@ public class GameManager : MonoBehaviour
         }
 
         return availableSeats;
+    }
+
+    public Seat GetNeighborSeatRight(Seat seat)
+    {
+        var group = seat.groupOfSeat;
+        var groupSeats = group.seatsInGroup;
+        int index = groupSeats.IndexOf(seat);
+
+        if (index >= 0 && index < groupSeats.Count - 1)
+            return groupSeats[index + 1];
+        return null;
+    }
+
+    public Seat GetNeighborSeatLeft(Seat seat)
+    {
+        var group = seat.groupOfSeat;
+        var groupSeats = group.seatsInGroup;
+        int index = groupSeats.IndexOf(seat);
+
+        if (index > 0)
+            return groupSeats[index - 1];
+        return null;
     }
 
     public Seat GetRightNeighborSlot(Seat seat)

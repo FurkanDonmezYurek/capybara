@@ -22,11 +22,7 @@ public class Capybara : MonoBehaviour
 
     public virtual void Start()
     {
-        // 1/10 Chance to be frozen for testing purposes.
-        if (Random.Range(0, 10) == 0)
-        {
-            Freeze();
-        }
+        //Empty for now
     }
 
     public virtual void SetSeat(Seat slot)

@@ -67,6 +67,19 @@ public class GridSystem : MonoBehaviour
         }
     }
 
+    public void ClearGrid()
+    {
+        if (groupsParent == null) return;
+
+        for (int i = groupsParent.childCount - 1; i >= 0; i--)
+        {
+            Transform child = groupsParent.GetChild(i);
+            if (child != null)
+                DestroyImmediate(child.gameObject);
+        }
+    }
+
+
     public Seat GetSeatAtPosition(Vector2Int gridPos)
     {
         foreach (var group in FindObjectsOfType<SeatGroup>())
@@ -79,4 +92,13 @@ public class GridSystem : MonoBehaviour
         }
         return null;
     }
+
+    public void SetGridParameters(int rows, int columns, int groupWidth, int groupHeight)
+    {
+        this.rows = rows;
+        this.columns = columns;
+        this.groupWidth = groupWidth;
+        this.groupHeight = groupHeight;
+    }
+
 }

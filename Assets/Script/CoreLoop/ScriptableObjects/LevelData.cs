@@ -27,6 +27,8 @@ public class LevelData : ScriptableObject
     public class CapybaraInfo
     {
         public Vector2Int gridPosition;
+        public CapybaraType type;
+        public bool isFrozen;
         public Color color;
     }
 
