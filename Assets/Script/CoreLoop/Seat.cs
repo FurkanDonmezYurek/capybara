@@ -5,6 +5,8 @@ public class Seat : MonoBehaviour
     public Vector2Int gridPosition;
     public Capybara currentCapybara;
     public bool IsEmpty => currentCapybara == null;
+    public bool isCorridorSide;
+    public SeatGroup groupOfSeat;
 
     // Sets current capybara
     public void SetCapybara(Capybara capy)
@@ -21,7 +23,6 @@ public class Seat : MonoBehaviour
     {
         return currentCapybara == capy;
     }
-
 
     private void OnMouseDown()
     {

@@ -14,7 +14,7 @@ public class ChildCapybara : Capybara
     public override void Start()
     {
         base.Start();
-        // Start changing seats automatically on start for now. 
+        // Start changing seats automatically on start for now.
         StartAutoMoving();
     }
 
@@ -36,14 +36,13 @@ public class ChildCapybara : Capybara
         Debug.Log("Started auto move coroutine for: " + name);
         while (!isLocked)
         {
-            yield return new WaitForSeconds(Random.Range(minMoveInterval,maxMoveInterval));
+            yield return new WaitForSeconds(Random.Range(minMoveInterval, maxMoveInterval));
 
             if (!IsMovable())
             {
                 Debug.Log(name + " is not movable!");
                 continue;
             }
-                
 
             Seat target = GameManager.Instance.GetRandomAvailableSeat();
 
@@ -52,8 +51,8 @@ public class ChildCapybara : Capybara
                 Debug.Log("Auto move skipped!. Target slot is: " + target.name);
                 continue;
             }
-
-            SitSeat(target);
+            if (GameManager.Instance.IsCorrectMove(target, currentSlot))
+                SitSeat(target);
         }
     }
 

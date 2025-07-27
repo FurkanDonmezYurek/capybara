@@ -1,12 +1,12 @@
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 
 public enum CapybaraType
 {
     Normal,
     Fat,
     Child,
-    Sleepy
+    Sleepy,
 }
 
 public class Capybara : MonoBehaviour
@@ -62,16 +62,20 @@ public class Capybara : MonoBehaviour
 
     public virtual void SitSeat(Seat targetSlot)
     {
-        if (!IsMovable() || targetSlot == null) return;
+        if (!IsMovable() || targetSlot == null)
+            return;
 
         currentSlot?.ClearCapybara();
         targetSlot.SetCapybara(this);
         currentSlot = targetSlot;
 
-        transform.DOMove(targetSlot.transform.position, SeatChangeTime).SetEase(Ease.OutQuad).OnComplete(() =>
-        {
-            CheckTargetSeatMatch(targetSlot);
-        });
+        transform
+            .DOMove(targetSlot.transform.position, SeatChangeTime)
+            .SetEase(Ease.OutQuad)
+            .OnComplete(() =>
+            {
+                CheckTargetSeatMatch(targetSlot);
+            });
     }
 
     public void CheckTargetSeatMatch(Seat targetSlot)
@@ -79,7 +83,6 @@ public class Capybara : MonoBehaviour
         // Seat'in bağlı olduğu group'u bul
         var group = targetSlot.GetComponentInParent<SeatGroup>();
         group?.CheckGroupColor();
-
     }
 
     public virtual void Lock()

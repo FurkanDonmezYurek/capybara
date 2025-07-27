@@ -1,5 +1,5 @@
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 
 public class FatCapybara : Capybara
 {
@@ -8,6 +8,7 @@ public class FatCapybara : Capybara
 
     private Seat secondSlot;
 
+    //TODO: toolda yerleştirirken sorun çıkarıyor (currentslot assign edilmiyor)
     public override void SitSeat(Seat targetSlot)
     {
         if (targetSlot == null)
@@ -17,7 +18,7 @@ public class FatCapybara : Capybara
 
         if (right == null)
             return;
-            
+
         // Önce varsa eski yerlerden temizle
         currentSlot?.ClearCapybara();
         secondSlot?.ClearCapybara();
@@ -34,18 +35,19 @@ public class FatCapybara : Capybara
         Vector3 center = (targetSlot.transform.position + right.transform.position) / 2f;
         transform.localScale = new Vector3(2f, 1f, 1f); // haha funny
 
-        transform.DOMove(center, SeatChangeTime).SetEase(Ease.OutQuad).OnComplete(() =>
-        {
-            CheckTargetSeatMatch(targetSlot); // eşleşme kontrolü
-        });
+        transform
+            .DOMove(center, SeatChangeTime)
+            .SetEase(Ease.OutQuad)
+            .OnComplete(() =>
+            {
+                CheckTargetSeatMatch(targetSlot); // eşleşme kontrolü
+            });
     }
-
 
     public override void Lock()
     {
         base.Lock();
         // İkinci slot da kilitlenmiş sayılır
         secondSlot?.SetCapybara(this); // yine bu capybara ile işaretli kalır
-
     }
 }

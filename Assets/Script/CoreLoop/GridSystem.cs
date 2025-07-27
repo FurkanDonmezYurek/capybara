@@ -57,9 +57,26 @@ public class GridSystem : MonoBehaviour
 
                 SeatGroup group = gObj.AddComponent<SeatGroup>();
                 group.seatsInGroup = groupSeats;
+                for (int i = 0; i < group.seatsInGroup.Count; i++)
+                {
+                    group.seatsInGroup[i].groupOfSeat = group;
+                }
                 group.groupY = groupY;
                 group.groupX = groupX;
             }
         }
+    }
+
+    public Seat GetSeatAtPosition(Vector2Int gridPos)
+    {
+        foreach (var group in FindObjectsOfType<SeatGroup>())
+        {
+            foreach (var seat in group.seatsInGroup)
+            {
+                if (seat.gridPosition == gridPos)
+                    return seat;
+            }
+        }
+        return null;
     }
 }

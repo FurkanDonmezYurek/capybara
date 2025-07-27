@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     private Capybara selectedCapybara;
-    private List<SeatGroup> cachedSeatGroups;
+    List<SeatGroup> cachedSeatGroups;
 
     private void Awake()
     {
@@ -28,8 +28,7 @@ public class GameManager : MonoBehaviour
 
         if (selectedCapybara != null)
         {
-            selectedCapybara.GetComponent<Renderer>().material.color =
-                selectedCapybara.color;
+            selectedCapybara.GetComponent<Renderer>().material.color = selectedCapybara.color;
         }
 
         selectedCapybara = capybara;
@@ -42,22 +41,154 @@ public class GameManager : MonoBehaviour
         if (selectedCapybara == null)
             return;
 
-        if (seat.IsEmpty)
+        if (IsCorrectMove(seat, selectedCapybara.currentSlot))
         {
             selectedCapybara.SitSeat(seat);
-            selectedCapybara.GetComponent<Renderer>().material.color =
-                selectedCapybara.color;
-            selectedCapybara = null;
+        }
+        selectedCapybara.GetComponent<Renderer>().material.color = selectedCapybara.color;
+        selectedCapybara = null;
+    }
+
+    //You can access the decision tree from Miro
+    public bool IsCorrectMove(Seat seat, Seat oldSeat)
+    {
+        // 1. Hedef koltuk dolu mu?
+        if (!seat.IsEmpty)
+            return false;
+
+        // Eğer aynı grupta ve araları boşsa geçişe izin ver
+        if (seat.groupOfSeat == oldSeat.groupOfSeat && IsPathClear(oldSeat, seat))
+            return true;
+        // 2. Hedef koltuk koridor tarafında mı?
+        if (seat.isCorridorSide)
+        {
+            // 2a. Kaynak koltuk koridor tarafında mı?
+            if (oldSeat.isCorridorSide)
+                return true;
+
+            // 2b. Değilse → oldSeat'in grubundaki koridor koltuk boş mu?
+            var oldCorridor = oldSeat.groupOfSeat.seatsInGroup.FirstOrDefault(s =>
+                s.isCorridorSide && s.IsEmpty
+            );
+
+            if (oldCorridor == null)
+                return false;
+
+            // 2c. Bu koltuk oldSeat'e komşu mu?
+            if (AreNeighbors(oldCorridor, oldSeat))
+                return true;
+
+            // 2d. Aradaki koltuklar boş mu?
+            if (IsPathClear(oldCorridor, oldSeat))
+                return true;
+
+            return false;
+        }
+
+        // 3. Hedef koltuk koridor tarafında değilse →
+        //    seat'in grubundaki koridor koltuğu boş mu?
+        var seatCorridor = seat.groupOfSeat.seatsInGroup.FirstOrDefault(s =>
+            s.isCorridorSide && s.IsEmpty
+        );
+
+        if (seatCorridor == null)
+            return false;
+
+        // 3a. Bu koltuk seat'e komşu mu?
+        if (AreNeighbors(seatCorridor, seat))
+        {
+            // 3a-i. oldSeat koridor tarafında mı?
+            if (oldSeat.isCorridorSide)
+                return true;
+
+            // 3a-ii. Değilse → oldSeat'in grubundaki koridor koltuk boş mu?
+            var oldCorridor = oldSeat.groupOfSeat.seatsInGroup.FirstOrDefault(s =>
+                s.isCorridorSide && s.IsEmpty
+            );
+
+            if (oldCorridor == null)
+                return false;
+
+            if (AreNeighbors(oldCorridor, oldSeat))
+                return true;
+
+            if (IsPathClear(oldCorridor, oldSeat))
+                return true;
+
+            return false;
+        }
+        else
+        {
+            // 3b. seatCorridor ile seat arasında boşluk var mı?
+            if (!IsPathClear(seatCorridor, seat))
+                return false;
+
+            // 3b-i. oldSeat koridor tarafında mı?
+            if (oldSeat.isCorridorSide)
+                return true;
+
+            // 3b-ii. Değilse → oldSeat'in grubundaki koridor koltuk boş mu?
+            var oldCorridor = oldSeat.groupOfSeat.seatsInGroup.FirstOrDefault(s =>
+                s.isCorridorSide && s.IsEmpty
+            );
+
+            if (oldCorridor == null)
+                return false;
+
+            if (AreNeighbors(oldCorridor, oldSeat))
+                return true;
+
+            if (IsPathClear(oldCorridor, oldSeat))
+                return true;
+
+            return false;
         }
     }
 
-
-    // TODO: Sadece kapibaranın yerini değiştirecegi hedef konumdaki seat grup checklenecek.
-    //Optimize edilecek... Not: Cache eklendi eğer yeterince optimizeyse bu yorum satırını kaldırabilirsiniz.
-    void CheckAllGroups()
+    public bool AreNeighbors(Seat a, Seat b)
     {
-        foreach (var group in cachedSeatGroups)
-            group.CheckGroupColor();
+        return Mathf.Abs(a.gridPosition.x - b.gridPosition.x)
+                + Mathf.Abs(a.gridPosition.y - b.gridPosition.y)
+            == 1;
+    }
+
+    public bool IsPathClear(Seat a, Seat b)
+    {
+        if (a.groupOfSeat != b.groupOfSeat)
+            return false;
+
+        if (a.gridPosition.x == b.gridPosition.x) // Aynı sütun
+        {
+            int minY = Mathf.Min(a.gridPosition.y, b.gridPosition.y);
+            int maxY = Mathf.Max(a.gridPosition.y, b.gridPosition.y);
+
+            for (int y = minY + 1; y < maxY; y++)
+            {
+                var midSeat = a.groupOfSeat.seatsInGroup.Find(s =>
+                    s.gridPosition == new Vector2Int(a.gridPosition.x, y)
+                );
+                if (midSeat != null && !midSeat.IsEmpty)
+                    return false;
+            }
+            return true;
+        }
+        else if (a.gridPosition.y == b.gridPosition.y) // Aynı satır
+        {
+            int minX = Mathf.Min(a.gridPosition.x, b.gridPosition.x);
+            int maxX = Mathf.Max(a.gridPosition.x, b.gridPosition.x);
+
+            for (int x = minX + 1; x < maxX; x++)
+            {
+                var midSeat = a.groupOfSeat.seatsInGroup.Find(s =>
+                    s.gridPosition == new Vector2Int(x, a.gridPosition.y)
+                );
+                if (midSeat != null && !midSeat.IsEmpty)
+                    return false;
+            }
+            return true;
+        }
+
+        return false; // Diagonal değilse false
     }
 
     // Cache seat groups for performance
@@ -67,10 +198,30 @@ public class GameManager : MonoBehaviour
 
         SeatGroup[] allGroups = FindObjectsOfType<SeatGroup>();
 
+        // Index groups by positions
+        Dictionary<(int x, int y), SeatGroup> groupMap = new Dictionary<(int, int), SeatGroup>();
+
         foreach (var group in allGroups)
         {
             cachedSeatGroups.Add(group);
+            groupMap[(group.groupX, group.groupY)] = group;
             Debug.Log("Cached group: " + group.name);
+        }
+
+        // Check target's neighborhood
+        foreach (var group in allGroups)
+        {
+            // If there is a left-hand neighbor, the first seat of this group is the corridor side.
+            if (groupMap.ContainsKey((group.groupX - 1, group.groupY)))
+            {
+                group.seatsInGroup.First().isCorridorSide = true;
+            }
+
+            // If there is a right-hand neighbor, the last seat of this group is the corridor side.
+            if (groupMap.ContainsKey((group.groupX + 1, group.groupY)))
+            {
+                group.seatsInGroup.Last().isCorridorSide = true;
+            }
         }
     }
 
@@ -94,7 +245,6 @@ public class GameManager : MonoBehaviour
         int index = Random.Range(0, availableSeats.Count);
         return availableSeats[index];
     }
-
 
     public List<Seat> GetAvailableSeatsFromCache()
     {
@@ -126,4 +276,9 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
+    //TODO: Invoke this method after level completion
+    // void GoToNextLevel()
+    // {
+    //     FindObjectOfType<LevelManager>()?.LoadNextLevel();
+    // }
 }

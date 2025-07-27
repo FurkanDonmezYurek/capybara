@@ -46,8 +46,10 @@ public class SeatGroup : MonoBehaviour
         foreach (var group in GameManager.Instance.GetCachedSeatGroups())
         {
             // Aynı sütunda olacak ve satırı ya +1 ya -1 olacak
-            if (group.groupX == this.groupX &&
-                (group.groupY == this.groupY - 1 || group.groupY == this.groupY + 1))
+            if (
+                group.groupX == this.groupX
+                && (group.groupY == this.groupY - 1 || group.groupY == this.groupY + 1)
+            )
             {
                 foreach (var seat in group.seatsInGroup)
                 {
@@ -60,5 +62,4 @@ public class SeatGroup : MonoBehaviour
             }
         }
     }
-
 }
