@@ -985,8 +985,8 @@ RectTransform:
   - {fileID: 8818964636422011313}
   - {fileID: 1839793184}
   - {fileID: 4890093679582527339}
-  - {fileID: 5128467800560997341}
   - {fileID: 6762835212710788493}
+  - {fileID: 5128467800560997341}
   - {fileID: 4637232613581244934}
   m_Father: {fileID: 8762629142216925200}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3228,10 +3228,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3100610996121510164}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 8240220819106397206}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: HideAllPanels
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5220,6 +5220,7 @@ GameObject:
   - component: {fileID: 7931227895001358280}
   - component: {fileID: 7434730094873441075}
   - component: {fileID: 8240220819106397206}
+  - component: {fileID: 8240220819106397207}
   m_Layer: 5
   m_Name: InGameCanvas
   m_TagString: Untagged
@@ -7660,10 +7661,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 813511447437573848}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 8240220819106397206}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: HideAllPanels
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -8253,10 +8254,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1277822557796192392}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 8240220819106397206}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: HideAllPanels
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -8774,7 +8775,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8240220819106397206}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: ShowBoosterUnlockedPanel
+        m_MethodName: UnlockBoosterWithAd
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8830,7 +8831,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8240220819106397206}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: ShowBoosterUnlockedPanel
+        m_MethodName: UnlockBoosterWithCoin
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9074,7 +9075,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 120
+  m_text: 100
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0eec94d1af03593408528a0a573e0f13, type: 2}
   m_sharedMaterial: {fileID: -4680709006871703270, guid: 0eec94d1af03593408528a0a573e0f13,
@@ -9836,10 +9837,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2316819355862086708}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 8240220819106397206}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: HideAllPanels
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -10337,6 +10338,8 @@ MonoBehaviour:
   boosterIcon: {fileID: 8431088612639596062}
   boosterText: {fileID: 4420004347708815767}
   boosterButtons: {fileID: 2082341890}
+  unlockBoosterWithCoinButton: {fileID: 6925936211638293017}
+  unlockBoosterWithAdsButton: {fileID: 6923247138816942593}
   coinBuyCG: {fileID: 9180431991885887162}
   coinBuyHeader: {fileID: 8485331138657857864}
   coinBuyImage: {fileID: 735649425510990715}
@@ -10364,6 +10367,18 @@ MonoBehaviour:
   bgSettingsButtons:
   - {fileID: 21300000, guid: 110560bd3f91546c5ac079cca3479a57, type: 3}
   - {fileID: 21300000, guid: 22bf3691af08947788505e69ac13a24b, type: 3}
+--- !u!114 &8240220819106397207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2981957178975290562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 148b22bd8eed1a24badd1e0bf2df23d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8274484351134319758
 GameObject:
   m_ObjectHideFlags: 0
@@ -11029,7 +11044,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4941213829575925893}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8240220819106397206}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: BuyCoin
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 100
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8940864772324633622
 GameObject:
   m_ObjectHideFlags: 0

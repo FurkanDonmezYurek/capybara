@@ -44,6 +44,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform boosterIcon;
     [SerializeField] private Transform boosterText;
     [SerializeField] private Transform boosterButtons;
+    [SerializeField] private Button unlockBoosterWithCoinButton;
+    [SerializeField] private Button unlockBoosterWithAdsButton;
 
     [Header("Coin Buy Panel Elements")]
     [SerializeField] private CanvasGroup coinBuyCG;
@@ -92,6 +94,9 @@ public class UIManager : MonoBehaviour
         soundToggleButton.onClick.AddListener(ToggleSound);
         vibrationToggleButton.onClick.AddListener(ToggleVibration);
         restartButton.onClick.AddListener(RestartLevel);
+
+        CurrencyManager.Instance.OnCoinChanged += UpdateCoin;
+        UpdateCoin(CurrencyManager.Instance.Coin);
     }
 
     #region Currency & Level
@@ -112,11 +117,28 @@ public class UIManager : MonoBehaviour
     #region Panels
     public void HideAllPanels()
     {
-        levelCompletePanel.SetActive(false);
-        levelFailPanel.SetActive(false);
-        boosterPanel.SetActive(false);
-        coinBuyPanel.SetActive(false);
-        boosterUnlockedPanel.SetActive(false);
+        if (levelCompletePanel.activeSelf)
+            HidePanelWithAnimation(levelCompleteCG, levelCompleteHeader, levelCompletePanel);
+
+        if (levelFailPanel.activeSelf)
+            HidePanelWithAnimation(levelFailCG, levelFailHeader, levelFailPanel);
+
+        if (boosterPanel.activeSelf)
+            HidePanelWithAnimation(boosterCG, boosterHeader, boosterPanel);
+
+        if (coinBuyPanel.activeSelf)
+            HidePanelWithAnimation(coinBuyCG, coinBuyHeader, coinBuyPanel);
+
+        if (settingsPanel.activeSelf)
+            HidePanelWithAnimation(settingsCG, settingsContent, settingsPanel);
+    }
+
+    private void HidePanelWithAnimation(CanvasGroup cg, Transform scaleTarget, GameObject panelGO)
+    {
+        Sequence seq = DOTween.Sequence();
+        seq.Append(cg.DOFade(0f, 0.3f));
+        seq.Join(scaleTarget.DOScale(0.8f, 0.3f).SetEase(Ease.InBack));
+        seq.OnComplete(() => panelGO.SetActive(false));
     }
 
     public void ShowLevelComplete()
@@ -143,18 +165,6 @@ public class UIManager : MonoBehaviour
         UIAnimator.ScaleIn(levelFailButtons, 0.3f, 0.6f);
     }
 
-    public void ShowBoosterPanel()
-    {
-        HideAllPanels();
-        boosterPanel.SetActive(true);
-
-        UIAnimator.FadeIn(boosterCG);
-        UIAnimator.ScaleIn(boosterHeader);
-        UIAnimator.ScaleIn(boosterIcon, 0.3f, 0.2f);
-        UIAnimator.MoveFromX(boosterText, -1000, 0.3f, Ease.OutExpo, 0.4f);
-        UIAnimator.ScaleIn(boosterButtons, 0.3f, 0.6f);
-    }
-
     public void ShowCoinBuyPanel()
     {
         HideAllPanels();
@@ -166,6 +176,32 @@ public class UIManager : MonoBehaviour
         UIAnimator.MoveFromX(coinBuyText, -1000, 0.3f, Ease.OutExpo, 0.6f);
         UIAnimator.ScaleIn(coinBuyButton, 0.3f, 0.9f);
     }
+
+    public void BuyCoin(int coinAmount)
+    {
+        CurrencyManager.Instance.AddCoin(coinAmount);
+        HideAllPanels();
+    }
+
+    public void ShowBoosterPanel()
+    {
+        HideAllPanels();
+        boosterPanel.SetActive(true);
+
+        bool hasEnoughCoin = CurrencyManager.Instance.Coin >= 100;
+
+        unlockBoosterWithCoinButton.gameObject.SetActive(hasEnoughCoin);
+        unlockBoosterWithAdsButton.transform.localPosition = hasEnoughCoin
+            ? new Vector3(190, unlockBoosterWithAdsButton.transform.localPosition.y, 0) 
+            : new Vector3(0, unlockBoosterWithAdsButton.transform.localPosition.y, 0);  
+
+        UIAnimator.FadeIn(boosterCG);
+        UIAnimator.ScaleIn(boosterHeader);
+        UIAnimator.ScaleIn(boosterIcon, 0.3f, 0.2f);
+        UIAnimator.MoveFromX(boosterText, -1000, 0.3f, Ease.OutExpo, 0.4f);
+        UIAnimator.ScaleIn(boosterButtons, 0.3f, 0.6f);
+    }
+
 
     public void ShowBoosterUnlockedPanel()
     {
@@ -194,6 +230,26 @@ public class UIManager : MonoBehaviour
         seq.Join(boosterUnlockedCG.transform.DOScale(0.8f, 0.3f));
         seq.OnComplete(() => boosterUnlockedPanel.SetActive(false));
     }
+
+    public void UnlockBoosterWithCoin()
+    {
+        if (CurrencyManager.Instance.Coin >= 100)
+        {
+            CurrencyManager.Instance.SpendCoin(100);
+            ShowBoosterUnlockedPanel();
+        }
+        else
+        {
+            ShowCoinBuyPanel();
+        }
+    }
+
+    public void UnlockBoosterWithAd()
+    {
+        // TODO: If Ad is successful
+        ShowBoosterUnlockedPanel();
+    }
+
     public void ShowSettingsPanel()
     {
         HideAllPanels();
