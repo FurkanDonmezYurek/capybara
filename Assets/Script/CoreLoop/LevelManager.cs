@@ -4,15 +4,6 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    //For levelData
-    // public LevelDatabase levelDatabase;
-    // public GridSystem gridSystem; // GridSystem referansı
-    // public GameObject loaderPrefab;
-
-    // private int currentLevelIndex = 0;
-
-    //
-
     public GameObject[] capybaraPrefabs;
     public Color[] possibleColors;
     public int capybaraCount = 12;
@@ -144,27 +135,4 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    // public void LoadLevel(int index)
-    // {
-    //     if (index < 0 || index >= levelDatabase.levels.Length)
-    //     {
-    //         Debug.Log("Tüm seviyeler tamamlandı!");
-    //         return;
-    //     }
-
-    //     currentLevelIndex = index;
-
-    //     // Seviye verilerini GridSystem'e ilet
-    //     gridSystem.levelData = levelDatabase.levels[currentLevelIndex];
-
-    //     // Seviye oluşturma
-    //     gridSystem.GenerateGrid();
-    // }
-
-    // public void LoadNextLevel()
-    // {
-    //     LoadLevel(currentLevelIndex + 1);
-    // }
-
-    // public LevelData GetCurrentLevel() => levelDatabase.levels[currentLevelIndex];
 }

@@ -67,6 +67,70 @@ public class GridSystem : MonoBehaviour
         }
     }
 
+    // Adds seats in order to the current grid.
+    [ContextMenu("Add Seat Group")]
+    public void AddSeatGroup()
+    {
+        if (seatPrefab == null || groupsParent == null)
+        {
+            Debug.LogError("Seat prefab or groupsParent is not set!");
+            return;
+        }
+
+        int groupCountX = columns / groupWidth;
+        int currentGroupIndex = groupsParent.childCount;
+        int groupX = currentGroupIndex % groupCountX;
+        int groupY = currentGroupIndex / groupCountX;
+
+        // Eğer satır sayısı yetmiyorsa, büyüt
+        int requiredRows = (groupY + 1) * groupHeight;
+        if (requiredRows > rows)
+            rows = requiredRows;
+
+        List<Seat> groupSeats = new();
+        GameObject gObj = new GameObject($"SeatGroup_{groupY}_{groupX}");
+        gObj.transform.SetParent(groupsParent);
+
+        for (int dy = 0; dy < groupHeight; dy++)
+        {
+            for (int dx = 0; dx < groupWidth; dx++)
+            {
+                int x = groupX * groupWidth + dx;
+                int y = groupY * groupHeight + dy;
+
+                // Eğer sütun yetmiyorsa büyüt
+                if (x >= columns)
+                    columns = x + 1;
+
+                Vector3 groupOffset = new Vector3(groupX * groupSpacingX, 0, 0);
+                Vector3 pos = new Vector3(x * spacing, 0, -y * spacing) + groupOffset;
+
+#if UNITY_EDITOR
+                GameObject obj = PrefabUtility.InstantiatePrefab(seatPrefab, transform) as GameObject;
+#else
+            GameObject obj = Instantiate(seatPrefab, transform);
+#endif
+                obj.transform.localPosition = pos;
+
+                Seat seat = obj.GetComponent<Seat>();
+                seat.gridPosition = new Vector2Int(x, y);
+                seat.transform.SetParent(gObj.transform);
+                groupSeats.Add(seat);
+            }
+        }
+
+        SeatGroup group = gObj.AddComponent<SeatGroup>();
+        group.seatsInGroup = groupSeats;
+        group.groupX = groupX;
+        group.groupY = groupY;
+
+        foreach (var seat in groupSeats)
+            seat.groupOfSeat = group;
+
+        Debug.Log($"SeatGroup_{groupY}_{groupX} added. New grid size: {columns}x{rows}");
+    }
+
+
     public void ClearGrid()
     {
         if (groupsParent == null) return;
@@ -99,6 +163,14 @@ public class GridSystem : MonoBehaviour
         this.columns = columns;
         this.groupWidth = groupWidth;
         this.groupHeight = groupHeight;
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            AddSeatGroup();
+        }
     }
 
 }
