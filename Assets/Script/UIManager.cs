@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Sprite frozenClockIcon;
     [SerializeField] private Button settingsButton;
     private Tween flashTweenTimerText;
+    private Tween coinTween;
     private bool suppressTimerUI = false;
     private Coroutine animatedTimeCoroutine;
 
@@ -164,7 +165,10 @@ public class UIManager : MonoBehaviour
 
     #region === Top Bar Updates ===
 
-    public void UpdateCoin(int amount) => coinText.text = amount.ToString();
+    public void UpdateCoin(int amount)
+    {
+        AnimateCoinChange(amount); 
+    }
 
     public void UpdateLevel(int level) => levelText.text = "Level " + level;
 
@@ -245,6 +249,8 @@ public class UIManager : MonoBehaviour
 
     public void ShowLevelComplete()
     {
+        BuyCoins(100);
+
         if (GameTimerManager.Instance.isFrozen)
             GameTimerManager.Instance.CancelFreeze();
 
@@ -655,8 +661,26 @@ public class UIManager : MonoBehaviour
     public void BuyCoins(int coinAmount)
     {
         //TODO: Rewarded Ad Integration
+
         CurrencyManager.Instance.AddCoin(coinAmount);
+
         HideAllPanels();
+    }
+
+    public void AnimateCoinChange(int newCoinAmount)
+    {
+        if (coinTween != null && coinTween.IsActive()) coinTween.Kill();
+
+        int current = int.Parse(coinText.text);
+
+        coinText.transform.localScale = Vector3.one * 1.2f;
+        coinText.transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
+
+        coinTween = DOTween.To(() => current, x =>
+        {
+            current = x;
+            coinText.text = current.ToString();
+        }, newCoinAmount, 0.5f).SetEase(Ease.OutQuad);
     }
     #endregion
 
