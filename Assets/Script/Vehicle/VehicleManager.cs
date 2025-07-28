@@ -1,37 +1,40 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Splines;
 
 public class VehicleManager : MonoBehaviour
 {
+    public static VehicleManager Instance { get; private set; }
+
     [Header("Araç script referanslarý")]
     public List<GameObject> vehicles;
 
     private int currentIndex = 0;
     private const string PREF_KEY = "SelectedVehicleIndex";
 
+    void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+    }
+
     void Start()
     {
-        // Hafýzadan seçim al
         currentIndex = PlayerPrefs.GetInt(PREF_KEY, 0);
         ShowOnly(currentIndex);
     }
 
-    void Update()
+    public void VehicleUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            // Bir sonraki araca geç
-            currentIndex++;
+        currentIndex++;
 
-            // Son araçtan sonra baþa dön
-            if (currentIndex >= vehicles.Count)
-                currentIndex = 0;
+        if (currentIndex >= vehicles.Count)
+            currentIndex = 0;
 
-            // Aracý göster ve PlayerPrefs'e yaz
-            ShowOnly(currentIndex);
-            PlayerPrefs.SetInt(PREF_KEY, currentIndex);
-        }
+        ShowOnly(currentIndex);
+        PlayerPrefs.SetInt(PREF_KEY, currentIndex);
     }
 
     void ShowOnly(int indexToShow)
@@ -41,6 +44,17 @@ public class VehicleManager : MonoBehaviour
             vehicles[i].SetActive(i == indexToShow);
         }
     }
+
+    public GameObject GetCurrentVehicle()
+    {
+        return vehicles[currentIndex];
+    }
+    private void OnEnable()
+    {
+        Events.VehicleUpdate += VehicleUpdate;
+    }
+    private void OnDisable()
+    {
+        Events.VehicleUpdate -= VehicleUpdate;
+    }
 }
-
-

@@ -46,10 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e62d14abec85df4fae51327c4dfd815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleIntensity: 0.035
-  scaleCycleDuration: 1.4
-  tiltAngle: 3
-  tiltDuration: 1.2
+  wheelRotator: {fileID: 0}
+  bounceHeight: 0.15
+  bounceDuration: 1
+  swayAngle: 2
+  swayDuration: 1.5
 --- !u!114 &6805545549462697889
 MonoBehaviour:
   m_ObjectHideFlags: 0
