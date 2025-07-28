@@ -24,8 +24,8 @@ public class UIManager : MonoBehaviour
     private Coroutine animatedTimeCoroutine;
 
     [Header("Booster Shortcut")]
-    [SerializeField] private Button boosterButton;
-    private Tween boosterButtonTween;
+    [SerializeField] private Button[] boosterButton;
+    private Tween[] boosterButtonTweens;
 
     [Header("UI Panels")]
     [SerializeField] private GameObject levelCompletePanel;
@@ -59,9 +59,9 @@ public class UIManager : MonoBehaviour
     #region Booster Panel
     [Header("Booster Panel Elements")]
     [SerializeField] private CanvasGroup boosterCG;
-    [SerializeField] private Transform boosterHeader;
-    [SerializeField] private Transform boosterIcon;
-    [SerializeField] private Transform boosterText;
+    [SerializeField] private Transform[] boosterHeader;
+    [SerializeField] private Transform[] boosterIcon;
+    [SerializeField] private Transform[] boosterText;
     [SerializeField] private Transform boosterButtons;
     [SerializeField] private Button unlockBoosterWithCoinButton;
     [SerializeField] private Button unlockBoosterWithAdsButton;
@@ -82,8 +82,8 @@ public class UIManager : MonoBehaviour
     [Header("Booster Unlocked Panel Elements")]
     [SerializeField] private CanvasGroup boosterUnlockedCG;
     [SerializeField] private Image boosterUnlockedBGGlow;
-    [SerializeField] private Transform boosterUnlockedIcon;
-    [SerializeField] private CanvasGroup boosterTextImage;
+    [SerializeField] private Transform[] boosterUnlockedIcon;
+    [SerializeField] private CanvasGroup[] boosterTextImage;
     #endregion
 
     #region Booster Frame
@@ -155,6 +155,8 @@ public class UIManager : MonoBehaviour
         GameTimerManager.Instance.OnTimeChanged += UpdateTimer;
         GameTimerManager.Instance.OnTimeOver += ShowLevelFail;
 
+        boosterButtonTweens = new Tween[boosterButton.Length];
+
         StartLevel(); //TODO: Replace with actual level start logic
     }
 
@@ -215,7 +217,12 @@ public class UIManager : MonoBehaviour
             HidePanelWithAnimation(levelFailCG, levelFailHeader, levelFailPanel);
 
         if (boosterPanel.activeSelf)
-            HidePanelWithAnimation(boosterCG, boosterHeader, boosterPanel);
+        {
+            for (int i = 0;i< boosterHeader.Length; i++)
+            {
+                HidePanelWithAnimation(boosterCG, boosterHeader[i], boosterPanel);
+            }
+        }
 
         if (coinBuyPanel.activeSelf)
             HidePanelWithAnimation(coinBuyCG, coinBuyHeader, coinBuyPanel);
@@ -314,7 +321,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void ShowBoosterPanel()
+    public void ShowBoosterPanel(bool isFreezeBoster)
     {
         HideAllPanels();
         boosterPanel.SetActive(true);
@@ -345,39 +352,104 @@ public class UIManager : MonoBehaviour
         }
 
         UIAnimator.FadeIn(boosterCG);
-        UIAnimator.ScaleIn(boosterHeader);
-        UIAnimator.ScaleIn(boosterIcon, 0.3f, 0.2f);
-        UIAnimator.MoveFromX(boosterText, -1000, 0.3f, Ease.OutExpo, 0.4f);
+        if (isFreezeBoster)
+        {
+            boosterHeader[0].gameObject.SetActive(true);
+            boosterIcon[0].gameObject.SetActive(true);
+            boosterText[0].gameObject.SetActive(true);
+
+            boosterHeader[1].gameObject.SetActive(false);
+            boosterIcon[1].gameObject.SetActive(false);
+            boosterText[1].gameObject.SetActive(false);
+
+            UIAnimator.ScaleIn(boosterHeader[0]);
+            UIAnimator.ScaleIn(boosterIcon[0], 0.3f, 0.2f);
+            UIAnimator.MoveFromX(boosterText[0], -1000, 0.3f, Ease.OutExpo, 0.4f); 
+        }
+        else
+        {
+            boosterHeader[0].gameObject.SetActive(false);
+            boosterIcon[0].gameObject.SetActive(false);
+            boosterText[0].gameObject.SetActive(false);
+
+            boosterHeader[1].gameObject.SetActive(true);
+            boosterIcon[1].gameObject.SetActive(true);
+            boosterText[1].gameObject.SetActive(true);
+
+            UIAnimator.ScaleIn(boosterHeader[1]);
+            UIAnimator.ScaleIn(boosterIcon[1], 0.3f, 0.2f);
+            UIAnimator.MoveFromX(boosterText[1], -1000, 0.3f, Ease.OutExpo, 0.4f);
+        }
         UIAnimator.ScaleIn(boosterButtons, 0.3f, 0.6f);
     }
 
-    public void ShowBoosterUnlockedPanel()
+    public void ShowBoosterUnlockedPanel(bool isFreezeBooster)
     {
-        ShowBoosterFrame();
+
         HideAllPanels();
         boosterUnlockedPanel.SetActive(true);
 
         boosterUnlockedCG.alpha = 0;
         boosterUnlockedCG.transform.localScale = Vector3.zero;
-        boosterUnlockedIcon.localScale = Vector3.zero;
-        boosterTextImage.alpha = 0;
+        if (isFreezeBooster)
+        {
+            ShowBoosterFrame();
 
-        Vector3 originalTextPos = boosterTextImage.transform.localPosition;
-        boosterTextImage.transform.localPosition = new Vector3(originalTextPos.x, 50, originalTextPos.z);
+            boosterUnlockedIcon[0].gameObject.SetActive(true);
+            boosterUnlockedIcon[1].gameObject.SetActive(false);
+
+            boosterTextImage[0].gameObject.SetActive(true);
+            boosterTextImage[1].gameObject.SetActive(false);
+
+            boosterUnlockedIcon[0].localScale = Vector3.zero;
+            boosterTextImage[0].alpha = 0;
+
+            Vector3 originalTextPos = boosterTextImage[0].transform.localPosition;
+            boosterTextImage[0].transform.localPosition = new Vector3(originalTextPos.x, 50, originalTextPos.z);
 
 
-        Sequence seq = DOTween.Sequence();
-        seq.Append(boosterUnlockedCG.DOFade(1f, 0.4f));
-        seq.Join(boosterUnlockedCG.transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack));
-        UIAnimator.RotateLoop(boosterUnlockedBGGlow.transform, 8f);
-        UIAnimator.WobbleRotation(boosterUnlockedIcon.transform);
-        seq.Join(boosterUnlockedIcon.DOScale(1f, 0.4f).SetEase(Ease.OutBack));
-        seq.Append(boosterTextImage.DOFade(1f, 0.3f));
-        seq.Join(boosterTextImage.transform.DOLocalMoveY(originalTextPos.y, 0.3f).SetEase(Ease.OutExpo));
-        seq.AppendInterval(0.5f);
-        seq.Append(boosterUnlockedCG.DOFade(0f, 0.3f));
-        seq.Join(boosterUnlockedCG.transform.DOScale(0.8f, 0.3f));
-        seq.OnComplete(() => boosterUnlockedPanel.SetActive(false));
+            Sequence seq = DOTween.Sequence();
+            seq.Append(boosterUnlockedCG.DOFade(1f, 0.4f));
+            seq.Join(boosterUnlockedCG.transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack));
+            UIAnimator.RotateLoop(boosterUnlockedBGGlow.transform, 8f);
+            UIAnimator.WobbleRotation(boosterUnlockedIcon[0].transform);
+            seq.Join(boosterUnlockedIcon[0].DOScale(1f, 0.4f).SetEase(Ease.OutBack));
+            seq.Append(boosterTextImage[0].DOFade(1f, 0.3f));
+            seq.Join(boosterTextImage[0].transform.DOLocalMoveY(originalTextPos.y, 0.3f).SetEase(Ease.OutExpo));
+            seq.AppendInterval(0.5f);
+            seq.Append(boosterUnlockedCG.DOFade(0f, 0.3f));
+            seq.Join(boosterUnlockedCG.transform.DOScale(0.8f, 0.3f));
+            seq.OnComplete(() => boosterUnlockedPanel.SetActive(false));
+        }
+        else
+        {
+            boosterUnlockedIcon[0].gameObject.SetActive(false);
+            boosterUnlockedIcon[1].gameObject.SetActive(true);
+
+            boosterTextImage[0].gameObject.SetActive(false);
+            boosterTextImage[1].gameObject.SetActive(true);
+
+            boosterUnlockedIcon[1].localScale = Vector3.zero;
+            boosterTextImage[1].alpha = 0;
+
+            Vector3 originalTextPos = boosterTextImage[1].transform.localPosition;
+            boosterTextImage[1].transform.localPosition = new Vector3(originalTextPos.x, 50, originalTextPos.z);
+
+
+            Sequence seq = DOTween.Sequence();
+            seq.Append(boosterUnlockedCG.DOFade(1f, 0.4f));
+            seq.Join(boosterUnlockedCG.transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack));
+            UIAnimator.RotateLoop(boosterUnlockedBGGlow.transform, 8f);
+            UIAnimator.WobbleRotation(boosterUnlockedIcon[1].transform);
+            seq.Join(boosterUnlockedIcon[1].DOScale(1f, 0.4f).SetEase(Ease.OutBack));
+            seq.Append(boosterTextImage[1].DOFade(1f, 0.3f));
+            seq.Join(boosterTextImage[1].transform.DOLocalMoveY(originalTextPos.y, 0.3f).SetEase(Ease.OutExpo));
+            seq.AppendInterval(0.5f);
+            seq.Append(boosterUnlockedCG.DOFade(0f, 0.3f));
+            seq.Join(boosterUnlockedCG.transform.DOScale(0.8f, 0.3f));
+            seq.OnComplete(() => boosterUnlockedPanel.SetActive(false));
+        }
+        
     }
 
     public void ShowPlayOnPanel()
@@ -415,8 +487,16 @@ public class UIManager : MonoBehaviour
         if (CurrencyManager.Instance.Coin >= 100)
         {
             CurrencyManager.Instance.SpendCoin(100);
-            GameTimerManager.Instance.Freeze(10f);
-            ShowBoosterUnlockedPanel();
+            if (boosterHeader[0].gameObject.activeSelf)
+            {
+                GameTimerManager.Instance.Freeze(10f);
+                ShowBoosterUnlockedPanel(true);
+            }
+            else
+            {
+                //TODO: Add logic for seat booster
+                ShowBoosterUnlockedPanel(false);
+            }
         }
         else
         {
@@ -427,8 +507,16 @@ public class UIManager : MonoBehaviour
     public void UnlockBoosterWithAd()
     {
         //TODO: Rewarded Ad Integration
-        GameTimerManager.Instance.Freeze(10f);
-        ShowBoosterUnlockedPanel();
+        if (boosterHeader[0].gameObject.activeSelf)
+        {
+            GameTimerManager.Instance.Freeze(10f);
+            ShowBoosterUnlockedPanel(true);
+        }
+        else
+        {
+            //TODO: Add logic for seat booster
+            ShowBoosterUnlockedPanel(false);
+        }
     }
 
     public void SetFrozenState(bool frozen)
@@ -448,27 +536,33 @@ public class UIManager : MonoBehaviour
 
     private void HideBoosterButton()
     {
-        boosterButtonTween?.Kill();
+        for (int i = 0; i < boosterButton.Length; i++)
+        {
+            boosterButtonTweens[i]?.Kill();
 
-        boosterButtonTween = boosterButton.transform.DOScale(0f, 0.3f).SetEase(Ease.InBack)
-            .OnComplete(() =>
-            {
-                boosterButton.interactable = false;
-                boosterButton.gameObject.SetActive(false);
-            });
+            boosterButtonTweens[i] = boosterButton[i].transform.DOScale(0f, 0.3f).SetEase(Ease.InBack)
+                .OnComplete(() =>
+                {
+                    boosterButton[i].interactable = false;
+                    boosterButton[i].gameObject.SetActive(false);
+                });
+        }
     }
 
     private void ShowBoosterButton()
     {
-        boosterButton.gameObject.SetActive(true);
-        boosterButton.interactable = true;
+        for (int i = 0; i < boosterButton.Length; i++)
+        {
+            boosterButton[i].gameObject.SetActive(true);
+            boosterButton[i].interactable = true;
+            boosterButton[i].transform.localScale = Vector3.zero;
 
-        boosterButton.transform.localScale = Vector3.zero;
+            boosterButtonTweens[i]?.Kill();
 
-        boosterButtonTween?.Kill();
-
-        boosterButtonTween = boosterButton.transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack);
+            boosterButtonTweens[i] = boosterButton[i].transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack);
+        }
     }
+
     public void ShowBoosterFrame()
     {
         boosterFrameTween?.Kill(true);
@@ -490,8 +584,6 @@ public class UIManager : MonoBehaviour
             .Join(boosterFrameCG.transform.DOScale(1.2f, 1.5f).SetEase(Ease.InBack))
             .OnComplete(() => boosterFrameCG.gameObject.SetActive(false));
     }
-
-
     #endregion
 
     #region === Play On Actions ===
@@ -630,7 +722,7 @@ public class UIManager : MonoBehaviour
     //TODO: Remove or comment out these methods in production
     void StartLevel()
     {
-        GameTimerManager.Instance.StartTimer(10f);
+        GameTimerManager.Instance.StartTimer(60f);
     }
 
     #endregion
