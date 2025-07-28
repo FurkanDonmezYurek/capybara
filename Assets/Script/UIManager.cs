@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Sprite frozenClockIcon;
     [SerializeField] private Button settingsButton;
     private Tween flashTweenTimerText;
+    private bool suppressTimerUI = false;
+    private Coroutine animatedTimeCoroutine;
 
     [Header("Booster Shortcut")]
     [SerializeField] private Button boosterButton;
@@ -81,6 +84,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Image boosterUnlockedBGGlow;
     [SerializeField] private Transform boosterUnlockedIcon;
     [SerializeField] private CanvasGroup boosterTextImage;
+    #endregion
+
+    #region Booster Frame
+    [Header("Booster Frame")]
+    [SerializeField] private GameObject boosterFrame;
+    [SerializeField] private CanvasGroup boosterFrameCG;
+    private Tween boosterFrameTween;
     #endregion
 
     #region Play On Panel
@@ -158,6 +168,8 @@ public class UIManager : MonoBehaviour
 
     public void UpdateTimer(float progress)
     {
+        if (suppressTimerUI) return;
+
         timerFill.fillAmount = Mathf.Clamp01(progress);
 
         if (GameTimerManager.Instance.isFrozen)
@@ -341,6 +353,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowBoosterUnlockedPanel()
     {
+        ShowBoosterFrame();
         HideAllPanels();
         boosterUnlockedPanel.SetActive(true);
 
@@ -369,9 +382,6 @@ public class UIManager : MonoBehaviour
 
     public void ShowPlayOnPanel()
     {
-        //TODO: Add 30 seconds
-        GameTimerManager.Instance.AddTime(30f); //TODO: Crate this method in a Function because we will add more different things to add more time
-
         HideAllPanels();
         playOnPanel.SetActive(true);
 
@@ -459,13 +469,93 @@ public class UIManager : MonoBehaviour
 
         boosterButtonTween = boosterButton.transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack);
     }
+    public void ShowBoosterFrame()
+    {
+        boosterFrameTween?.Kill(true);
+
+        boosterFrameCG.gameObject.SetActive(true);
+        boosterFrameCG.alpha = 0f;
+        boosterFrameCG.transform.localScale = Vector3.one * 1.2f;
+
+        boosterFrameTween = DOTween.Sequence()
+            .Append(boosterFrameCG.DOFade(1f, 1f))
+            .Join(boosterFrameCG.transform.DOScale(1f, 1f).SetEase(Ease.OutBack));
+    }
+    public void HideBoosterFrame()
+    {
+        boosterFrameTween?.Kill(true);
+
+        boosterFrameTween = DOTween.Sequence()
+            .Append(boosterFrameCG.DOFade(0f, 1.5f))
+            .Join(boosterFrameCG.transform.DOScale(1.2f, 1.5f).SetEase(Ease.InBack))
+            .OnComplete(() => boosterFrameCG.gameObject.SetActive(false));
+    }
+
+
     #endregion
 
     #region === Play On Actions ===
     public void PlayOnRewarded()
     {
         //TODO: Rewarded Ad Integration
+
+        AnimateTimeAddition(30f, 1f); //TODO: Crate this method in a Function because we will add more different things to add more time
         ShowPlayOnPanel();
+    }
+
+    public void AnimateTimeAddition(float timeToAdd, float duration = 1f)
+    {
+        if (animatedTimeCoroutine != null)
+            StopCoroutine(animatedTimeCoroutine);
+
+        animatedTimeCoroutine = StartCoroutine(AnimateTimeIncreaseCoroutine(timeToAdd, duration));
+    }
+
+    private IEnumerator AnimateTimeIncreaseCoroutine(float timeToAdd, float animationDuration)
+    {
+        float startTime = GameTimerManager.Instance.RemainingTime;
+        float targetTime = Mathf.Min(startTime + timeToAdd, GameTimerManager.Instance.totalTime);
+        GameTimerManager.Instance.AddTime(timeToAdd, true);
+
+        suppressTimerUI = true;
+
+        timerText.text = "+30s";
+        timerText.transform.localScale = Vector3.one * 1.3f;
+        timerText.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
+        clockIcon.transform.DOPunchScale(Vector3.one * 0.3f, 0.3f, 4, 0.5f);
+
+        Color originalColor = timerFill.color;
+        timerFill.color = Color.cyan;
+
+        yield return new WaitForSeconds(0.5f);
+
+        float elapsed = 0f;
+        while (elapsed < animationDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / animationDuration);
+            float currentVisualTime = Mathf.Lerp(startTime, targetTime, t);
+            UpdateTimerVisualOnly(currentVisualTime);
+            yield return null;
+        }
+
+        timerFill.color = originalColor;
+
+        suppressTimerUI = false;
+        UpdateTimer(GameTimerManager.Instance.RemainingTime / GameTimerManager.Instance.totalTime);
+
+        animatedTimeCoroutine = null;
+    }
+
+    private void UpdateTimerVisualOnly(float displayTime)
+    {
+        float progress = displayTime / GameTimerManager.Instance.totalTime;
+        timerFill.fillAmount = Mathf.Clamp01(progress);
+
+        float remaining = displayTime;
+        int minutes = Mathf.FloorToInt(remaining / 60f);
+        int seconds = Mathf.FloorToInt(remaining % 60f);
+        timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
     #endregion
 
@@ -540,7 +630,7 @@ public class UIManager : MonoBehaviour
     //TODO: Remove or comment out these methods in production
     void StartLevel()
     {
-        GameTimerManager.Instance.StartTimer(60f);
+        GameTimerManager.Instance.StartTimer(10f);
     }
 
     #endregion

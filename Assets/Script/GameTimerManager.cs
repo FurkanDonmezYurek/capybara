@@ -57,16 +57,15 @@ public class GameTimerManager : MonoBehaviour
     /// <summary>
     /// Adds time to the timer and resumes if stopped.
     /// </summary>
-    public void AddTime(float seconds)
+    public void AddTime(float seconds, bool silent = false)
     {
         currentTime += seconds;
 
         if (currentTime > 0f && !isRunning)
-        {
             isRunning = true;
-        }
 
-        OnTimeChanged?.Invoke(currentTime / totalTime);
+        if (!silent)
+            OnTimeChanged?.Invoke(currentTime / totalTime);
     }
 
     /// <summary>
@@ -108,6 +107,7 @@ public class GameTimerManager : MonoBehaviour
 
         isFrozen = false;
         UIManager.Instance.SetFrozenState(false);
+        UIManager.Instance.HideBoosterFrame();
     }
 
     #endregion
