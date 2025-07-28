@@ -364,7 +364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelManager: {fileID: 0}
-  startLevelIndex: 8
+  startLevelIndex: 15
 --- !u!4 &1365210082
 Transform:
   m_ObjectHideFlags: 0
@@ -418,7 +418,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   seatPrefab: {fileID: 4229894146711232555, guid: bf2777f6f61d74fe79de5d74979f1612,
     type: 3}
-  rows: 4
+  rows: 5
   columns: 6
   spacing: 1.2
   groupWidth: 3

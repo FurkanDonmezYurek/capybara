@@ -10,20 +10,44 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c6aee26f58974152871384824b50d21, type: 3}
-  m_Name: 1.2
+  m_Name: 1.5
   m_EditorClassIdentifier: 
-  levelName: 1.2(easy)
+  levelName: New Level
   difficulty: 0
   isLocked: 0
-  rows: 2
+  rows: 4
   columns: 6
   groupWidth: 3
   groupHeight: 1
   capybaras:
-  - gridPosition: {x: 3, y: 1}
+  - gridPosition: {x: 3, y: 3}
+    type: 0
+    isFrozen: 0
+    color: {r: 0.8457632, g: 0.0047169924, b: 1, a: 0}
+  - gridPosition: {x: 4, y: 3}
     type: 0
     isFrozen: 0
     color: {r: 0, g: 1, b: 0.79420686, a: 0}
+  - gridPosition: {x: 5, y: 3}
+    type: 0
+    isFrozen: 0
+    color: {r: 0.9031561, g: 0.972549, b: 0.070588194, a: 0}
+  - gridPosition: {x: 0, y: 3}
+    type: 1
+    isFrozen: 0
+    color: {r: 0, g: 1, b: 0.79420686, a: 0}
+  - gridPosition: {x: 5, y: 2}
+    type: 0
+    isFrozen: 0
+    color: {r: 0, g: 0.00040936467, b: 1, a: 0}
+  - gridPosition: {x: 1, y: 2}
+    type: 0
+    isFrozen: 0
+    color: {r: 0.8457632, g: 0.0047169924, b: 1, a: 0}
+  - gridPosition: {x: 4, y: 1}
+    type: 0
+    isFrozen: 0
+    color: {r: 0.9031561, g: 0.972549, b: 0.070588194, a: 0}
   - gridPosition: {x: 5, y: 1}
     type: 0
     isFrozen: 0
@@ -31,24 +55,24 @@ MonoBehaviour:
   - gridPosition: {x: 0, y: 1}
     type: 0
     isFrozen: 0
-    color: {r: 0, g: 0.00040936467, b: 1, a: 0}
-  - gridPosition: {x: 1, y: 1}
-    type: 0
-    isFrozen: 0
     color: {r: 0.9031561, g: 0.972549, b: 0.070588194, a: 0}
-  - gridPosition: {x: 2, y: 1}
-    type: 0
+  - gridPosition: {x: 1, y: 1}
+    type: 1
     isFrozen: 0
     color: {r: 0, g: 1, b: 0.79420686, a: 0}
   - gridPosition: {x: 3, y: 0}
-    type: 0
+    type: 1
     isFrozen: 0
     color: {r: 0.9031561, g: 0.972549, b: 0.070588194, a: 0}
   - gridPosition: {x: 5, y: 0}
     type: 0
     isFrozen: 0
-    color: {r: 0, g: 0.00040936467, b: 1, a: 0}
+    color: {r: 0.8457632, g: 0.0047169924, b: 1, a: 0}
   - gridPosition: {x: 0, y: 0}
+    type: 0
+    isFrozen: 0
+    color: {r: 0, g: 0.00040936467, b: 1, a: 0}
+  - gridPosition: {x: 1, y: 0}
     type: 0
     isFrozen: 0
     color: {r: 0.9031561, g: 0.972549, b: 0.070588194, a: 0}
