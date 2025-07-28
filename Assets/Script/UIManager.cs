@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 
 public class UIManager : MonoBehaviour
+
+
 {
     public GameObject loadingPanel;
 
@@ -19,4 +21,27 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(levelName);
     }
+
+public GameObject shopPanel;
+public GameObject settingsPanel;
+
+public void OpenShop()
+{
+    shopPanel.SetActive(true);
+}
+
+public void CloseShop()
+{
+    shopPanel.SetActive(false);
+}
+
+public void OpenSettings()
+{
+    settingsPanel.SetActive(true);
+}
+
+public void CloseSettings()
+{
+    settingsPanel.SetActive(false);
+}
 }
