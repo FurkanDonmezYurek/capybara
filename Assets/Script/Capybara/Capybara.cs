@@ -105,11 +105,14 @@ public class Capybara : MonoBehaviour
         Vector3 end = targetSlot.transform.position;
         float duration = Vector3.Distance(start, end) / MoveSpeed;
 
-        transform.DOMove(end, duration).SetEase(Ease.InOutSine).OnComplete(() =>
-        {
-            currentSlot = targetSlot;
-            CheckTargetSeatMatch(targetSlot);
-        });
+        transform
+            .DOMove(end, duration)
+            .SetEase(Ease.InOutSine)
+            .OnComplete(() =>
+            {
+                currentSlot = targetSlot;
+                CheckTargetSeatMatch(targetSlot);
+            });
     }
 
     protected virtual void AnimateCorridorMove(Seat targetSlot)
@@ -124,7 +127,12 @@ public class Capybara : MonoBehaviour
         SeatGroup fromGroup = currentSlot.groupOfSeat;
         SeatGroup toGroup = targetSlot.groupOfSeat;
 
-        Vector3 corridorExit = GetCorridorExitPoint(fromGroup, currentSlot, corridorOffset, targetSlot);
+        Vector3 corridorExit = GetCorridorExitPoint(
+            fromGroup,
+            currentSlot,
+            corridorOffset,
+            targetSlot
+        );
         Vector3 step1 = corridorExit;
         Vector3 step2 = new Vector3(corridorExit.x, start.y, end.z);
         Vector3 step3 = end;
@@ -149,11 +157,15 @@ public class Capybara : MonoBehaviour
             {
                 GameManager.Instance.CheckGameCondition();
             }
-
         });
     }
 
-    protected virtual Vector3 GetCorridorExitPoint(SeatGroup seatGroup, Seat currentSeat, float offset, Seat targetSlot)
+    protected virtual Vector3 GetCorridorExitPoint(
+        SeatGroup seatGroup,
+        Seat currentSeat,
+        float offset,
+        Seat targetSlot
+    )
     {
         var corridorSeats = seatGroup.seatsInGroup.Where(s => s.isCorridorSide).ToList();
 
@@ -194,7 +206,6 @@ public class Capybara : MonoBehaviour
 
         return new Vector3(corridorPos.x + xOffset, currentPos.y, currentPos.z);
     }
-
 
     protected virtual bool GetMovementDirection(Seat fromSeat, Seat toSeat)
     {

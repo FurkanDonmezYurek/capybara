@@ -35,8 +35,11 @@ public class ProgressManager : MonoBehaviour
     }
 
     public int GetSoftCurrency() => playerData.softCurrency;
+
     public int GetHardCurrency() => playerData.hardCurrency;
+
     public int GetMaxReachedLevel() => playerData.maxReachedLevel;
+
     public int GetAdsWatchedCount() => playerData.adsWatched;
 
     public void ResetProgress()

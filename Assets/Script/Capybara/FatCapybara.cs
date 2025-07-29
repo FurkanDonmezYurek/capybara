@@ -1,14 +1,13 @@
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 
 public class FatCapybara : Capybara
 {
-
-    // FIXME: CORRIDOR MECHANIC DOES NOT WORK FOR THE FAT CAPYBARA RIGHT NOW, 
+    // FIXME: CORRIDOR MECHANIC DOES NOT WORK FOR THE FAT CAPYBARA RIGHT NOW,
     public override CapybaraType Type => CapybaraType.Fat;
     public override float MoveSpeed => 1.5f;
 
-    private Seat secondSlot;
+    public Seat secondSlot;
 
     // Oyun başlangıcında direkt seat'e yerleştirmek için
     public override void SetSeat(Seat targetSlot)
@@ -77,7 +76,9 @@ public class FatCapybara : Capybara
         transform.position = center;
         transform.localScale = new Vector3(2f, 1f, 1f);
 
-        Debug.Log($"Fat capybara directly set to seats: Primary={primary.name}, Secondary={secondary.name}");
+        Debug.Log(
+            $"Fat capybara directly set to seats: Primary={primary.name}, Secondary={secondary.name}"
+        );
     }
 
     public override void SitSeat(Seat targetSlot)
@@ -181,7 +182,9 @@ public class FatCapybara : Capybara
             currentSlot = primary;
             secondSlot = secondary;
 
-            Debug.Log($"Successfully assigned seats: Primary={primary.name}, Secondary={secondary.name}");
+            Debug.Log(
+                $"Successfully assigned seats: Primary={primary.gridPosition}, Secondary={secondary.gridPosition}"
+            );
         }
         catch (System.Exception e)
         {

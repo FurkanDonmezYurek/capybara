@@ -1,12 +1,12 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 // Serializable class to define named audio clips (for dynamic assignment in Inspector)
 [System.Serializable]
 public class NamedAudioClip
 {
-    public string name;       // Unique identifier to play the sound (e.g., "Win", "Click")
-    public AudioClip clip;    // Actual AudioClip asset
+    public string name; // Unique identifier to play the sound (e.g., "Win", "Click")
+    public AudioClip clip; // Actual AudioClip asset
 }
 
 public class AudioManager : MonoBehaviour
@@ -15,19 +15,19 @@ public class AudioManager : MonoBehaviour
 
     [Header("Audio Sources")]
     public AudioSource musicSource; // Plays background music
-    public AudioSource sfxSource;   // Plays sound effects
+    public AudioSource sfxSource; // Plays sound effects
 
     [Header("Music Clips")]
     public List<NamedAudioClip> musicClips; // List of background music options
 
     [Header("SFX Clips")]
-    public List<NamedAudioClip> sfxClips;   // List of sound effects
+    public List<NamedAudioClip> sfxClips; // List of sound effects
 
     private Dictionary<string, AudioClip> musicLibrary = new(); // Runtime music lookup
-    private Dictionary<string, AudioClip> sfxLibrary = new();   // Runtime SFX lookup
+    private Dictionary<string, AudioClip> sfxLibrary = new(); // Runtime SFX lookup
 
     private const string MuteMusicKey = "MuteMusic"; // PlayerPrefs key for music mute
-    private const string MuteSFXKey = "MuteSFX";     // PlayerPrefs key for SFX mute
+    private const string MuteSFXKey = "MuteSFX"; // PlayerPrefs key for SFX mute
 
     void Awake()
     {
@@ -37,8 +37,8 @@ public class AudioManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject); // Persist between scenes
 
-            BuildClipDictionaries();       // Convert lists to dictionaries
-            LoadMuteSettings();            // Load saved mute settings
+            BuildClipDictionaries(); // Convert lists to dictionaries
+            LoadMuteSettings(); // Load saved mute settings
         }
         else
         {
@@ -117,5 +117,6 @@ public class AudioManager : MonoBehaviour
 
     // Public getters for UI elements
     public bool IsMusicMuted() => musicSource.mute;
+
     public bool IsSFXMuted() => sfxSource.mute;
 }

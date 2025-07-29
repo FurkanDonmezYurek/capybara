@@ -58,5 +58,6 @@ public class TimerManager : MonoBehaviour
     }
 
     public float GetTimeRemaining() => timeRemaining;
+
     public bool IsRunning() => isTimerRunning;
 }

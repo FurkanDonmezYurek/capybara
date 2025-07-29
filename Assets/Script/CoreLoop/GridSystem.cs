@@ -106,9 +106,10 @@ public class GridSystem : MonoBehaviour
                 Vector3 pos = new Vector3(x * spacing, 0, -y * spacing) + groupOffset;
 
 #if UNITY_EDITOR
-                GameObject obj = PrefabUtility.InstantiatePrefab(seatPrefab, transform) as GameObject;
+                GameObject obj =
+                    PrefabUtility.InstantiatePrefab(seatPrefab, transform) as GameObject;
 #else
-            GameObject obj = Instantiate(seatPrefab, transform);
+                GameObject obj = Instantiate(seatPrefab, transform);
 #endif
                 obj.transform.localPosition = pos;
 
@@ -129,19 +130,18 @@ public class GridSystem : MonoBehaviour
 
         Debug.Log($"SeatGroup_{groupY}_{groupX} added. New grid size: {columns}x{rows}");
 
-        // Update SeatGroup cache 
+        // Update SeatGroup cache
         if (Application.isPlaying)
         {
             GameManager.Instance.ClearSeatGroupCache();
             GameManager.Instance.InitializeSeatGroupsCache();
         }
-
     }
-
 
     public void ClearGrid()
     {
-        if (groupsParent == null) return;
+        if (groupsParent == null)
+            return;
 
         for (int i = groupsParent.childCount - 1; i >= 0; i--)
         {
@@ -150,7 +150,6 @@ public class GridSystem : MonoBehaviour
                 DestroyImmediate(child.gameObject);
         }
     }
-
 
     public Seat GetSeatAtPosition(Vector2Int gridPos)
     {
@@ -180,5 +179,4 @@ public class GridSystem : MonoBehaviour
             AddSeatGroup();
         }
     }
-
 }

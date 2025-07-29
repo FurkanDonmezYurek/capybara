@@ -10,7 +10,9 @@ public class GameManager : MonoBehaviour
     List<SeatGroup> cachedSeatGroups;
     public LevelManager levelManager;
     public TimerManager timerManager;
-    [SerializeField] private int startLevelIndex = 0; // For testing, change later
+
+    [SerializeField]
+    private int startLevelIndex = 0; // For testing, change later
 
     private void Awake()
     {
@@ -134,7 +136,7 @@ public class GameManager : MonoBehaviour
 
         if (selectedCapybara is FatCapybara fat)
         {
-            if (IsCorrectMoveFat(seat, fat.currentSlot))
+            if (IsCorrectMoveFat(seat, fat.currentSlot, fat.secondSlot))
             {
                 fat.SitSeat(seat);
             }
@@ -248,23 +250,78 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public bool IsCorrectMoveFat(Seat targetLeft, Seat currentLeft)
+    public bool IsCorrectMoveFat(Seat targetSeat, Seat currentSeat, Seat secondSeat)
     {
-        // 1. Hedefin sağındaki koltuk var mı?
-        Seat targetRight = GetNeighborSeatRight(targetLeft);
-        if (targetRight == null || !targetLeft.IsEmpty || !targetRight.IsEmpty)
-            return false;
+        // 1. CorridorSeat: currentSeat grubundaki koridor koltuğu (isCorridorSide == true)
+        Seat corridorSeat = currentSeat.groupOfSeat.seatsInGroup.FirstOrDefault(s =>
+            s.isCorridorSide
+        );
 
-        // 2. Kaynağın sağ koltuğu
-        Seat currentRight = GetNeighborSeatRight(currentLeft);
-        if (currentRight == null)
+        if (corridorSeat == null)
+        {
+            Debug.LogWarning("Corridor seat not found in current seat's group.");
             return false;
+        }
 
-        // 3. İki koltuğun da grup geçiş izinleri kontrol edilmeli
-        bool leftMoveValid = IsCorrectMove(targetLeft, currentLeft);
-        bool rightMoveValid = IsCorrectMove(targetRight, currentRight);
-        Debug.Log("Fat capybara is move valid:\nLeft:" + leftMoveValid + "\nRight: " + rightMoveValid);
-        return leftMoveValid || rightMoveValid;
+        // 2. corridorSeat currentSeat veya secondSeat eşit mi kontrol et
+        Seat oldSeat = null;
+        if (corridorSeat == currentSeat || corridorSeat == secondSeat)
+        {
+            oldSeat = corridorSeat;
+        }
+        else
+        {
+            // corridorSeat'e en yakın olanı bul (currentSeat veya secondSeat)
+            float distCurrent = Vector2Int.Distance(
+                corridorSeat.gridPosition,
+                currentSeat.gridPosition
+            );
+            float distSecond = Vector2Int.Distance(
+                corridorSeat.gridPosition,
+                secondSeat.gridPosition
+            );
+
+            oldSeat = distCurrent < distSecond ? currentSeat : secondSeat;
+        }
+
+        // 3. targetSeat'in sağında veya solunda boş koltuk var mı? Öncelikle koridor tarafına en uzak olanı kontrol et.
+
+        // Sağ ve sol komşularını al
+        Seat rightNeighbor = GetNeighborSeatRight(targetSeat);
+        Seat leftNeighbor = GetNeighborSeatLeft(targetSeat);
+
+        // Koridor tarafını bulmak için seat grubundaki koridor koltuğunun index'ini al
+        var seatsGroup = targetSeat.groupOfSeat.seatsInGroup;
+        int corridorIndex = seatsGroup.FindIndex(s => s.isCorridorSide);
+        int targetIndex = seatsGroup.IndexOf(targetSeat);
+
+        List<Seat> seatsToCheck = new List<Seat>();
+
+        // Koridor tarafına en uzak olan koltuğu önce kontrol edeceğiz
+        if (targetIndex < corridorIndex)
+        {
+            // Koridor sağda, o yüzden önce soldaki koltuk sonra sağdaki
+            if (leftNeighbor != null && leftNeighbor.IsEmpty)
+                seatsToCheck.Add(leftNeighbor);
+            if (rightNeighbor != null && rightNeighbor.IsEmpty)
+                seatsToCheck.Add(rightNeighbor);
+        }
+        else
+        {
+            // Koridor solda, önce sağdaki koltuk sonra soldaki
+            if (rightNeighbor != null && rightNeighbor.IsEmpty)
+                seatsToCheck.Add(rightNeighbor);
+            if (leftNeighbor != null && leftNeighbor.IsEmpty)
+                seatsToCheck.Add(leftNeighbor);
+        }
+
+        foreach (var seatToCheck in seatsToCheck)
+        {
+            if (IsCorrectMove(seatToCheck, oldSeat))
+                return true;
+        }
+
+        return false;
     }
 
     public bool IsPathClear(Seat a, Seat b)

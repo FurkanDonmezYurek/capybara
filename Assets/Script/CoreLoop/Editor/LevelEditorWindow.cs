@@ -117,8 +117,8 @@ public class LevelEditorWindow : EditorWindow
 
         if (colorPaletteAsset != null && colorPaletteAsset.colorPalette.Length > 0)
         {
-            string[] colorNames = colorPaletteAsset.colorPalette
-                .Select((c, i) => $"Color {i + 1}")
+            string[] colorNames = colorPaletteAsset
+                .colorPalette.Select((c, i) => $"Color {i + 1}")
                 .ToArray();
 
             selectedColorIndex = EditorGUILayout.Popup("Color", selectedColorIndex, colorNames);
@@ -131,7 +131,6 @@ public class LevelEditorWindow : EditorWindow
 
         GUILayout.Label("Capybara Properties", EditorStyles.boldLabel);
         isFrozen = EditorGUILayout.Toggle("Is Frozen", isFrozen);
-
 
         // Meta bilgilerini doldurabileceğimiz alan
         GUILayout.Space(20);
@@ -289,11 +288,7 @@ public class LevelEditorWindow : EditorWindow
         Vector3 spawnPos = seat.transform.position;
 
         // Capybara'yı seat'in pozisyonuna yerleştir
-        GameObject capybaraObj = Instantiate(
-            selectedCapybaraPrefab,
-            spawnPos,
-            Quaternion.identity
-        );
+        GameObject capybaraObj = Instantiate(selectedCapybaraPrefab, spawnPos, Quaternion.identity);
         Capybara capybara = capybaraObj.GetComponent<Capybara>();
 
         if (capybara != null)
@@ -349,7 +344,6 @@ public class LevelEditorWindow : EditorWindow
                         type = capy.Type,
                         isFrozen = capy.IsFrozen,
                         color = seat.currentCapybara.GetComponent<Renderer>().sharedMaterial.color,
-
                     };
                     capybaras.Add(capyInfo);
                 }

@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour
     public GridSystem gridSystem;
     private int currentLevelIndex = 0;
     public TimerManager timerManager; // Drag from Inspector or GetComponent
+
     public int GetCurrentLevelIndex() => currentLevelIndex;
 
     public void RestartCurrentLevel()
@@ -42,7 +43,12 @@ public class LevelManager : MonoBehaviour
         GameManager.Instance.ClearSeatGroupCache();
 
         gridSystem.ClearGrid();
-        gridSystem.SetGridParameters(level.rows, level.columns, level.groupWidth, level.groupHeight);
+        gridSystem.SetGridParameters(
+            level.rows,
+            level.columns,
+            level.groupWidth,
+            level.groupHeight
+        );
         gridSystem.GenerateGrid();
 
         foreach (var capyInfo in level.capybaras)
@@ -71,7 +77,8 @@ public class LevelManager : MonoBehaviour
                 .GetComponent<Capybara>();
 
             capy.SetColor(capyInfo.color);
-            if (capyInfo.isFrozen) capy.Freeze();
+            if (capyInfo.isFrozen)
+                capy.Freeze();
 
             capy.SitSeat(seat);
         }
