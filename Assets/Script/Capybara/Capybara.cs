@@ -145,6 +145,11 @@ public class Capybara : MonoBehaviour
         {
             currentSlot = targetSlot;
             CheckTargetSeatMatch(targetSlot);
+            if (Application.isPlaying)
+            {
+                GameManager.Instance.CheckGameCondition();
+            }
+
         });
     }
 

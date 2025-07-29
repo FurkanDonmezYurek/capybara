@@ -49,7 +49,30 @@ public class GameManager : MonoBehaviour
 
     public void OnTimeExpired()
     {
-        Debug.Log("Time's up! Game Over triggered from GameManager.");
+        CheckGameCondition();
+    }
+
+    private void UpdateTimerUI(float timeRemaining)
+    {
+        // UI güncellemesi için kullanılır
+        // Örnek: timerText.text = Mathf.CeilToInt(timeRemaining).ToString();
+    }
+
+    public void ShowWinScreen()
+    {
+        Debug.Log("You won! Show win screen here.");
+        // Burada kazandığınızda gösterilecek ekranı açabilirsiniz
+    }
+
+    public void ShowLoseScreen()
+    {
+        Debug.Log("You lost! Show lose screen here.");
+        // Burada kaybettiğinizde gösterilecek ekranı açabilirsiniz
+    }
+
+    public void CheckGameCondition()
+    {
+        Debug.Log("Checking game condition...");
         if (IsAllGroupsMatched())
         {
             // Game Won
@@ -62,25 +85,6 @@ public class GameManager : MonoBehaviour
             // Game Lost
             ShowLoseScreen();
         }
-    }
-
-    private void UpdateTimerUI(float timeRemaining)
-    {
-        // UI güncellemesi için kullanılır
-        // Örnek: timerText.text = Mathf.CeilToInt(timeRemaining).ToString();
-    }
-
-    public void ShowWinScreen()
-    {
-        Debug.Log("You won! Show win screen here.");
-        progressManager.SetMaxReachedLevel(levelManager.GetCurrentLevelIndex());
-        // Burada kazandığınızda gösterilecek ekranı açabilirsiniz
-    }
-
-    public void ShowLoseScreen()
-    {
-        Debug.Log("You lost! Show lose screen here.");
-        // Burada kaybettiğinizde gösterilecek ekranı açabilirsiniz
     }
 
     public void RestartCurrentLevel()
