@@ -133,8 +133,8 @@ GameObject:
   - component: {fileID: 25558607}
   - component: {fileID: 25558608}
   - component: {fileID: 25558609}
-  - component: {fileID: 25558610}
   - component: {fileID: 25558611}
+  - component: {fileID: 25558612}
   m_Layer: 5
   m_Name: UIManager
   m_TagString: Untagged
@@ -187,7 +187,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31498d54b684b4b4e9fbf13068bc81b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &25558610
+--- !u!114 &25558611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 25558606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d30b3806b91ebe45ae7aa3af570e322, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  splashScreenPanel: {fileID: 1947101489}
+  mainMenuPanel: {fileID: 2113967958}
+  mapPanel: {fileID: 1858088756}
+  winPanel: {fileID: 1300418788}
+  losePanel: {fileID: 1532808400}
+  settingsPanel: {fileID: 0}
+  shopPanel: {fileID: 0}
+--- !u!114 &25558612
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -206,12 +225,12 @@ MonoBehaviour:
   clockIcon: {fileID: 0}
   normalClockIcon: {fileID: 0}
   frozenClockIcon: {fileID: 0}
-  settingsButton: {fileID: 394017282}
+  settingsButton: {fileID: 0}
   boosterButton: []
   levelCompletePanel: {fileID: 0}
   levelFailPanel: {fileID: 0}
   boosterPanel: {fileID: 0}
-  coinBuyPanel: {fileID: 0}
+  coinBuyPanel: {fileID: 1855577814}
   boosterUnlockedPanel: {fileID: 0}
   playOnPanel: {fileID: 0}
   settingsPanel: {fileID: 0}
@@ -236,10 +255,10 @@ MonoBehaviour:
   unlockBoosterWithAdsButton: {fileID: 0}
   unlockBoosterNoAdAvailableButton: {fileID: 0}
   coinBuyCG: {fileID: 0}
-  coinBuyHeader: {fileID: 0}
-  coinBuyImage: {fileID: 0}
-  coinBuyText: {fileID: 0}
-  coinBuyButton: {fileID: 0}
+  coinBuyHeader: {fileID: 2095419860}
+  coinBuyImage: {fileID: 1465354335}
+  coinBuyText: {fileID: 2145465328}
+  coinBuyButton: {fileID: 1794955378}
   coinBuyButtonNoConnection: {fileID: 0}
   boosterUnlockedCG: {fileID: 0}
   boosterUnlockedBGGlow: {fileID: 0}
@@ -263,25 +282,7 @@ MonoBehaviour:
   iconSounds: []
   iconVibrations: []
   bgSettingsButtons: []
---- !u!114 &25558611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 25558606}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d30b3806b91ebe45ae7aa3af570e322, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  splashScreenPanel: {fileID: 1947101489}
-  mainMenuPanel: {fileID: 2113967958}
-  mapPanel: {fileID: 1858088756}
-  winPanel: {fileID: 1300418788}
-  losePanel: {fileID: 1532808400}
-  settingsPanel: {fileID: 0}
-  shopPanel: {fileID: 0}
+  shopPanel: {fileID: 1944796560}
 --- !u!1 &50294225
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,7 +428,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2083750197}
   m_Father: {fileID: 2062213701}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &88252211
@@ -2143,18 +2145,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 394017280}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &394017282 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2833732925990222409, guid: 070add71008581e49986cf2f1d3ff193,
-    type: 3}
-  m_PrefabInstance: {fileID: 394017280}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &525761890 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4031320136281830267, guid: 070add71008581e49986cf2f1d3ff193,
@@ -3765,6 +3755,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Top Menu
       objectReference: {fileID: 0}
+    - target: {fileID: 5938155582631693857, guid: b0f4150f0885d054ba6100b942ba11d6,
+        type: 3}
+      propertyPath: m_Name
+      value: Coin
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423261412914505959, guid: b0f4150f0885d054ba6100b942ba11d6,
+        type: 3}
+      propertyPath: m_Name
+      value: CoinButton
+      objectReference: {fileID: 0}
     - target: {fileID: 9028319207115337119, guid: b0f4150f0885d054ba6100b942ba11d6,
         type: 3}
       propertyPath: m_Type
@@ -4184,6 +4184,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1538112686989522489, guid: b01002205b707a24c9bcc655f14264cb,
     type: 3}
   m_PrefabInstance: {fileID: 1881453885}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &1465354335 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1222734750418897370, guid: ef94f707182732b4fb45389fc2da750f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2095419859}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1483541948
 GameObject:
@@ -5378,6 +5384,12 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &1794955378 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 806492054615363268, guid: ef94f707182732b4fb45389fc2da750f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2095419859}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1801027978
 GameObject:
   m_ObjectHideFlags: 0
@@ -5798,6 +5810,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1852663744}
   m_CullTransparentMesh: 1
+--- !u!1 &1855577814 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7423261412914505959, guid: b0f4150f0885d054ba6100b942ba11d6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1104858070}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1858088756
 GameObject:
   m_ObjectHideFlags: 0
@@ -6902,12 +6920,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2083750195}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 399.1077, y: 1070.9203, z: -4.9732423}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 489.82593, y: -289.6178, z: 12.606701}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 88252210}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2095419859
 PrefabInstance:
@@ -7432,6 +7450,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2113967958}
   m_CullTransparentMesh: 1
+--- !u!224 &2145465328 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 213138871056620865, guid: ef94f707182732b4fb45389fc2da750f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2095419859}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4491159049558487148
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7820,5 +7844,4 @@ SceneRoots:
   - {fileID: 2066868685}
   - {fileID: 1102562796}
   - {fileID: 1609981598}
-  - {fileID: 2083750197}
   - {fileID: 546257975}

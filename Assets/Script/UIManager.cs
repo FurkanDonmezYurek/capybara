@@ -125,6 +125,11 @@ public class UIManager : MonoBehaviour
 
 
 
+    [SerializeField] private GameObject shopPanel;  
+
+
+
+
     #endregion
 
     #endregion
@@ -746,8 +751,30 @@ public class UIManager : MonoBehaviour
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
     }
 
-    #endregion
+    
 
+
+
+       public void OpenShopFromCoin()
+    {
+        OpenShopPanel();
+    }
+
+    // Gem Artı Butonuna Tıklanıldığında Magaza Sayfasına Yönlendirme
+    public void OpenShopFromGem()
+    {
+        OpenShopPanel();
+    }
+
+    // Mağaza Panelini Açma
+    private void OpenShopPanel()
+    {
+        shopPanel.SetActive(true); // Eğer mağaza bir panelse bunu aktif edebilirsiniz
+        // Ya da, mağaza sayfasına sahne geçişi yapılabilir:
+        // SceneManager.LoadScene("ShopScene"); // Eğer mağaza sahnesi varsa
+    }
+
+#endregion
 
 
     #region === Debug Methods ===
