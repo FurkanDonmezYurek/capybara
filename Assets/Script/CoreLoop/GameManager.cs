@@ -40,10 +40,15 @@ public class GameManager : MonoBehaviour
             Debug.LogError("LevelManager reference is missing in GameManager!");
         }
 
+        timerManager = GetComponent<TimerManager>();
         if (timerManager != null)
         {
             timerManager.OnTimerFinished += OnTimeExpired;
             timerManager.OnTimerTick += UpdateTimerUI; // Eğer UI göstereceksen
+        }
+        else
+        {
+            Debug.LogError("TimerManager reference is missing in GameManager!");
         }
     }
 
