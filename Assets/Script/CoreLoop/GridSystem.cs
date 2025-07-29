@@ -128,6 +128,14 @@ public class GridSystem : MonoBehaviour
             seat.groupOfSeat = group;
 
         Debug.Log($"SeatGroup_{groupY}_{groupX} added. New grid size: {columns}x{rows}");
+
+        // Update SeatGroup cache 
+        if (Application.isPlaying)
+        {
+            GameManager.Instance.ClearSeatGroupCache();
+            GameManager.Instance.InitializeSeatGroupsCache();
+        }
+
     }
 
 

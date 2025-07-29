@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public ProgressManager progressManager;
     private Capybara selectedCapybara;
     List<SeatGroup> cachedSeatGroups;
     public LevelManager levelManager;
@@ -22,6 +23,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        progressManager = GetComponent<ProgressManager>();
+        if (progressManager == null)
+        {
+            Debug.LogError("ProgressManager reference is missing in GameManager!");
+            return;
+        }
         levelManager = GetComponent<LevelManager>();
         if (levelManager != null)
         {
@@ -47,6 +54,8 @@ public class GameManager : MonoBehaviour
         {
             // Game Won
             ShowWinScreen();
+            progressManager.SetMaxReachedLevel(levelManager.GetCurrentLevelIndex());
+            progressManager.AddSoftCurrency(100); // Örnek olarak 100 soft currency ekle
         }
         else
         {
@@ -64,6 +73,7 @@ public class GameManager : MonoBehaviour
     public void ShowWinScreen()
     {
         Debug.Log("You won! Show win screen here.");
+        progressManager.SetMaxReachedLevel(levelManager.GetCurrentLevelIndex());
         // Burada kazandığınızda gösterilecek ekranı açabilirsiniz
     }
 
