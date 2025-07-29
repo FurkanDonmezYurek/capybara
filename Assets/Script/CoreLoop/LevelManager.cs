@@ -10,8 +10,9 @@ public class LevelManager : MonoBehaviour
 
     public LevelDatabase levelDatabase;
     public GridSystem gridSystem;
-
     private int currentLevelIndex = 0;
+    public TimerManager timerManager; // Drag from Inspector or GetComponent
+
 
     private void Update()
     {
@@ -20,6 +21,11 @@ public class LevelManager : MonoBehaviour
         {
             CapybaraSpawnerRandom();
         }
+    }
+
+    public void RestartCurrentLevel()
+    {
+        LoadLevelByIndex(currentLevelIndex);
     }
 
     public void LoadNextLevel()
@@ -46,6 +52,7 @@ public class LevelManager : MonoBehaviour
 
         GameManager.Instance.ClearSeatGroupCache();
 
+        gridSystem.ClearGrid();
         gridSystem.SetGridParameters(level.rows, level.columns, level.groupWidth, level.groupHeight);
         gridSystem.GenerateGrid();
 
@@ -81,7 +88,22 @@ public class LevelManager : MonoBehaviour
         }
 
         GameManager.Instance.InitializeSeatGroupsCache();
+
+        // Start timer
+        if (timerManager == null)
+        {
+            timerManager = GetComponent<TimerManager>();
+            if (timerManager == null)
+            {
+                Debug.LogError("TimerManager not found in LevelManager!");
+                return;
+            }
+        }
+
+        timerManager.StopTimer(); // Eski bir süre varsa durdur
+        timerManager.StartTimer(level.levelTime);
     }
+
 
     // For testing purposes
     public void CapybaraSpawnerRandom()

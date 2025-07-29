@@ -5,10 +5,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
     private Capybara selectedCapybara;
     List<SeatGroup> cachedSeatGroups;
     public LevelManager levelManager;
+    public TimerManager timerManager;
     [SerializeField] private int startLevelIndex = 0; // For testing, change later
 
     private void Awake()
@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
             Instance = this;
 
         InitializeSeatGroupsCache();
+        DontDestroyOnLoad(gameObject); // Persist between scenes
     }
 
     private void Start()
@@ -31,10 +32,65 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("LevelManager reference is missing in GameManager!");
         }
+
+        if (timerManager != null)
+        {
+            timerManager.OnTimerFinished += OnTimeExpired;
+            timerManager.OnTimerTick += UpdateTimerUI; // Eğer UI göstereceksen
+        }
     }
 
+    public void OnTimeExpired()
+    {
+        Debug.Log("Time's up! Game Over triggered from GameManager.");
+        if (IsAllGroupsMatched())
+        {
+            // Game Won
+            ShowWinScreen();
+        }
+        else
+        {
+            // Game Lost
+            ShowLoseScreen();
+        }
+    }
 
-    // TODO: Make these so that there is no  change, instead a little visual effect plays (particle or animation)
+    private void UpdateTimerUI(float timeRemaining)
+    {
+        // UI güncellemesi için kullanılır
+        // Örnek: timerText.text = Mathf.CeilToInt(timeRemaining).ToString();
+    }
+
+    public void ShowWinScreen()
+    {
+        Debug.Log("You won! Show win screen here.");
+        // Burada kazandığınızda gösterilecek ekranı açabilirsiniz
+    }
+
+    public void ShowLoseScreen()
+    {
+        Debug.Log("You lost! Show lose screen here.");
+        // Burada kaybettiğinizde gösterilecek ekranı açabilirsiniz
+    }
+
+    public void RestartCurrentLevel()
+    {
+        levelManager.RestartCurrentLevel();
+    }
+
+    public void LoadLevelByIndex(int index)
+    {
+        levelManager.LoadLevelByIndex(index);
+    }
+
+    public void LoadNextLevel()
+    {
+        levelManager.LoadNextLevel();
+    }
+
+    #region On Clicked Functions
+
+    // TODO: Make these so that there is no material change, instead a little visual effect plays (particle or animation)
     public void OnCapybaraClicked(Capybara capybara)
     {
         if (!capybara.IsMovable())
@@ -52,7 +108,6 @@ public class GameManager : MonoBehaviour
         selectedCapybara.GetComponent<Renderer>().material.color = Color.yellow;
     }
 
-    // Check all groups burdan kaldırıldı. Bu checki seat group bazında capybara.cs den yapıyoruz suan.
     public void OnSeatClicked(Seat seat)
     {
         if (selectedCapybara == null)
@@ -75,7 +130,9 @@ public class GameManager : MonoBehaviour
         selectedCapybara.GetComponent<Renderer>().material.color = selectedCapybara.color;
         selectedCapybara = null;
     }
+    #endregion
 
+    #region Move Checks
     //You can access the decision tree from Miro
     public bool IsCorrectMove(Seat seat, Seat oldSeat)
     {
@@ -191,14 +248,6 @@ public class GameManager : MonoBehaviour
         return leftMoveValid || rightMoveValid;
     }
 
-
-    public bool AreNeighbors(Seat a, Seat b)
-    {
-        return Mathf.Abs(a.gridPosition.x - b.gridPosition.x)
-                + Mathf.Abs(a.gridPosition.y - b.gridPosition.y)
-            == 1;
-    }
-
     public bool IsPathClear(Seat a, Seat b)
     {
         if (a.groupOfSeat != b.groupOfSeat)
@@ -237,6 +286,9 @@ public class GameManager : MonoBehaviour
 
         return false; // Diagonal değilse false
     }
+    #endregion
+
+    #region Seat Group Cache
 
     // Cache seat groups for performance
     public void InitializeSeatGroupsCache()
@@ -282,6 +334,25 @@ public class GameManager : MonoBehaviour
     {
         cachedSeatGroups.Clear();
     }
+    #endregion
+
+    #region Helper Functions
+
+    // True if group is locked, if not check if there is capybara in the group, if group has capybara, return false
+    public bool IsAllGroupsMatched()
+    {
+        foreach (var group in cachedSeatGroups)
+        {
+            if (!group.IsGroupLocked)
+            {
+                if (group.seatsInGroup.Any(s => s.currentCapybara != null))
+                {
+                    return false; // Group has capybara but not matched
+                }
+            }
+        }
+        return true; // All groups are either locked or empty
+    }
 
     public Seat GetRandomAvailableSeat()
     {
@@ -307,6 +378,13 @@ public class GameManager : MonoBehaviour
         }
 
         return availableSeats;
+    }
+
+    public bool AreNeighbors(Seat a, Seat b)
+    {
+        return Mathf.Abs(a.gridPosition.x - b.gridPosition.x)
+                + Mathf.Abs(a.gridPosition.y - b.gridPosition.y)
+            == 1;
     }
 
     public Seat GetNeighborSeatRight(Seat seat)
@@ -344,10 +422,5 @@ public class GameManager : MonoBehaviour
 
         return null;
     }
-
-    //TODO: Invoke this method after level completion
-    // void GoToNextLevel()
-    // {
-    //     FindObjectOfType<LevelManager>()?.LoadNextLevel();
-    // }
+    #endregion
 }

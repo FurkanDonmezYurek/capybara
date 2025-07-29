@@ -13,6 +13,7 @@ public class LevelData : ScriptableObject
     [Header("Meta")]
     public string levelName;
     public Difficulty difficulty;
+    public float levelTime = 120f; // Default 2 minutes
     public bool isLocked = false;
 
     [Header("Grid Structure")]
