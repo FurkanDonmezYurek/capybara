@@ -27,13 +27,13 @@ public class LevelLockManager : MonoBehaviour
             {
                 levelButtons[i].interactable = true;
                 lockIcons[i].SetActive(false); // Kilidi kaldır
-                levelTexts[i].text = "Level " + (i + 1);
+             
             }
             else
             {
                 levelButtons[i].interactable = false;
-                lockIcons[i].SetActive(true); // Kilidi göster
-                levelTexts[i].text = "Locked"; // Kilitli yazısı göster
+                lockIcons[i].SetActive(true); 
+            
             }
         }
     }
