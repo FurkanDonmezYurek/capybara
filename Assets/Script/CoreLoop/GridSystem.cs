@@ -16,6 +16,10 @@ public class GridSystem : MonoBehaviour
     public float groupSpacingX = 1.0f;
     public Transform groupsParent;
 
+    //for path
+    public Dictionary<string, Dictionary<string, Vector3>> pathPointsGrid;
+    public Vector3[,] groupPositions;
+
     [ContextMenu("Generate Grid and Groups")] //for run in the editor
     public void GenerateGrid()
     {
@@ -23,6 +27,8 @@ public class GridSystem : MonoBehaviour
 
         int groupCountX = columns / groupWidth;
         int groupCountY = rows / groupHeight;
+
+        groupPositions = new Vector3[groupCountY, groupCountX];
 
         for (int groupY = 0; groupY < groupCountY; groupY++)
         {
@@ -56,6 +62,7 @@ public class GridSystem : MonoBehaviour
                 }
 
                 SeatGroup group = gObj.AddComponent<SeatGroup>();
+
                 group.seatsInGroup = groupSeats;
                 for (int i = 0; i < group.seatsInGroup.Count; i++)
                 {
@@ -63,6 +70,7 @@ public class GridSystem : MonoBehaviour
                 }
                 group.groupY = groupY;
                 group.groupX = groupX;
+                groupPositions[groupY, groupX] = GetSeatGroupCenter(group);
             }
         }
     }
@@ -170,6 +178,66 @@ public class GridSystem : MonoBehaviour
         this.columns = columns;
         this.groupWidth = groupWidth;
         this.groupHeight = groupHeight;
+    }
+
+    public void InitPathGrid()
+    {
+        int pointRow = rows / groupHeight;
+        int pointColumn = (columns / groupWidth) - 1;
+        pathPointsGrid = new Dictionary<string, Dictionary<string, Vector3>>();
+
+        for (int x = 0; x < pointColumn; x++)
+        {
+            string xKey = x.ToString();
+            if (!pathPointsGrid.ContainsKey(xKey))
+                pathPointsGrid[xKey] = new Dictionary<string, Vector3>();
+
+            for (int y = 0; y < pointRow; y++)
+            {
+                string yKey = y.ToString();
+
+                float xPos = (groupPositions[y, x].x + groupPositions[y, x + 1].x) / 2;
+                float yPos = groupPositions[y, x].y;
+                float zPos = groupPositions[y, x].z;
+
+                Vector3 pointPosition = new Vector3(xPos, yPos, zPos);
+                Debug.Log(pointPosition);
+                pathPointsGrid[xKey][yKey] = pointPosition;
+            }
+        }
+
+        Debug.Log("Path grid initialized.");
+    }
+
+    Vector3 GetSeatGroupCenter(SeatGroup group)
+    {
+        if (group == null || group.seatsInGroup == null || group.seatsInGroup.Count == 0)
+            return Vector3.zero;
+
+        Vector3 total = Vector3.zero;
+        foreach (var seat in group.seatsInGroup)
+        {
+            total += seat.transform.position;
+        }
+
+        return total / group.seatsInGroup.Count;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (pathPointsGrid == null || pathPointsGrid.Count == 0)
+            return;
+
+        Gizmos.color = Color.cyan;
+
+        foreach (var xPair in pathPointsGrid)
+        {
+            foreach (var yPair in xPair.Value)
+            {
+                Vector3 point = yPair.Value;
+                Gizmos.DrawSphere(point, 0.1f);
+            }
+        }
     }
 
     void Update()

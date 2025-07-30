@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using UnityEngine;
@@ -120,96 +121,107 @@ public class Capybara : MonoBehaviour
         currentSlot.ClearCapybara();
         targetSlot.SetCapybara(this);
 
+        GridSystem gridSystem = FindObjectOfType<GridSystem>();
+        if (gridSystem == null)
+        {
+            Debug.LogError("GridSystem not found!");
+            return;
+        }
+
         Vector3 start = transform.position;
         Vector3 end = targetSlot.transform.position;
-        float corridorOffset = 1.1f;
 
         SeatGroup fromGroup = currentSlot.groupOfSeat;
         SeatGroup toGroup = targetSlot.groupOfSeat;
 
-        Vector3 corridorExit = GetCorridorExitPoint(
-            fromGroup,
-            currentSlot,
-            corridorOffset,
-            targetSlot
-        );
-        Vector3 step1 = corridorExit;
-        Vector3 step2 = new Vector3(corridorExit.x, start.y, end.z);
-        Vector3 step3 = end;
+        int fromX = fromGroup.groupX;
+        int toX = toGroup.groupX;
+        int y = fromGroup.groupY; // corridor satırı
 
-        float d1 = Vector3.Distance(start, step1);
-        float d2 = Vector3.Distance(step1, step2);
-        float d3 = Vector3.Distance(step2, step3);
+        Vector3 fromExit = GetCorridorExitPoint(currentSlot, targetSlot);
+        Vector3 toEntry = GetCorridorExitPoint(targetSlot, currentSlot);
 
-        float dur1 = d1 / MoveSpeed;
-        float dur2 = d2 / MoveSpeed;
-        float dur3 = d3 / MoveSpeed;
+        List<Vector3> pathPoints = new();
+        pathPoints.Add(start); // A - Başlangıç noktası
+        pathPoints.Add(fromExit); // B - Çıkış corridor noktası
 
+        // corridor üzerindeki geçişler (gruplar arasında)
+        if (fromX < toX)
+        {
+            for (int x = fromX; x < toX; x++)
+            {
+                pathPoints.Add(gridSystem.pathPointsGrid[x.ToString()][y.ToString()]);
+            }
+        }
+        else if (fromX > toX)
+        {
+            for (int x = fromX - 1; x >= toX; x--)
+            {
+                pathPoints.Add(gridSystem.pathPointsGrid[x.ToString()][y.ToString()]);
+            }
+        }
+
+        pathPoints.Add(toEntry); // C - Hedef grubun corridor giriş noktası
+        pathPoints.Add(end); // D - Hedef koltuk
+
+        // Animasyon
         Sequence seq = DOTween.Sequence();
-        seq.Append(transform.DOMove(step1, dur1).SetEase(Ease.Linear));
-        seq.Append(transform.DOMove(step2, dur2).SetEase(Ease.Linear));
-        seq.Append(transform.DOMove(step3, dur3).SetEase(Ease.Linear));
+        for (int i = 0; i < pathPoints.Count - 1; i++)
+        {
+            float dist = Vector3.Distance(pathPoints[i], pathPoints[i + 1]);
+            float dur = dist / MoveSpeed;
+            seq.Append(transform.DOMove(pathPoints[i + 1], dur).SetEase(Ease.Linear));
+        }
+
         seq.OnComplete(() =>
         {
             currentSlot = targetSlot;
             CheckTargetSeatMatch(targetSlot);
             if (Application.isPlaying)
-            {
                 GameManager.Instance.CheckGameCondition();
-            }
         });
     }
 
-    protected virtual Vector3 GetCorridorExitPoint(
-        SeatGroup seatGroup,
-        Seat currentSeat,
-        float offset,
-        Seat targetSlot
-    )
+    protected virtual Vector3 GetCorridorExitPoint(Seat seat, Seat targetSeat)
     {
-        var corridorSeats = seatGroup.seatsInGroup.Where(s => s.isCorridorSide).ToList();
+        GridSystem gridSystem = FindObjectOfType<GridSystem>();
+        if (gridSystem == null || gridSystem.pathPointsGrid == null)
+            return seat.transform.position;
 
-        if (!corridorSeats.Any())
-            return currentSeat.transform.position;
+        int groupX = seat.groupOfSeat.groupX;
+        int groupY = seat.groupOfSeat.groupY;
 
-        Seat appropriateCorridorSeat;
-        bool shouldGoRight = GetMovementDirection(currentSeat, targetSlot);
+        List<Vector3> candidatePoints = new();
 
-        if (corridorSeats.Count == 1)
+        // GridSystem'deki corridor noktaları arasında kendi grubunun sağındaki corridor da olabilir
+        if (groupX > 0)
         {
-            appropriateCorridorSeat = corridorSeats[0];
-        }
-        else
-        {
-            appropriateCorridorSeat = shouldGoRight
-                ? corridorSeats.OrderByDescending(s => s.gridPosition.x).FirstOrDefault()
-                : corridorSeats.OrderBy(s => s.gridPosition.x).FirstOrDefault();
-        }
-
-        Vector3 corridorPos = appropriateCorridorSeat.transform.position;
-        Vector3 currentPos = currentSeat.transform.position;
-
-        float xOffset;
-
-        if (corridorSeats.Count == 1)
-        {
-            int corridorIndex = seatGroup.seatsInGroup.IndexOf(appropriateCorridorSeat);
-            int groupMiddleIndex = seatGroup.seatsInGroup.Count / 2;
-
-            // Eğer corridor seat grup dizisinin solundaysa offset sola, sağındaysa sağa
-            xOffset = corridorIndex < groupMiddleIndex ? -offset : offset;
-        }
-        else
-        {
-            xOffset = shouldGoRight ? offset : -offset;
+            string leftKey = (groupX - 1).ToString();
+            if (
+                gridSystem.pathPointsGrid.TryGetValue(leftKey, out var yDict)
+                && yDict.TryGetValue(groupY.ToString(), out var point)
+            )
+            {
+                candidatePoints.Add(point);
+            }
         }
 
-        return new Vector3(corridorPos.x + xOffset, currentPos.y, currentPos.z);
-    }
+        string currentKey = groupX.ToString();
+        if (
+            gridSystem.pathPointsGrid.TryGetValue(currentKey, out var currentYDict)
+            && currentYDict.TryGetValue(groupY.ToString(), out var currentPoint)
+        )
+        {
+            candidatePoints.Add(currentPoint);
+        }
 
-    protected virtual bool GetMovementDirection(Seat fromSeat, Seat toSeat)
-    {
-        return toSeat.transform.position.x > fromSeat.transform.position.x;
+        // En yakın corridor noktasını hedefe göre seç
+        Vector3 targetPos = targetSeat.transform.position;
+        Vector3 bestPoint = candidatePoints
+            .OrderBy(p => Vector3.Distance(p, targetPos))
+            .FirstOrDefault();
+
+        return new Vector3(bestPoint.x, seat.transform.position.y, seat.transform.position.z);
     }
 
     public void CheckTargetSeatMatch(Seat targetSlot)

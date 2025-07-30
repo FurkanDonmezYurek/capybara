@@ -50,6 +50,7 @@ public class LevelManager : MonoBehaviour
             level.groupHeight
         );
         gridSystem.GenerateGrid();
+        gridSystem.InitPathGrid();
 
         foreach (var capyInfo in level.capybaras)
         {
