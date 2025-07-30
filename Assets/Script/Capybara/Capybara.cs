@@ -21,10 +21,20 @@ public class Capybara : MonoBehaviour
     protected bool isFrozen;
     public bool IsFrozen => isFrozen;
     public GameObject iceCubeVisual; // Assigned in prefab or instantiated
+    public GameObject capybaraColorMaterialObject;
+    public CapybaraStateMachine CapybaraStateMachine { get; private set; }
 
     public virtual void Start()
     {
-        // Empty
+        CapybaraStateMachine = GetComponent<CapybaraStateMachine>();
+        if (CapybaraStateMachine == null)
+        {
+            Debug.LogError("CapybaraStateMachine component is missing on " + gameObject.name);
+            return;
+        }
+
+        CapybaraStateMachine.FonksiyonStart();
+        SitAnimation();
     }
 
     public virtual void SetSeat(Seat slot)
@@ -32,12 +42,81 @@ public class Capybara : MonoBehaviour
         currentSlot = slot;
         slot.SetCapybara(this);
         transform.position = slot.transform.position;
+        SitAnimation();
+    }
+
+    public virtual void SitAnimation()
+    {
+        if (CapybaraStateMachine == null)
+        {
+            Debug.Log("CapybaraStateMachine is not set for " + gameObject.name);
+            return;
+        }
+
+        switch (Type)
+        {
+            case CapybaraType.Normal:
+                CapybaraStateMachine.SetState(CapybaraStateMachine.normalSitState);
+                break;
+            case CapybaraType.Fat:
+                CapybaraStateMachine.SetState(CapybaraStateMachine.fatSitState);
+                break;
+            case CapybaraType.Child:
+                CapybaraStateMachine.SetState(CapybaraStateMachine.childSitState);
+                break;
+            case CapybaraType.Sleepy:
+                CapybaraStateMachine.SetState(CapybaraStateMachine.sleepState);
+                break;
+        }
+
+        ResetRotation();
+    }
+
+    public virtual void WalkAnimation()
+    {
+        if (CapybaraStateMachine == null)
+        {
+            Debug.LogError("CapybaraStateMachine is not set for " + gameObject.name);
+            return;
+        }
+
+        CapybaraStateMachine.SetState(CapybaraStateMachine.walkState);
+    }
+
+    public virtual void RunAnimation()
+    {
+        if (CapybaraStateMachine == null)
+        {
+            Debug.LogError("CapybaraStateMachine is not set for " + gameObject.name);
+            return;
+        }
+
+        CapybaraStateMachine.SetState(CapybaraStateMachine.runState);
+    }
+
+    public virtual void IdleAnimation()
+    {
+        if (CapybaraStateMachine == null)
+        {
+            Debug.LogError("CapybaraStateMachine is not set for " + gameObject.name);
+            return;
+        }
+
+        CapybaraStateMachine.SetState(CapybaraStateMachine.idleState);
     }
 
     public void SetColor(Color color)
     {
-        this.color = color;
-        GetComponent<Renderer>().material.color = color;
+        Material[] materials = capybaraColorMaterialObject.GetComponent<Renderer>().materials;
+        foreach (var mat in materials)
+        {
+            if (mat.name.Contains("Capybara_Accesoires"))
+            {
+                this.color = color;
+                mat.color = color;
+            }
+        }
+
     }
 
     public virtual void Freeze()
@@ -90,6 +169,7 @@ public class Capybara : MonoBehaviour
         slot.SetCapybara(this);
         currentSlot = slot;
         transform.position = slot.transform.position;
+        SitAnimation();
     }
 
     protected virtual bool IsSameGroup(Seat a, Seat b)
@@ -97,13 +177,34 @@ public class Capybara : MonoBehaviour
         return a.groupOfSeat == b.groupOfSeat;
     }
 
+    protected void LookTowards(Vector3 targetPosition)
+    {
+        Vector3 direction = (targetPosition - transform.position).normalized;
+        direction.y = 0f; // Only rotate on horizontal axis
+        if (direction != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.DORotateQuaternion(targetRotation, 0.3f); // Smooth rotate
+        }
+    }
+
+    public virtual void ResetRotation()
+    {
+        transform.DORotateQuaternion(Quaternion.identity, 0.3f); // Smooth reset to default (forward: Z+)
+    }
+
     protected virtual void AnimateDirectMove(Seat targetSlot)
     {
+        WalkAnimation();
+
         currentSlot.ClearCapybara();
         targetSlot.SetCapybara(this);
 
         Vector3 start = transform.position;
         Vector3 end = targetSlot.transform.position;
+
+        LookTowards(end); // Look towards the target slot
+
         float duration = Vector3.Distance(start, end) / MoveSpeed;
 
         transform
@@ -113,11 +214,14 @@ public class Capybara : MonoBehaviour
             {
                 currentSlot = targetSlot;
                 CheckTargetSeatMatch(targetSlot);
+                SitAnimation();
             });
     }
 
     protected virtual void AnimateCorridorMove(Seat targetSlot)
     {
+        WalkAnimation();
+
         currentSlot.ClearCapybara();
         targetSlot.SetCapybara(this);
 
@@ -168,9 +272,14 @@ public class Capybara : MonoBehaviour
         Sequence seq = DOTween.Sequence();
         for (int i = 0; i < pathPoints.Count - 1; i++)
         {
-            float dist = Vector3.Distance(pathPoints[i], pathPoints[i + 1]);
+            Vector3 from = pathPoints[i];
+            Vector3 to = pathPoints[i + 1];
+
+            float dist = Vector3.Distance(from, to);
             float dur = dist / MoveSpeed;
-            seq.Append(transform.DOMove(pathPoints[i + 1], dur).SetEase(Ease.Linear));
+
+            seq.AppendCallback(() => LookTowards(to));
+            seq.Append(transform.DOMove(to, dur).SetEase(Ease.Linear));
         }
 
         seq.OnComplete(() =>
@@ -179,6 +288,7 @@ public class Capybara : MonoBehaviour
             CheckTargetSeatMatch(targetSlot);
             if (Application.isPlaying)
                 GameManager.Instance.CheckGameCondition();
+            SitAnimation();
         });
     }
 
