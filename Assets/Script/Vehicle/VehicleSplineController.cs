@@ -1,15 +1,36 @@
+﻿using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines;
 
 [RequireComponent(typeof(SplineAnimate))]
 public class VehicleSplineController : MonoBehaviour
 {
-    private SplineAnimate splineAnimate;
+    [Header("Checkpoint Ayarları")]
+    public List<LevelCheckpoint> levelCheckpoints;
+
+    private int targetCheckpointIndex;
+    private int currentCheckpointIndex = 0;
+
     private bool isPaused = false;
+
+    private const string PREF_LEVEL_KEY = "Level";
+
+    private SplineAnimate splineAnimate;
+    private VehicleManager vehicleManager;
 
     void Awake()
     {
         splineAnimate = GetComponent<SplineAnimate>();
+        vehicleManager = GetComponent<VehicleManager>();
+    }
+
+    void Start()
+    {
+        targetCheckpointIndex = PlayerPrefs.GetInt(PREF_LEVEL_KEY, 10);
+        currentCheckpointIndex = 0;
+
+        vehicleManager.VehicleSelect(levelCheckpoints[targetCheckpointIndex].vehicleTypeIndex);
     }
 
     private void Update()
@@ -29,7 +50,13 @@ public class VehicleSplineController : MonoBehaviour
                 checkpoint.isOpen = true;
                 checkpoint.UpdateVisual();
 
-                PauseMovement();
+                if (currentCheckpointIndex >= targetCheckpointIndex)
+                {
+                    PauseMovement();
+                }
+                currentCheckpointIndex++;
+                vehicleManager.VehicleSelect(levelCheckpoints[currentCheckpointIndex-1].vehicleTypeIndex);
+                PlayerPrefs.SetInt(PREF_LEVEL_KEY, currentCheckpointIndex);
             }
         }
     }
@@ -50,8 +77,8 @@ public class VehicleSplineController : MonoBehaviour
         {
             splineAnimate.Play();
             isPaused = false;
-            Debug.Log("Vehicle resumed spline movement.");
             Events.VehiclePause?.Invoke(isPaused);
+
         }
     }
 }

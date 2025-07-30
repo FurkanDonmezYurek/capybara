@@ -26,17 +26,11 @@ public class VehicleManager : MonoBehaviour
         ShowOnly(currentIndex);
     }
 
-    public void VehicleUpdate()
+    public void VehicleSelect(int VehicleIndex)
     {
-        currentIndex++;
-
-        if (currentIndex >= vehicles.Count)
-            currentIndex = 0;
-
-        ShowOnly(currentIndex);
-        PlayerPrefs.SetInt(PREF_KEY, currentIndex);
+        ShowOnly(VehicleIndex);
+        PlayerPrefs.SetInt(PREF_KEY, VehicleIndex);
     }
-
     void ShowOnly(int indexToShow)
     {
         for (int i = 0; i < vehicles.Count; i++)
@@ -48,13 +42,5 @@ public class VehicleManager : MonoBehaviour
     public GameObject GetCurrentVehicle()
     {
         return vehicles[currentIndex];
-    }
-    private void OnEnable()
-    {
-        Events.VehicleUpdate += VehicleUpdate;
-    }
-    private void OnDisable()
-    {
-        Events.VehicleUpdate -= VehicleUpdate;
     }
 }
