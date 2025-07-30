@@ -80,6 +80,8 @@ public class FatCapybara : Capybara
         Debug.Log(
             $"Fat capybara directly set to seats: Primary={primary.name}, Secondary={secondary.name}"
         );
+
+        SitAnimation();
     }
 
     public override void SitSeat(Seat targetSlot)
@@ -208,9 +210,6 @@ public class FatCapybara : Capybara
         float distance = Vector3.Distance(transform.position, center);
         float duration = distance / MoveSpeed;
 
-        // Scale ayarla
-        transform.localScale = new Vector3(2f, 1f, 1f);
-
 #if UNITY_EDITOR
         if (!Application.isPlaying)
         {
@@ -226,6 +225,7 @@ public class FatCapybara : Capybara
             .OnComplete(() =>
             {
                 CheckTargetSeatMatch(primary);
+                SitAnimation();
             });
     }
 
@@ -241,6 +241,8 @@ public class FatCapybara : Capybara
         {
             return;
         }
+
+        WalkAnimation();
 
         SeatGroup fromGroup = currentSlot.groupOfSeat;
         SeatGroup toGroup = targetSlot.groupOfSeat;
@@ -335,9 +337,14 @@ public class FatCapybara : Capybara
         Sequence seq = DOTween.Sequence();
         for (int i = 0; i < pathPoints.Count - 1; i++)
         {
-            float dist = Vector3.Distance(pathPoints[i], pathPoints[i + 1]);
+            Vector3 from = pathPoints[i];
+            Vector3 to = pathPoints[i + 1];
+
+            float dist = Vector3.Distance(from, to);
             float dur = dist / MoveSpeed;
-            seq.Append(transform.DOMove(pathPoints[i + 1], dur).SetEase(Ease.Linear));
+
+            seq.AppendCallback(() => LookTowards(to)); // Her adım öncesi bakış yönünü ayarla
+            seq.Append(transform.DOMove(to, dur).SetEase(Ease.Linear));
         }
 
         seq.OnComplete(() =>
@@ -361,6 +368,8 @@ public class FatCapybara : Capybara
                 secondSlot = null;
             }
 
+            SitAnimation();
+
             // Yerleşimi kontrol et
             CheckTargetSeatMatch(primary);
             if (Application.isPlaying)
@@ -380,6 +389,8 @@ public class FatCapybara : Capybara
             secondSlot.ClearCapybara();
             secondSlot = null;
         }
+
+        RunAnimation();
 
         var group = targetSlot.groupOfSeat;
         var groupSeats = group.seatsInGroup;
@@ -424,8 +435,7 @@ public class FatCapybara : Capybara
         Vector3 start = transform.position;
         Vector3 end = (primary.transform.position + secondary.transform.position) / 2f;
         float duration = Vector3.Distance(start, end) / MoveSpeed;
-
-        transform.localScale = new Vector3(2f, 1f, 1f);
+        LookTowards(end);
 
         transform
             .DOMove(end, duration)

@@ -302,17 +302,13 @@ public class LevelEditorWindow : EditorWindow
             }
         }
 
-        Renderer renderer = capybaraObj.GetComponent<Renderer>();
-        if (renderer != null)
-        {
+
 #if UNITY_EDITOR
-            Material matCopy = new Material(renderer.sharedMaterial);
-            matCopy.color = selectedColor;
-            renderer.sharedMaterial = matCopy;
+        capybaraObj.GetComponent<Capybara>().SetColor(selectedColor);
 #else
-            renderer.material.color = selectedColor;
+        capybaraObj.GetComponent<Capybara>().SetColor(selectedColor);
 #endif
-        }
+
 
         placedCapybaras.Add(capybaraObj);
     }
@@ -343,7 +339,7 @@ public class LevelEditorWindow : EditorWindow
                         gridPosition = seat.gridPosition,
                         type = capy.Type,
                         isFrozen = capy.IsFrozen,
-                        color = seat.currentCapybara.GetComponent<Renderer>().sharedMaterial.color,
+                        color = seat.currentCapybara.color,
                     };
                     capybaras.Add(capyInfo);
                 }

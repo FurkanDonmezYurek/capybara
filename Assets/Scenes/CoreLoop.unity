@@ -390,6 +390,7 @@ GameObject:
   - component: {fileID: 1365210084}
   - component: {fileID: 1365210083}
   - component: {fileID: 1365210085}
+  - component: {fileID: 1365210086}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -441,10 +442,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   capybaraPrefabs:
-  - {fileID: 3499829703655255493, guid: e6da6d68ae1904e9589dc83cfdcb73fa, type: 3}
-  - {fileID: 3499829703655255493, guid: be45c981d7f76fe4088e09b3d91c2ebb, type: 3}
-  - {fileID: 3499829703655255493, guid: 9ab546b33fbf87b4f88425cf5185a289, type: 3}
-  - {fileID: 3499829703655255493, guid: 91cfe6535492f2146acd6e02c879a83c, type: 3}
+  - {fileID: 7817169657867875490, guid: 58f5fc18968821c4a974262792afba3d, type: 3}
+  - {fileID: 7817169657867875490, guid: 5329b3ae022387b44b8d2a489143885b, type: 3}
+  - {fileID: 7817169657867875490, guid: f8c0ed61965657340b5a13a6117c5928, type: 3}
+  - {fileID: 7817169657867875490, guid: 88b010bf1a44525419723fc00e70651c, type: 3}
   possibleColors:
   - {r: 0.048089504, g: 0, b: 1, a: 0}
   - {r: 1, g: 0, b: 0, a: 0}
@@ -486,6 +487,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: 19b32e6bea2719c4ebf88b6336a66c31, type: 2}
+--- !u!114 &1365210086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365210080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a286ddbc349e68c4baed502eb1bb254c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelTime: 60
 --- !u!1 &1371797665
 GameObject:
   m_ObjectHideFlags: 0

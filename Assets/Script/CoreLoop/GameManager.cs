@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
             progressManager.SetMaxReachedLevel(levelManager.GetCurrentLevelIndex());
             progressManager.AddSoftCurrency(100); // Örnek olarak 100 soft currency ekle
         }
-        else
+        else if (timerManager.IsTimerExpired())
         {
             // Game Lost
             ShowLoseScreen();
@@ -119,14 +119,17 @@ public class GameManager : MonoBehaviour
             Debug.Log("Clicked capybara is not movable!");
             return;
         }
+        /* TODO: COMMENTED OUT- REPLACE WITH VISUAL EFFECT
 
         if (selectedCapybara != null)
         {
-            selectedCapybara.GetComponent<Renderer>().material.color = selectedCapybara.color;
+            selectedCapybara.SetColor(selectedCapybara.color); // Reset previous selection color
         }
+        selectedCapybara = capybara;
+        selectedCapybara.SetColor(Color.yellow); // Highlight selected capybara
+        */
 
         selectedCapybara = capybara;
-        selectedCapybara.GetComponent<Renderer>().material.color = Color.yellow;
     }
 
     public void OnSeatClicked(Seat seat)
@@ -148,7 +151,7 @@ public class GameManager : MonoBehaviour
                 selectedCapybara.SitSeat(seat);
             }
         }
-        selectedCapybara.GetComponent<Renderer>().material.color = selectedCapybara.color;
+        //selectedCapybara.SetColor(selectedCapybara.color); // Reset color after move
         selectedCapybara = null;
     }
     #endregion
