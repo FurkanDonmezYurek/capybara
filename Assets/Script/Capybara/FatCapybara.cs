@@ -1,14 +1,86 @@
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
 
 public class FatCapybara : Capybara
 {
+    // FIXME: CORRIDOR MECHANIC DOES NOT WORK FOR THE FAT CAPYBARA RIGHT NOW,
     public override CapybaraType Type => CapybaraType.Fat;
-    public override float SeatChangeTime => 1.5f;
+    public override float MoveSpeed => 1.5f;
 
-    private Seat secondSlot;
+    public Seat secondSlot;
 
-    //TODO: toolda yerleştirirken sorun çıkarıyor (currentslot assign edilmiyor)
+    // Oyun başlangıcında direkt seat'e yerleştirmek için
+    public override void SetSeat(Seat targetSlot)
+    {
+        Debug.Log("Setting fat capybara to seat directly...");
+
+        if (targetSlot == null)
+        {
+            Debug.Log("Target slot is null!");
+            return;
+        }
+
+        var group = targetSlot.groupOfSeat;
+        var groupSeats = group.seatsInGroup;
+        int targetIndex = groupSeats.IndexOf(targetSlot);
+
+        if (targetIndex == -1)
+        {
+            Debug.Log("Target slot not found in its group!");
+            return;
+        }
+
+        // Uygun seat çiftini bul
+        Seat primary = null;
+        Seat secondary = null;
+
+        // 1. Öncelik: target + sağdaki seat
+        if (targetIndex < groupSeats.Count - 1)
+        {
+            Seat rightSeat = groupSeats[targetIndex + 1];
+            if (targetSlot.IsEmpty && rightSeat.IsEmpty)
+            {
+                Debug.Log("Direct set - Pair found: TARGET + RIGHT");
+                primary = targetSlot;
+                secondary = rightSeat;
+            }
+        }
+
+        // 2. Alternatif: soldaki + target
+        if (primary == null && targetIndex > 0)
+        {
+            Seat leftSeat = groupSeats[targetIndex - 1];
+            if (leftSeat.IsEmpty && targetSlot.IsEmpty)
+            {
+                Debug.Log("Direct set - Pair found: LEFT + TARGET");
+                primary = leftSeat;
+                secondary = targetSlot;
+            }
+        }
+
+        if (primary == null || secondary == null)
+        {
+            Debug.LogWarning("FatCapybara: No valid adjacent seat pair found for direct setting.");
+            return;
+        }
+
+        // Seat'leri işgal et
+        primary.SetCapybara(this);
+        secondary.SetCapybara(this);
+
+        currentSlot = primary;
+        secondSlot = secondary;
+
+        // Pozisyonu center'a direkt set et
+        Vector3 center = (primary.transform.position + secondary.transform.position) / 2f;
+        transform.position = center;
+        transform.localScale = new Vector3(2f, 1f, 1f);
+
+        Debug.Log(
+            $"Fat capybara directly set to seats: Primary={primary.name}, Secondary={secondary.name}"
+        );
+    }
+
     public override void SitSeat(Seat targetSlot)
     {
         Debug.Log("Attempting to sit fat capybara...");
@@ -19,60 +91,118 @@ public class FatCapybara : Capybara
             return;
         }
 
+        // Eğer current seat yoksa direkt set et
+        if (currentSlot == null)
+        {
+            Debug.Log("No current seat, using direct set...");
+            SetSeat(targetSlot);
+            return;
+        }
+
         var group = targetSlot.groupOfSeat;
         var groupSeats = group.seatsInGroup;
-        int index = groupSeats.IndexOf(targetSlot);
+        int targetIndex = groupSeats.IndexOf(targetSlot);
 
-        Debug.Log($"Target slot index in group: {index}");
+        Debug.Log($"Target slot index in group: {targetIndex}");
 
-        if (index == -1)
+        if (targetIndex == -1)
         {
             Debug.Log("Target slot not found in its group!");
             return;
         }
 
-        Seat left = (index > 0) ? groupSeats[index - 1] : null;
-        Seat right = (index < groupSeats.Count - 1) ? groupSeats[index + 1] : null;
+        // Mevcut slotları temizle ÖNCE
+        Debug.Log("Clearing previous slots if any...");
+        if (currentSlot != null)
+        {
+            currentSlot.ClearCapybara();
+            currentSlot = null;
+        }
+        if (secondSlot != null)
+        {
+            secondSlot.ClearCapybara();
+            secondSlot = null;
+        }
 
-        Debug.Log($"Left seat: {(left == null ? "null" : left.name)} | Right seat: {(right == null ? "null" : right.name)}");
-        Debug.Log($"target.IsEmpty={targetSlot.IsEmpty}, left.IsEmpty={(left != null ? left.IsEmpty : false)}, right.IsEmpty={(right != null ? right.IsEmpty : false)}");
-
+        // Uygun seat çiftini bul
         Seat primary = null;
         Seat secondary = null;
 
-        // Öncelik: target + right boşsa
-        if (targetSlot.IsEmpty && right != null && right.IsEmpty)
+        // 1. Öncelik: target + sağdaki seat
+        if (targetIndex < groupSeats.Count - 1)
         {
-            Debug.Log("Pair found: TARGET + RIGHT");
-            primary = targetSlot;
-            secondary = right;
+            Seat rightSeat = groupSeats[targetIndex + 1];
+            if (targetSlot.IsEmpty && rightSeat.IsEmpty)
+            {
+                Debug.Log("Pair found: TARGET + RIGHT");
+                primary = targetSlot;
+                secondary = rightSeat;
+            }
         }
-        // Değilse: left + target boşsa
-        else if (left != null && left.IsEmpty && targetSlot.IsEmpty)
+
+        // 2. Alternatif: soldaki + target
+        if (primary == null && targetIndex > 0)
         {
-            Debug.Log("Pair found: LEFT + TARGET");
-            primary = left;
-            secondary = targetSlot;
+            Seat leftSeat = groupSeats[targetIndex - 1];
+            if (leftSeat.IsEmpty && targetSlot.IsEmpty)
+            {
+                Debug.Log("Pair found: LEFT + TARGET");
+                primary = leftSeat;
+                secondary = targetSlot;
+            }
         }
-        else
+
+        // 3. Son alternatif: target'ın her iki yanındaki boş slotları kontrol et
+        if (primary == null)
         {
-            Debug.LogWarning("FatCapybara: No valid adjacent seat pair found.");
+            for (int i = 0; i < groupSeats.Count - 1; i++)
+            {
+                if (groupSeats[i].IsEmpty && groupSeats[i + 1].IsEmpty)
+                {
+                    Debug.Log($"Alternative pair found at indices {i} and {i + 1}");
+                    primary = groupSeats[i];
+                    secondary = groupSeats[i + 1];
+                    break;
+                }
+            }
+        }
+
+        if (primary == null || secondary == null)
+        {
+            Debug.LogWarning("FatCapybara: No valid adjacent seat pair found in the group.");
             return;
         }
 
-        // Eski slotları temizle
-        Debug.Log("Clearing previous slots if any...");
-        currentSlot?.ClearCapybara();
-        secondSlot?.ClearCapybara();
+        // Seat'leri işgal et
+        try
+        {
+            primary.SetCapybara(this);
+            secondary.SetCapybara(this);
 
-        // Yeni slotları ata
-        primary.SetCapybara(this);
-        secondary.SetCapybara(this);
+            currentSlot = primary;
+            secondSlot = secondary;
 
-        currentSlot = primary;
-        secondSlot = secondary;
+            Debug.Log(
+                $"Successfully assigned seats: Primary={primary.gridPosition}, Secondary={secondary.gridPosition}"
+            );
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Error setting capybara to seats: {e.Message}");
+            // Hata durumunda temizle
+            primary?.ClearCapybara();
+            secondary?.ClearCapybara();
+            currentSlot = null;
+            secondSlot = null;
+            return;
+        }
 
+        // Hareket hesapla ve gerçekleştir
         Vector3 center = (primary.transform.position + secondary.transform.position) / 2f;
+        float distance = Vector3.Distance(transform.position, center);
+        float duration = distance / MoveSpeed;
+
+        // Scale ayarla
         transform.localScale = new Vector3(2f, 1f, 1f);
 
 #if UNITY_EDITOR
@@ -84,23 +214,44 @@ public class FatCapybara : Capybara
         }
 #endif
 
-        Debug.Log("Moving capybara to center of selected pair...");
+        Debug.Log($"Moving capybara to center position: {center}");
         transform
-            .DOMove(center, SeatChangeTime)
-            .SetEase(Ease.OutQuad)
+            .DOMove(center, duration)
             .OnComplete(() =>
             {
                 Debug.Log("Movement complete, checking match...");
-                CheckTargetSeatMatch(primary); // sol koltuk üzerinden match check
+                CheckTargetSeatMatch(primary);
             });
     }
-
-
 
     public override void Lock()
     {
         base.Lock();
         // İkinci slot da kilitlenmiş sayılır
-        secondSlot?.SetCapybara(this); // yine bu capybara ile işaretli kalır
+        if (secondSlot != null)
+        {
+            secondSlot.SetCapybara(this);
+        }
+    }
+
+    // Capybara'yı tamamen temizlemek için
+    public void ClearFromSeats()
+    {
+        if (currentSlot != null)
+        {
+            currentSlot.ClearCapybara();
+            currentSlot = null;
+        }
+        if (secondSlot != null)
+        {
+            secondSlot.ClearCapybara();
+            secondSlot = null;
+        }
+    }
+
+    // Debug için
+    private void OnDestroy()
+    {
+        ClearFromSeats();
     }
 }

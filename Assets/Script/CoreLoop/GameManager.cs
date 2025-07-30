@@ -5,11 +5,14 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
+    public ProgressManager progressManager;
     private Capybara selectedCapybara;
     List<SeatGroup> cachedSeatGroups;
     public LevelManager levelManager;
-    [SerializeField] private int startLevelIndex = 0; // For testing, change later
+    public TimerManager timerManager;
+
+    [SerializeField]
+    private int startLevelIndex = 0; // For testing, change later
 
     private void Awake()
     {
@@ -17,10 +20,17 @@ public class GameManager : MonoBehaviour
             Instance = this;
 
         InitializeSeatGroupsCache();
+        DontDestroyOnLoad(gameObject); // Persist between scenes
     }
 
     private void Start()
     {
+        progressManager = GetComponent<ProgressManager>();
+        if (progressManager == null)
+        {
+            Debug.LogError("ProgressManager reference is missing in GameManager!");
+            return;
+        }
         levelManager = GetComponent<LevelManager>();
         if (levelManager != null)
         {
@@ -31,10 +41,77 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("LevelManager reference is missing in GameManager!");
         }
+
+        timerManager = GetComponent<TimerManager>();
+        if (timerManager != null)
+        {
+            timerManager.OnTimerFinished += OnTimeExpired;
+            timerManager.OnTimerTick += UpdateTimerUI; // Eğer UI göstereceksen
+        }
+        else
+        {
+            Debug.LogError("TimerManager reference is missing in GameManager!");
+        }
     }
 
+    public void OnTimeExpired()
+    {
+        CheckGameCondition();
+    }
 
-    // TODO: Make these so that there is no  change, instead a little visual effect plays (particle or animation)
+    private void UpdateTimerUI(float timeRemaining)
+    {
+        // UI güncellemesi için kullanılır
+        // Örnek: timerText.text = Mathf.CeilToInt(timeRemaining).ToString();
+    }
+
+    public void ShowWinScreen()
+    {
+        Debug.Log("You won! Show win screen here.");
+        // Burada kazandığınızda gösterilecek ekranı açabilirsiniz
+    }
+
+    public void ShowLoseScreen()
+    {
+        Debug.Log("You lost! Show lose screen here.");
+        // Burada kaybettiğinizde gösterilecek ekranı açabilirsiniz
+    }
+
+    public void CheckGameCondition()
+    {
+        Debug.Log("Checking game condition...");
+        if (IsAllGroupsMatched())
+        {
+            // Game Won
+            ShowWinScreen();
+            progressManager.SetMaxReachedLevel(levelManager.GetCurrentLevelIndex());
+            progressManager.AddSoftCurrency(100); // Örnek olarak 100 soft currency ekle
+        }
+        else
+        {
+            // Game Lost
+            ShowLoseScreen();
+        }
+    }
+
+    public void RestartCurrentLevel()
+    {
+        levelManager.RestartCurrentLevel();
+    }
+
+    public void LoadLevelByIndex(int index)
+    {
+        levelManager.LoadLevelByIndex(index);
+    }
+
+    public void LoadNextLevel()
+    {
+        levelManager.LoadNextLevel();
+    }
+
+    #region On Clicked Functions
+
+    // TODO: Make these so that there is no material change, instead a little visual effect plays (particle or animation)
     public void OnCapybaraClicked(Capybara capybara)
     {
         if (!capybara.IsMovable())
@@ -52,7 +129,6 @@ public class GameManager : MonoBehaviour
         selectedCapybara.GetComponent<Renderer>().material.color = Color.yellow;
     }
 
-    // Check all groups burdan kaldırıldı. Bu checki seat group bazında capybara.cs den yapıyoruz suan.
     public void OnSeatClicked(Seat seat)
     {
         if (selectedCapybara == null)
@@ -60,7 +136,7 @@ public class GameManager : MonoBehaviour
 
         if (selectedCapybara is FatCapybara fat)
         {
-            if (IsCorrectMoveFat(seat, fat.currentSlot))
+            if (IsCorrectMoveFat(seat, fat.currentSlot, fat.secondSlot))
             {
                 fat.SitSeat(seat);
             }
@@ -75,7 +151,9 @@ public class GameManager : MonoBehaviour
         selectedCapybara.GetComponent<Renderer>().material.color = selectedCapybara.color;
         selectedCapybara = null;
     }
+    #endregion
 
+    #region Move Checks
     //You can access the decision tree from Miro
     public bool IsCorrectMove(Seat seat, Seat oldSeat)
     {
@@ -172,31 +250,78 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public bool IsCorrectMoveFat(Seat targetLeft, Seat currentLeft)
+    public bool IsCorrectMoveFat(Seat targetSeat, Seat currentSeat, Seat secondSeat)
     {
-        // 1. Hedefin sağındaki koltuk var mı?
-        Seat targetRight = GetNeighborSeatRight(targetLeft);
-        if (targetRight == null || !targetLeft.IsEmpty || !targetRight.IsEmpty)
+        // 1. CorridorSeat: currentSeat grubundaki koridor koltuğu (isCorridorSide == true)
+        Seat corridorSeat = currentSeat.groupOfSeat.seatsInGroup.FirstOrDefault(s =>
+            s.isCorridorSide
+        );
+
+        if (corridorSeat == null)
+        {
+            Debug.LogWarning("Corridor seat not found in current seat's group.");
             return false;
+        }
 
-        // 2. Kaynağın sağ koltuğu
-        Seat currentRight = GetNeighborSeatRight(currentLeft);
-        if (currentRight == null)
-            return false;
+        // 2. corridorSeat currentSeat veya secondSeat eşit mi kontrol et
+        Seat oldSeat = null;
+        if (corridorSeat == currentSeat || corridorSeat == secondSeat)
+        {
+            oldSeat = corridorSeat;
+        }
+        else
+        {
+            // corridorSeat'e en yakın olanı bul (currentSeat veya secondSeat)
+            float distCurrent = Vector2Int.Distance(
+                corridorSeat.gridPosition,
+                currentSeat.gridPosition
+            );
+            float distSecond = Vector2Int.Distance(
+                corridorSeat.gridPosition,
+                secondSeat.gridPosition
+            );
 
-        // 3. İki koltuğun da grup geçiş izinleri kontrol edilmeli
-        bool leftMoveValid = IsCorrectMove(targetLeft, currentLeft);
-        bool rightMoveValid = IsCorrectMove(targetRight, currentRight);
-        Debug.Log("Fat capybara is move valid:\nLeft:" + leftMoveValid + "\nRight: " + rightMoveValid);
-        return leftMoveValid || rightMoveValid;
-    }
+            oldSeat = distCurrent < distSecond ? currentSeat : secondSeat;
+        }
 
+        // 3. targetSeat'in sağında veya solunda boş koltuk var mı? Öncelikle koridor tarafına en uzak olanı kontrol et.
 
-    public bool AreNeighbors(Seat a, Seat b)
-    {
-        return Mathf.Abs(a.gridPosition.x - b.gridPosition.x)
-                + Mathf.Abs(a.gridPosition.y - b.gridPosition.y)
-            == 1;
+        // Sağ ve sol komşularını al
+        Seat rightNeighbor = GetNeighborSeatRight(targetSeat);
+        Seat leftNeighbor = GetNeighborSeatLeft(targetSeat);
+
+        // Koridor tarafını bulmak için seat grubundaki koridor koltuğunun index'ini al
+        var seatsGroup = targetSeat.groupOfSeat.seatsInGroup;
+        int corridorIndex = seatsGroup.FindIndex(s => s.isCorridorSide);
+        int targetIndex = seatsGroup.IndexOf(targetSeat);
+
+        List<Seat> seatsToCheck = new List<Seat>();
+
+        // Koridor tarafına en uzak olan koltuğu önce kontrol edeceğiz
+        if (targetIndex < corridorIndex)
+        {
+            // Koridor sağda, o yüzden önce soldaki koltuk sonra sağdaki
+            if (leftNeighbor != null && leftNeighbor.IsEmpty)
+                seatsToCheck.Add(leftNeighbor);
+            if (rightNeighbor != null && rightNeighbor.IsEmpty)
+                seatsToCheck.Add(rightNeighbor);
+        }
+        else
+        {
+            // Koridor solda, önce sağdaki koltuk sonra soldaki
+            if (rightNeighbor != null && rightNeighbor.IsEmpty)
+                seatsToCheck.Add(rightNeighbor);
+            if (leftNeighbor != null && leftNeighbor.IsEmpty)
+                seatsToCheck.Add(leftNeighbor);
+        }
+
+        foreach (var seatToCheck in seatsToCheck)
+        {
+            if (IsCorrectMove(seatToCheck, oldSeat))
+                return true;
+        }
+
+        return false;
     }
 
     public bool IsPathClear(Seat a, Seat b)
@@ -237,6 +362,9 @@ public class GameManager : MonoBehaviour
 
         return false; // Diagonal değilse false
     }
+    #endregion
+
+    #region Seat Group Cache
 
     // Cache seat groups for performance
     public void InitializeSeatGroupsCache()
@@ -282,6 +410,25 @@ public class GameManager : MonoBehaviour
     {
         cachedSeatGroups.Clear();
     }
+    #endregion
+
+    #region Helper Functions
+
+    // True if group is locked, if not check if there is capybara in the group, if group has capybara, return false
+    public bool IsAllGroupsMatched()
+    {
+        foreach (var group in cachedSeatGroups)
+        {
+            if (!group.IsGroupLocked)
+            {
+                if (group.seatsInGroup.Any(s => s.currentCapybara != null))
+                {
+                    return false; // Group has capybara but not matched
+                }
+            }
+        }
+        return true; // All groups are either locked or empty
+    }
 
     public Seat GetRandomAvailableSeat()
     {
@@ -307,6 +454,13 @@ public class GameManager : MonoBehaviour
         }
 
         return availableSeats;
+    }
+
+    public bool AreNeighbors(Seat a, Seat b)
+    {
+        return Mathf.Abs(a.gridPosition.x - b.gridPosition.x)
+                + Mathf.Abs(a.gridPosition.y - b.gridPosition.y)
+            == 1;
     }
 
     public Seat GetNeighborSeatRight(Seat seat)
@@ -344,10 +498,5 @@ public class GameManager : MonoBehaviour
 
         return null;
     }
-
-    //TODO: Invoke this method after level completion
-    // void GoToNextLevel()
-    // {
-    //     FindObjectOfType<LevelManager>()?.LoadNextLevel();
-    // }
+    #endregion
 }

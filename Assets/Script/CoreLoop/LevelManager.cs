@@ -4,31 +4,18 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    //For levelData
-    // public LevelDatabase levelDatabase;
-    // public GridSystem gridSystem; // GridSystem referansı
-    // public GameObject loaderPrefab;
-
-    // private int currentLevelIndex = 0;
-
-    //
-
     public GameObject[] capybaraPrefabs;
     public Color[] possibleColors;
-    public int capybaraCount = 12;
-
     public LevelDatabase levelDatabase;
     public GridSystem gridSystem;
-
     private int currentLevelIndex = 0;
+    public TimerManager timerManager; // Drag from Inspector or GetComponent
 
-    private void Update()
+    public int GetCurrentLevelIndex() => currentLevelIndex;
+
+    public void RestartCurrentLevel()
     {
-        // TODO: Dont forget to remove on latest version.
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            CapybaraSpawnerRandom();
-        }
+        LoadLevelByIndex(currentLevelIndex);
     }
 
     public void LoadNextLevel()
@@ -55,8 +42,15 @@ public class LevelManager : MonoBehaviour
 
         GameManager.Instance.ClearSeatGroupCache();
 
-        gridSystem.SetGridParameters(level.rows, level.columns, level.groupWidth, level.groupHeight);
+        gridSystem.ClearGrid();
+        gridSystem.SetGridParameters(
+            level.rows,
+            level.columns,
+            level.groupWidth,
+            level.groupHeight
+        );
         gridSystem.GenerateGrid();
+        gridSystem.InitPathGrid();
 
         foreach (var capyInfo in level.capybaras)
         {
@@ -84,87 +78,26 @@ public class LevelManager : MonoBehaviour
                 .GetComponent<Capybara>();
 
             capy.SetColor(capyInfo.color);
-            if (capyInfo.isFrozen) capy.Freeze();
+            if (capyInfo.isFrozen)
+                capy.Freeze();
 
             capy.SitSeat(seat);
         }
 
         GameManager.Instance.InitializeSeatGroupsCache();
-    }
 
-    // For testing purposes
-    public void CapybaraSpawnerRandom()
-    {
-        var allSeats = new List<Seat>(FindObjectsOfType<Seat>());
-        var available = new List<Seat>(allSeats);
-
-        int placedCount = 0;
-
-        while (placedCount < capybaraCount && available.Count > 0)
+        // Start timer
+        if (timerManager == null)
         {
-            int index = Random.Range(0, available.Count);
-            Seat seat = available[index];
-            available.RemoveAt(index);
-
-            GameObject prefab = capybaraPrefabs[Random.Range(0, capybaraPrefabs.Length)];
-            var capy = Instantiate(prefab, seat.transform.position, Quaternion.identity)
-                .GetComponent<Capybara>();
-
-            Color color = possibleColors[Random.Range(0, possibleColors.Length)];
-            capy.SetColor(color);
-
-            if (capy is FatCapybara fat)
+            timerManager = GetComponent<TimerManager>();
+            if (timerManager == null)
             {
-                Seat right = GameManager.Instance.GetNeighborSeatRight(seat);
-
-                // Eğer sağ koltuk yoksa veya doluysa, spawn iptal edilir
-                if (right == null || !seat.IsEmpty || !right.IsEmpty)
-                {
-                    Destroy(fat.gameObject);
-                    continue;
-                }
-
-                fat.SitSeat(seat);
-
-                // her iki koltuk da dolu olduğundan listeden çıkart
-                available.Remove(right);
+                Debug.LogError("TimerManager not found in LevelManager!");
+                return;
             }
-            else
-            {
-                if (!seat.IsEmpty)
-                {
-                    Destroy(capy.gameObject);
-                    continue;
-                }
-
-                capy.SitSeat(seat);
-            }
-
-            placedCount++;
         }
+
+        timerManager.StopTimer(); // Eski bir süre varsa durdur
+        timerManager.StartTimer(level.levelTime);
     }
-
-    // public void LoadLevel(int index)
-    // {
-    //     if (index < 0 || index >= levelDatabase.levels.Length)
-    //     {
-    //         Debug.Log("Tüm seviyeler tamamlandı!");
-    //         return;
-    //     }
-
-    //     currentLevelIndex = index;
-
-    //     // Seviye verilerini GridSystem'e ilet
-    //     gridSystem.levelData = levelDatabase.levels[currentLevelIndex];
-
-    //     // Seviye oluşturma
-    //     gridSystem.GenerateGrid();
-    // }
-
-    // public void LoadNextLevel()
-    // {
-    //     LoadLevel(currentLevelIndex + 1);
-    // }
-
-    // public LevelData GetCurrentLevel() => levelDatabase.levels[currentLevelIndex];
 }

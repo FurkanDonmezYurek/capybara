@@ -19,8 +19,10 @@ public class SeatGroup : MonoBehaviour
         if (seatsInGroup.Any(s => s.currentCapybara == null))
             return;
 
-        var distinctColors = seatsInGroup.Select(s => s.currentCapybara.color).Distinct();
+        if (seatsInGroup.Any(s => s.currentCapybara.IsFrozen))
+            return;
 
+        var distinctColors = seatsInGroup.Select(s => s.currentCapybara.color).Distinct();
         if (distinctColors.Count() == 1)
         {
             LockGroup();
