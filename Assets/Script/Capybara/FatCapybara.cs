@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
@@ -98,6 +99,14 @@ public class FatCapybara : Capybara
             SetSeat(targetSlot);
             return;
         }
+        // Eğer farklı gruplardaysa corridor üzerinden git
+        if (!IsSameGroup(currentSlot, targetSlot))
+        {
+            AnimateCorridorMove(targetSlot);
+            return;
+        }
+
+        AnimateDirectMove(targetSlot);
 
         var group = targetSlot.groupOfSeat;
         var groupSeats = group.seatsInGroup;
@@ -134,7 +143,6 @@ public class FatCapybara : Capybara
             Seat rightSeat = groupSeats[targetIndex + 1];
             if (targetSlot.IsEmpty && rightSeat.IsEmpty)
             {
-                Debug.Log("Pair found: TARGET + RIGHT");
                 primary = targetSlot;
                 secondary = rightSeat;
             }
@@ -146,7 +154,6 @@ public class FatCapybara : Capybara
             Seat leftSeat = groupSeats[targetIndex - 1];
             if (leftSeat.IsEmpty && targetSlot.IsEmpty)
             {
-                Debug.Log("Pair found: LEFT + TARGET");
                 primary = leftSeat;
                 secondary = targetSlot;
             }
@@ -159,7 +166,6 @@ public class FatCapybara : Capybara
             {
                 if (groupSeats[i].IsEmpty && groupSeats[i + 1].IsEmpty)
                 {
-                    Debug.Log($"Alternative pair found at indices {i} and {i + 1}");
                     primary = groupSeats[i];
                     secondary = groupSeats[i + 1];
                     break;
@@ -219,7 +225,213 @@ public class FatCapybara : Capybara
             .DOMove(center, duration)
             .OnComplete(() =>
             {
-                Debug.Log("Movement complete, checking match...");
+                CheckTargetSeatMatch(primary);
+            });
+    }
+
+    protected override void AnimateCorridorMove(Seat targetSlot)
+    {
+        if (currentSlot == null || targetSlot == null)
+        {
+            return;
+        }
+
+        GridSystem gridSystem = FindObjectOfType<GridSystem>();
+        if (gridSystem == null)
+        {
+            return;
+        }
+
+        SeatGroup fromGroup = currentSlot.groupOfSeat;
+        SeatGroup toGroup = targetSlot.groupOfSeat;
+
+        int fromX = fromGroup.groupX;
+        int toX = toGroup.groupX;
+        int y = fromGroup.groupY; // corridor row
+
+        Vector3 startCenter = (currentSlot.transform.position + secondSlot.transform.position) / 2f;
+        Vector3 endCenter;
+
+        // Önce uygun hedef çiftini bul
+        var groupSeats = toGroup.seatsInGroup;
+        int targetIndex = groupSeats.IndexOf(targetSlot);
+        Seat primary = null,
+            secondary = null;
+
+        // Öncelik: target + sağ
+        if (
+            targetIndex < groupSeats.Count - 1
+            && groupSeats[targetIndex].IsEmpty
+            && groupSeats[targetIndex + 1].IsEmpty
+        )
+        {
+            primary = groupSeats[targetIndex];
+            secondary = groupSeats[targetIndex + 1];
+        }
+        // Alternatif: sol + target
+        else if (
+            targetIndex > 0
+            && groupSeats[targetIndex - 1].IsEmpty
+            && groupSeats[targetIndex].IsEmpty
+        )
+        {
+            primary = groupSeats[targetIndex - 1];
+            secondary = groupSeats[targetIndex];
+        }
+        // Alternatif: ilk boş çift
+        else
+        {
+            for (int i = 0; i < groupSeats.Count - 1; i++)
+            {
+                if (groupSeats[i].IsEmpty && groupSeats[i + 1].IsEmpty)
+                {
+                    primary = groupSeats[i];
+                    secondary = groupSeats[i + 1];
+                    break;
+                }
+            }
+        }
+
+        if (primary == null || secondary == null)
+        {
+            return;
+        }
+
+        endCenter = (primary.transform.position + secondary.transform.position) / 2f;
+
+        // Slot'ları geçici olarak rezerve et (animasyon sırasında çakışma olmasın)
+        currentSlot.ClearCapybara();
+        secondSlot.ClearCapybara();
+
+        transform.localScale = new Vector3(2f, 1f, 1f);
+
+        // PathPoints
+        Vector3 fromExit = GetCorridorExitPoint(currentSlot, targetSlot);
+        Vector3 toEntry = GetCorridorExitPoint(primary, currentSlot);
+
+        List<Vector3> pathPoints = new();
+        pathPoints.Add(startCenter); // A - Başlangıç
+        pathPoints.Add(fromExit); // B - Corridor çıkışı
+
+        if (fromX < toX)
+        {
+            for (int x = fromX; x < toX; x++)
+            {
+                pathPoints.Add(gridSystem.pathPointsGrid[x.ToString()][y.ToString()]);
+            }
+        }
+        else if (fromX > toX)
+        {
+            for (int x = fromX - 1; x >= toX; x--)
+            {
+                pathPoints.Add(gridSystem.pathPointsGrid[x.ToString()][y.ToString()]);
+            }
+        }
+
+        pathPoints.Add(toEntry); // C - Corridor girişi
+        pathPoints.Add(endCenter); // D - Hedef
+
+        // Animasyon
+        Sequence seq = DOTween.Sequence();
+        for (int i = 0; i < pathPoints.Count - 1; i++)
+        {
+            float dist = Vector3.Distance(pathPoints[i], pathPoints[i + 1]);
+            float dur = dist / MoveSpeed;
+            seq.Append(transform.DOMove(pathPoints[i + 1], dur).SetEase(Ease.Linear));
+        }
+
+        seq.OnComplete(() =>
+        {
+            // Hedef seat'leri set et
+            try
+            {
+                primary.SetCapybara(this);
+                secondary.SetCapybara(this);
+                currentSlot = primary;
+                secondSlot = secondary;
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError(
+                    "FatCapybara: Seat assignment failed after corridor move: " + e.Message
+                );
+                primary?.ClearCapybara();
+                secondary?.ClearCapybara();
+                currentSlot = null;
+                secondSlot = null;
+            }
+
+            // Yerleşimi kontrol et
+            CheckTargetSeatMatch(primary);
+            if (Application.isPlaying)
+                GameManager.Instance.CheckGameCondition();
+        });
+    }
+
+    protected override void AnimateDirectMove(Seat targetSlot)
+    {
+        if (currentSlot != null)
+        {
+            currentSlot.ClearCapybara();
+            currentSlot = null;
+        }
+        if (secondSlot != null)
+        {
+            secondSlot.ClearCapybara();
+            secondSlot = null;
+        }
+
+        var group = targetSlot.groupOfSeat;
+        var groupSeats = group.seatsInGroup;
+        int targetIndex = groupSeats.IndexOf(targetSlot);
+
+        Seat primary = null,
+            secondary = null;
+
+        // target + sağ
+        if (targetIndex < groupSeats.Count - 1)
+        {
+            var right = groupSeats[targetIndex + 1];
+            if (targetSlot.IsEmpty && right.IsEmpty)
+            {
+                primary = targetSlot;
+                secondary = right;
+            }
+        }
+
+        // sol + target
+        if (primary == null && targetIndex > 0)
+        {
+            var left = groupSeats[targetIndex - 1];
+            if (left.IsEmpty && targetSlot.IsEmpty)
+            {
+                primary = left;
+                secondary = targetSlot;
+            }
+        }
+
+        if (primary == null || secondary == null)
+        {
+            Debug.LogWarning("FatCapybara: AnimateDirectMove - no valid seat pair found.");
+            return;
+        }
+
+        currentSlot = primary;
+        secondSlot = secondary;
+        primary.SetCapybara(this);
+        secondary.SetCapybara(this);
+
+        Vector3 start = transform.position;
+        Vector3 end = (primary.transform.position + secondary.transform.position) / 2f;
+        float duration = Vector3.Distance(start, end) / MoveSpeed;
+
+        transform.localScale = new Vector3(2f, 1f, 1f);
+
+        transform
+            .DOMove(end, duration)
+            .SetEase(Ease.InOutSine)
+            .OnComplete(() =>
+            {
                 CheckTargetSeatMatch(primary);
             });
     }
