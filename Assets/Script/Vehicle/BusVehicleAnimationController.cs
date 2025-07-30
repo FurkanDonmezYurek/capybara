@@ -26,9 +26,9 @@ public class BusVehicleAnimationController : VehicleAnimationController
         float currentZ = transform.localEulerAngles.z;
 
         tiltTween = DOTween.Sequence()
-            .Append(transform.DOLocalRotate(new Vector3(0, 180, currentZ + tiltAngle), tiltDuration / 2f).SetEase(Ease.InOutSine))
-            .Append(transform.DOLocalRotate(new Vector3(0, 180, currentZ - tiltAngle), tiltDuration).SetEase(Ease.InOutSine))
-            .Append(transform.DOLocalRotate(new Vector3(0, 180, currentZ), tiltDuration / 2f).SetEase(Ease.InOutSine))
+            .Append(transform.DOLocalRotate(new Vector3(0, 0, currentZ + tiltAngle), tiltDuration / 2f).SetEase(Ease.InOutSine))
+            .Append(transform.DOLocalRotate(new Vector3(0, 0, currentZ - tiltAngle), tiltDuration).SetEase(Ease.InOutSine))
+            .Append(transform.DOLocalRotate(new Vector3(0, 0, currentZ), tiltDuration / 2f).SetEase(Ease.InOutSine))
             .SetLoops(-1);
     }
     private void OnDisable()
