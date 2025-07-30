@@ -29,7 +29,7 @@ public class LevelEditorWindow : EditorWindow
 
     private Vector2 scrollPosition;
 
-    private bool isTemporary = true;
+    //private bool isTemporary = true;
     private List<GameObject> placedCapybaras = new List<GameObject>();
 
     [MenuItem("LevelDesign/Level Editor")]
@@ -40,7 +40,7 @@ public class LevelEditorWindow : EditorWindow
 
     void OnDisable()
     {
-        if (isTemporary)
+        //if (isTemporary)
         {
             EditorApplication.delayCall += () =>
             {
@@ -143,7 +143,7 @@ public class LevelEditorWindow : EditorWindow
         {
             ExportLevel(levelName, difficulty, isLocked);
         }
-        isTemporary = EditorGUILayout.Toggle("Is Temporary", isTemporary);
+        //isTemporary = EditorGUILayout.Toggle("Is Temporary", isTemporary);
 
         // Eğer grid oluşturulduysa grid'i görselleştir
         if (isGridGenerated)

@@ -412,7 +412,7 @@ MonoBehaviour:
   progressManager: {fileID: 0}
   levelManager: {fileID: 0}
   timerManager: {fileID: 0}
-  startLevelIndex: 5
+  startLevelIndex: 13
 --- !u!4 &1365210082
 Transform:
   m_ObjectHideFlags: 0
