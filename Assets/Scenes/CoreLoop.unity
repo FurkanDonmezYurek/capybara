@@ -506,6 +506,7 @@ MonoBehaviour:
   timerManager: {fileID: 589664596}
   gridSystem: {fileID: 1365210084}
   UIManager: {fileID: 589664598}
+  gameTimerManager: {fileID: 589664596}
   startLevelIndex: 1
 --- !u!4 &1365210082
 Transform:
@@ -545,6 +546,7 @@ MonoBehaviour:
   - {r: 0.23358655, g: 1, b: 0, a: 0}
   levelDatabase: {fileID: 11400000, guid: 7c63a7b9db7ac447aac2824de9d6faab, type: 2}
   gridSystem: {fileID: 1365210084}
+  timerManager: {fileID: 0}
 --- !u!114 &1365210084
 MonoBehaviour:
   m_ObjectHideFlags: 0

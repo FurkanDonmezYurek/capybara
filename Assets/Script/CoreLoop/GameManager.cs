@@ -8,10 +8,12 @@ public class GameManager : MonoBehaviour
     public ProgressManager progressManager;
     private Capybara selectedCapybara;
     List<SeatGroup> cachedSeatGroups;
+    public List<Capybara> cachedCapybaraGroups;
     public LevelManager levelManager;
     public GameTimerManager timerManager;
     public GridSystem gridSystem;
     public UIManager UIManager;
+    public GameTimerManager gameTimerManager;
 
     [SerializeField]
     private int startLevelIndex = 0; // For testing, change later
@@ -21,35 +23,27 @@ public class GameManager : MonoBehaviour
     {
         if (Instance == null)
             Instance = this;
-
-        InitializeSeatGroupsCache();
+        else return;
+            InitializeSeatGroupsCache();
         DontDestroyOnLoad(gameObject); // Persist between scenes
     }
 
     private void Start()
     {
-        progressManager = GetComponent<ProgressManager>();
-        if (progressManager == null)
-        {
-            Debug.LogError("ProgressManager reference is missing in GameManager!");
-            return;
-        }
-        levelManager = GetComponent<LevelManager>();
-        if (levelManager != null)
-        {
-            LevelIndex= PlayerPrefs.GetInt("Level", 0);
-            //LevelIndex = 1;
-            //PlayerPrefs.SetInt("Level", LevelIndex);
-            levelManager.LoadLevelByIndex(LevelIndex);
-            UIManager.UpdateLevel(LevelIndex);
-            Debug.Log($"Loaded level {LevelIndex}");
-        }
-        else
-        {
-            Debug.LogError("LevelManager reference is missing in GameManager!");
-        }
+         LevelStart();
     }
 
+    public void LevelStart()
+    {
+        LevelIndex = PlayerPrefs.GetInt("Level", 0);
+        levelManager.LoadLevelByIndex(LevelIndex);
+        UIManager.UpdateLevel(LevelIndex);
+
+        LevelData level = levelManager.levelDatabase.levels[LevelIndex];
+
+        gameTimerManager.StartTimer(level.levelTime);
+        Debug.Log($"Loaded level {LevelIndex}");
+    }
     public void OnTimeExpired()
     {
         CheckGameCondition();
@@ -66,14 +60,7 @@ public class GameManager : MonoBehaviour
         // Burada kazandığınızda gösterilecek ekranı açabilirsiniz
         Debug.Log("You won! Show win screen here.");
         progressManager.SetMaxReachedLevel(levelManager.GetCurrentLevelIndex());
-        if (UIManager.Instance != null)
-        {
-            UIManager.Instance.ShowLevelComplete();
-        }
-        else
-        {
-            Debug.LogError("UIManager.Instance is null! Make sure it's in the scene before calling ShowWinScreen.");
-        }
+        UIManager.ShowLevelComplete();
         // progressManager.AddSoftCurrency(100); // Örnek olarak 100 soft currency ekle
 
     }
@@ -91,7 +78,7 @@ public class GameManager : MonoBehaviour
         if (IsAllGroupsMatched())
         {
             // Game Won
-            ShowWinScreen();
+            if(!UIManager.levelCompletePanel.activeSelf) ShowWinScreen();
         }
     }
 
@@ -384,7 +371,7 @@ public class GameManager : MonoBehaviour
         {
             cachedSeatGroups.Add(group);
             groupMap[(group.groupX, group.groupY)] = group;
-            //Debug.Log("Cached group: " + group.name);
+            Debug.Log("Cached group: " + group.name);
         }
 
         // Check target's neighborhood
@@ -403,7 +390,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
+  
     public List<SeatGroup> GetCachedSeatGroups()
     {
         return cachedSeatGroups;
@@ -413,6 +400,18 @@ public class GameManager : MonoBehaviour
     public void ClearSeatGroupCache()
     {
         cachedSeatGroups.Clear();
+    }
+
+    public void ClearCapybaraGroupCache()
+    {
+        foreach (var group in cachedSeatGroups) 
+        { 
+            foreach(var seat in group.seatsInGroup)
+            {
+                if(seat.currentCapybara!=null)
+                   Destroy(seat.currentCapybara.gameObject);
+            }
+        }
     }
     #endregion
 
