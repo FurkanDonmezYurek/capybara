@@ -101,7 +101,7 @@ public class IdleUIManager : MonoBehaviour
     {
         HideAllPanels();
 
-        //selectedLevelIndex = GameManager.Instance.levelManager.GetCurrentLevelIndex();
+        selectedLevelIndex = GameManager.Instance.levelManager.GetCurrentLevelIndex();
 
         selectedLevelText.text = "LEVEL " + (selectedLevelIndex + 1);
 
