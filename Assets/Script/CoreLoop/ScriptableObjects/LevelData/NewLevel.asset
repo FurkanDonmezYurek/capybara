@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelName: New Level
   difficulty: 0
-  levelTime: 120
   isLocked: 0
   rows: 7
   columns: 6
@@ -22,14 +21,6 @@ MonoBehaviour:
   groupHeight: 1
   capybaras:
   - gridPosition: {x: 2, y: 2}
-    type: 0
-    isFrozen: 0
     color: {r: 1, g: 1, b: 1, a: 1}
   - gridPosition: {x: 3, y: 1}
-    type: 0
-    isFrozen: 0
-    color: {r: 1, g: 1, b: 1, a: 1}
-  - gridPosition: {x: 5, y: 1}
-    type: 0
-    isFrozen: 0
     color: {r: 1, g: 1, b: 1, a: 1}
