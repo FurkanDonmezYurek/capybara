@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+
     public GameObject[] capybaraPrefabs;
     public Color[] possibleColors;
     public LevelDatabase levelDatabase;
     public GridSystem gridSystem;
     private int currentLevelIndex = 0;
+    public TimerManager timerManager; // Drag from Inspector or GetComponent
 
     public int GetCurrentLevelIndex() => currentLevelIndex;
 
@@ -83,8 +85,16 @@ public class LevelManager : MonoBehaviour
             capy.SitSeat(seat);
         }
 
-        PlayerPrefs.SetInt("Level",currentLevelIndex);
-         
         GameManager.Instance.InitializeSeatGroupsCache();
+
+        PlayerPrefs.SetInt("Level", currentLevelIndex);
+
+        GameTimerManager.Instance.StartTimer(level.levelTime);
+
+        LoadLevelByIndex(currentLevelIndex);
+        GameManager.Instance.UIManager.UpdateLevel(currentLevelIndex);
+        Debug.Log($"Loaded level {currentLevelIndex}");
+
     }
 }
+

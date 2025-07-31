@@ -40,6 +40,10 @@ public class GameManager : MonoBehaviour
             LevelIndex= PlayerPrefs.GetInt("Level", 0);
             levelManager.LoadLevelByIndex(LevelIndex);
             UIManager.UpdateLevel(LevelIndex);
+
+            LevelData level = levelManager.levelDatabase.levels[LevelIndex];
+
+            GameTimerManager.Instance.StartTimer(level.levelTime);
             Debug.Log($"Loaded level {LevelIndex}");
         }
         else
