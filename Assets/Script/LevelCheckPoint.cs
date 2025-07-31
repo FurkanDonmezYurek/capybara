@@ -7,7 +7,6 @@ public class LevelCheckpoint : MonoBehaviour
     public Color closedColor = Color.gray;
     [SerializeField] private MeshRenderer visualRenderer;
 
-    public int levelIndex;
     public int vehicleTypeIndex;
 
     private void Awake()

@@ -23,8 +23,6 @@ public class GameManager : MonoBehaviour
     {
         if (Instance == null)
             Instance = this;
-        else return;
-        DontDestroyOnLoad(gameObject); // Persist between scenes
     }
 
     private void Start()

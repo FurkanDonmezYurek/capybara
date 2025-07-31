@@ -937,11 +937,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 612c713c-1255-477b-9346-d94142652fce
+  cloudProjectId: afa64deb-dac8-4422-a4b1-7fed037967aa
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: capybara 2025-07-24_00-33-14
-  organizationId: furkandonmezyurek
+  projectName: Capybara Sort
+  organizationId: erdoganfatma119
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

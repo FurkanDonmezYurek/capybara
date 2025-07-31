@@ -119,13 +119,16 @@ public class IdleUIManager : MonoBehaviour
 
     private void OnPlayButtonClicked()
     {
-        HideAllPanels();
-        int LevelIndex = PlayerPrefs.GetInt("Level", 0);
-        LevelIndex++;
-        PlayerPrefs.SetInt("Level", LevelIndex);
-        //GameManager.Instance.LevelStart();
+        //HideAllPanels();
+        //int LevelIndex = PlayerPrefs.GetInt("Level", 0);
+        //LevelIndex++;
+        //PlayerPrefs.SetInt("Level", LevelIndex);
+        ////GameManager.Instance.LevelStart();
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        // TODO: Optional restart animation
+        SceneManager.LoadScene(1);
     }
 
 
@@ -233,7 +236,6 @@ public class IdleUIManager : MonoBehaviour
             coinText.text = current.ToString();
         }, newCoinAmount, 0.5f).SetEase(Ease.OutQuad);
     }
-
 
     #endregion
 }

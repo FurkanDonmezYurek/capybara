@@ -19,18 +19,25 @@ public class VehicleSplineController : MonoBehaviour
     private VehicleManager vehicleManager;
 
 
-    void Awake()
+    void Start()
     {
         splineAnimate = GetComponent<SplineAnimate>();
         vehicleManager = GetComponent<VehicleManager>();
-    }
 
-    void Start()
-    {
         targetCheckpointIndex = vehicleManager.GetCurrentLevelIndex();
         currentCheckpointIndex = 0;
+        
 
-        vehicleManager.VehicleSelect(levelCheckpoints[targetCheckpointIndex+1].vehicleTypeIndex);
+        for (int i = 0; i < targetCheckpointIndex; i++)
+        {
+            levelCheckpoints[targetCheckpointIndex].isOpen = true;
+            levelCheckpoints[targetCheckpointIndex].UpdateVisual();
+
+        }
+
+        vehicleManager.VehicleSelect(levelCheckpoints[targetCheckpointIndex].vehicleTypeIndex);
+
+        ResumeMovement();
     }
 
     private void Update()

@@ -28,11 +28,11 @@ public class CapybaraAnimation
     }
     public void SetJumpAnim(bool status)
     {
-        _animator.SetBool(Sleepy, status);
+        _animator.SetBool(Jump, status);
     }
     public void SetFreezeAnim(bool status)
     {
-        _animator.SetBool(Jump, status);
+        _animator.SetBool(Freeze, status);
     }
     public void SetMovementAnimByMagnitude(float magnitude, bool instant = false)
     {

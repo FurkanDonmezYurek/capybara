@@ -167,7 +167,7 @@ public class UIManager : MonoBehaviour
 
         boosterButtonTweens = new Tween[boosterButton.Length];
 
-        StartLevel(); //TODO: Replace with actual level start logic
+        //StartLevel(); //TODO: Replace with actual level start logic
     }
 
     #endregion
@@ -751,11 +751,17 @@ public class UIManager : MonoBehaviour
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
     }
 
-    
+    public void NextLevel()
+    {
+        int LevelIndex = PlayerPrefs.GetInt("Level", 0);
+        LevelIndex++;
+        PlayerPrefs.SetInt("Level",LevelIndex);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+    }
 
 
 
-       public void OpenShopFromCoin()
+    public void OpenShopFromCoin()
     {
         OpenShopPanel();
     }
