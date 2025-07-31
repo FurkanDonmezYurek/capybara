@@ -19,8 +19,9 @@ public class GridSystem : MonoBehaviour
     //for path
     public Dictionary<string, Dictionary<string, Vector3>> pathPointsGrid;
     public Vector3[,] groupPositions;
+
     // ...
-#if UNITY_EDITOR
+
     [ContextMenu("Generate Grid and Groups")] //for run in the editor
     public void GenerateGrid()
     {
@@ -49,8 +50,12 @@ public class GridSystem : MonoBehaviour
                         Vector3 groupOffset = new Vector3(groupX * groupSpacingX, 0, 0);
                         Vector3 pos = new Vector3(x * spacing, 0, -y * spacing) + groupOffset;
 
+#if UNITY_EDITOR
                         GameObject obj =
                             PrefabUtility.InstantiatePrefab(seatPrefab, transform) as GameObject; //for run in the editor
+#else
+                        GameObject obj = Instantiate(seatPrefab, transform);
+#endif
                         obj.transform.localPosition = pos;
 
                         Seat seat = obj.GetComponent<Seat>();
@@ -76,7 +81,6 @@ public class GridSystem : MonoBehaviour
         }
     }
 
-#endif
     // Adds seats in order to the current grid.
     [ContextMenu("Add Seat Group")]
     public void AddSeatGroup()

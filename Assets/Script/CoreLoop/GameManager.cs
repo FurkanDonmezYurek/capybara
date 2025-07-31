@@ -15,8 +15,8 @@ public class GameManager : MonoBehaviour
     public UIManager UIManager;
     public GameTimerManager gameTimerManager;
 
-    [SerializeField]
-    private int startLevelIndex = 0; // For testing, change later
+    // [SerializeField]
+    // private int startLevelIndex = 0; // For testing, change later
     private int LevelIndex = 0; // For testing, change later
 
     private void Awake()
@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         LevelStart();
-
     }
 
     public void LevelStart()
@@ -42,6 +41,7 @@ public class GameManager : MonoBehaviour
         gameTimerManager.StartTimer(level.levelTime);
         Debug.Log($"Loaded level {LevelIndex}");
     }
+
     public void OnTimeExpired()
     {
         CheckGameCondition();
@@ -60,7 +60,6 @@ public class GameManager : MonoBehaviour
         progressManager.SetMaxReachedLevel(levelManager.GetCurrentLevelIndex());
         UIManager.ShowLevelComplete();
         // progressManager.AddSoftCurrency(100); // Örnek olarak 100 soft currency ekle
-
     }
 
     public void ShowLoseScreen()
@@ -76,7 +75,8 @@ public class GameManager : MonoBehaviour
         if (IsAllGroupsMatched())
         {
             // Game Won
-            if (!UIManager.levelCompletePanel.activeSelf) ShowWinScreen();
+            if (!UIManager.levelCompletePanel.activeSelf)
+                ShowWinScreen();
         }
     }
 
