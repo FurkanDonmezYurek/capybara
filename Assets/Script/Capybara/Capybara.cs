@@ -18,7 +18,7 @@ public class Capybara : MonoBehaviour
     public Color color;
     public Seat currentSlot;
     protected bool isLocked;
-    protected bool isFrozen;
+    public bool isFrozen;
     public bool IsFrozen => isFrozen;
     public GameObject iceCubeVisual; // Assigned in prefab or instantiated
     public GameObject capybaraColorMaterialObject;
@@ -215,6 +215,8 @@ public class Capybara : MonoBehaviour
                 currentSlot = targetSlot;
                 CheckTargetSeatMatch(targetSlot);
                 SitAnimation();
+                if (Application.isPlaying)
+                    GameManager.Instance.CheckGameCondition();
             });
     }
 

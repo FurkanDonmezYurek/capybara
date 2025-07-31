@@ -56,6 +56,8 @@ public class SeatGroup : MonoBehaviour
                 foreach (var seat in group.seatsInGroup)
                 {
                     var capy = seat.currentCapybara;
+                    Debug.Log("Capybara name: " + (capy != null ? capy.name : "null"));
+                    Debug.Log("IsFrozen: " + (capy != null ? capy.IsFrozen : "null"));
                     if (capy != null && capy.IsFrozen && capy.color == matchingColor)
                     {
                         capy.Unfreeze();

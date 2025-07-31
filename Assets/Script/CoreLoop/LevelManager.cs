@@ -83,9 +83,9 @@ public class LevelManager : MonoBehaviour
             if (capyInfo.isFrozen)
                 capy.Freeze();
 
-            capy.SitSeat(seat);
+            capy.SetSeat(seat);
 
-            
+
         }
 
         GameManager.Instance.InitializeSeatGroupsCache();

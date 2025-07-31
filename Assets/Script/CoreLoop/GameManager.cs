@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public ProgressManager progressManager;
     private Capybara selectedCapybara;
-    List<SeatGroup> cachedSeatGroups;
+    List<SeatGroup> cachedSeatGroups = new List<SeatGroup>();
     public List<Capybara> cachedCapybaraGroups;
     public LevelManager levelManager;
     public GameTimerManager timerManager;
@@ -24,13 +24,13 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
             Instance = this;
         else return;
-            InitializeSeatGroupsCache();
         DontDestroyOnLoad(gameObject); // Persist between scenes
     }
 
     private void Start()
     {
-         LevelStart();
+        LevelStart();
+
     }
 
     public void LevelStart()
@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
         if (IsAllGroupsMatched())
         {
             // Game Won
-            if(!UIManager.levelCompletePanel.activeSelf) ShowWinScreen();
+            if (!UIManager.levelCompletePanel.activeSelf) ShowWinScreen();
         }
     }
 
@@ -390,7 +390,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-  
+
     public List<SeatGroup> GetCachedSeatGroups()
     {
         return cachedSeatGroups;
@@ -404,12 +404,12 @@ public class GameManager : MonoBehaviour
 
     public void ClearCapybaraGroupCache()
     {
-        foreach (var group in cachedSeatGroups) 
-        { 
-            foreach(var seat in group.seatsInGroup)
+        foreach (var group in cachedSeatGroups)
+        {
+            foreach (var seat in group.seatsInGroup)
             {
-                if(seat.currentCapybara!=null)
-                   Destroy(seat.currentCapybara.gameObject);
+                if (seat.currentCapybara != null)
+                    Destroy(seat.currentCapybara.gameObject);
             }
         }
     }
