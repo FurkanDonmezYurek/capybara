@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
         if (levelManager != null)
         {
             LevelIndex= PlayerPrefs.GetInt("Level", 0);
+            //LevelIndex = 1;
+            //PlayerPrefs.SetInt("Level", LevelIndex);
             levelManager.LoadLevelByIndex(LevelIndex);
             UIManager.UpdateLevel(LevelIndex);
             Debug.Log($"Loaded level {LevelIndex}");
@@ -64,7 +66,14 @@ public class GameManager : MonoBehaviour
         // Burada kazandığınızda gösterilecek ekranı açabilirsiniz
         Debug.Log("You won! Show win screen here.");
         progressManager.SetMaxReachedLevel(levelManager.GetCurrentLevelIndex());
-        UIManager.ShowLevelComplete();
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowLevelComplete();
+        }
+        else
+        {
+            Debug.LogError("UIManager.Instance is null! Make sure it's in the scene before calling ShowWinScreen.");
+        }
         // progressManager.AddSoftCurrency(100); // Örnek olarak 100 soft currency ekle
 
     }
@@ -375,7 +384,7 @@ public class GameManager : MonoBehaviour
         {
             cachedSeatGroups.Add(group);
             groupMap[(group.groupX, group.groupY)] = group;
-            Debug.Log("Cached group: " + group.name);
+            //Debug.Log("Cached group: " + group.name);
         }
 
         // Check target's neighborhood

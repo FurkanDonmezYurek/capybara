@@ -174,7 +174,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateTimer(float progress)
     {
-        if (suppressTimerUI) return;
+        if (suppressTimerUI || timerFill == null || timerText == null) return;
 
         timerFill.fillAmount = Mathf.Clamp01(progress);
 
@@ -208,31 +208,84 @@ public class UIManager : MonoBehaviour
         }
     }
 
+
     #endregion
 
     #region === Panel Management ===
 
     public void HideAllPanels()
     {
-        if (levelCompletePanel.activeSelf)
-            HidePanelWithAnimation(levelCompleteCG, levelCompleteHeader, levelCompletePanel);
+        Debug.Log("HideAllPanels started");
 
-        if (levelFailPanel.activeSelf)
-            HidePanelWithAnimation(levelFailCG, levelFailHeader, levelFailPanel);
-
-        if (boosterPanel.activeSelf)
+        try
         {
-            for (int i = 0;i< boosterHeader.Length; i++)
+            if (levelCompletePanel == null)
             {
-                HidePanelWithAnimation(boosterCG, boosterHeader[i], boosterPanel);
+                Debug.LogWarning("levelCompletePanel is null!");
             }
+            else if (levelCompletePanel.activeSelf)
+            {
+                Debug.Log("Hiding levelCompletePanel...");
+                HidePanelWithAnimation(levelCompleteCG, levelCompleteHeader, levelCompletePanel);
+            }
+
+            if (levelFailPanel == null)
+            {
+                Debug.LogWarning("levelFailPanel is null!");
+            }
+            else if (levelFailPanel.activeSelf)
+            {
+                Debug.Log("Hiding levelFailPanel...");
+                HidePanelWithAnimation(levelFailCG, levelFailHeader, levelFailPanel);
+            }
+
+            if (boosterPanel == null)
+            {
+                Debug.LogWarning("boosterPanel is null!");
+            }
+            else if (boosterPanel.activeSelf)
+            {
+                Debug.Log("Hiding boosterPanel...");
+                if (boosterHeader == null || boosterHeader.Length == 0)
+                {
+                    Debug.LogWarning("boosterHeader array is null or empty!");
+                }
+                else
+                {
+                    for (int i = 0; i < boosterHeader.Length; i++)
+                    {
+                        Debug.Log($"Hiding boosterHeader[{i}]...");
+                        HidePanelWithAnimation(boosterCG, boosterHeader[i], boosterPanel);
+                    }
+                }
+            }
+
+            if (coinBuyPanel == null)
+            {
+                Debug.LogWarning("coinBuyPanel is null!");
+            }
+            else if (coinBuyPanel.activeSelf)
+            {
+                Debug.Log("Hiding coinBuyPanel...");
+                HidePanelWithAnimation(coinBuyCG, coinBuyHeader, coinBuyPanel);
+            }
+
+            if (settingsPanel == null)
+            {
+                Debug.LogWarning("settingsPanel is null!");
+            }
+            else if (settingsPanel.activeSelf)
+            {
+                Debug.Log("Hiding settingsPanel...");
+                HidePanelWithAnimation(settingsCG, settingsContent, settingsPanel);
+            }
+
+            Debug.Log("HideAllPanels finished successfully.");
         }
-
-        if (coinBuyPanel.activeSelf)
-            HidePanelWithAnimation(coinBuyCG, coinBuyHeader, coinBuyPanel);
-
-        if (settingsPanel.activeSelf)
-            HidePanelWithAnimation(settingsCG, settingsContent, settingsPanel);
+        catch (System.Exception ex)
+        {
+            Debug.LogError("Exception in HideAllPanels: " + ex);
+        }
     }
 
     private void HidePanelWithAnimation(CanvasGroup cg, Transform scaleTarget, GameObject panelGO)

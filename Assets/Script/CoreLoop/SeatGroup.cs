@@ -11,7 +11,7 @@ public class SeatGroup : MonoBehaviour
 
     public void CheckGroupColor()
     {
-        Debug.Log("Checking group color for SeatGroup: " + name);
+        //Debug.Log("Checking group color for SeatGroup: " + name);
 
         if (IsGroupLocked)
             return;
