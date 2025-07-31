@@ -2220,7 +2220,6 @@ GameObject:
   - component: {fileID: 6651406848692724833}
   - component: {fileID: 7468902028551661675}
   - component: {fileID: 2982855727808603292}
-  - component: {fileID: 7645328565631268876}
   - component: {fileID: 7645328565631268877}
   m_Layer: 5
   m_Name: IdleCanvas
@@ -2228,7 +2227,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!222 &583057908904341556
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11500,21 +11499,6 @@ RectTransform:
   m_AnchoredPosition: {x: 437, y: 494}
   m_SizeDelta: {x: 116, y: 134}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &7645328565631268876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 571639524431108373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd29309246fdacb469589e81cf37c930, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  totalTime: 60
-  isRunning: 0
-  isFrozen: 0
 --- !u!114 &7645328565631268877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12142,7 +12126,7 @@ PrefabInstance:
     - target: {fileID: 6812645726406976706, guid: 6210837283c601d4fa5238c62e9aee41,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7154185816701061767, guid: 6210837283c601d4fa5238c62e9aee41,
         type: 3}
