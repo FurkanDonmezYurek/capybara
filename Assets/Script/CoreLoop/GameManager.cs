@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     List<SeatGroup> cachedSeatGroups;
     public LevelManager levelManager;
     public GameTimerManager timerManager;
+    public GridSystem gridSystem;
     public UIManager UIManager;
 
     [SerializeField]

@@ -500,7 +500,7 @@ public class UIManager : MonoBehaviour
             }
             else
             {
-                //TODO: Add logic for seat booster
+                GameManager.Instance.gridSystem.AddSeatGroup();
                 ShowBoosterUnlockedPanel(false);
             }
         }

@@ -501,9 +501,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ff799b87908042918ae71815f1caa3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progressManager: {fileID: 0}
-  levelManager: {fileID: 0}
+  progressManager: {fileID: 1365210085}
+  levelManager: {fileID: 1365210083}
   timerManager: {fileID: 589664596}
+  gridSystem: {fileID: 1365210084}
   UIManager: {fileID: 589664598}
   startLevelIndex: 1
 --- !u!4 &1365210082
