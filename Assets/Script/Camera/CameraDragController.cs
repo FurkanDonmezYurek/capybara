@@ -10,6 +10,7 @@ public class CameraDragController : MonoBehaviour
     private Vector3 lastMousePosition;
     private bool isDragging = false;
 
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0))

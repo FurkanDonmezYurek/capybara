@@ -75,6 +75,7 @@ public class VehicleSplineController : MonoBehaviour
             isPaused = true;
             Events.VehiclePause?.Invoke(isPaused);
         }
+        Camera.main.transform.DOMoveZ(transform.position.z - 20,0.25f);
     }
 
     private void ResumeMovement()

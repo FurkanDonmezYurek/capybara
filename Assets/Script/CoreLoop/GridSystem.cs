@@ -19,7 +19,8 @@ public class GridSystem : MonoBehaviour
     //for path
     public Dictionary<string, Dictionary<string, Vector3>> pathPointsGrid;
     public Vector3[,] groupPositions;
-
+    // ...
+#if UNITY_EDITOR
     [ContextMenu("Generate Grid and Groups")] //for run in the editor
     public void GenerateGrid()
     {
@@ -75,6 +76,7 @@ public class GridSystem : MonoBehaviour
         }
     }
 
+#endif
     // Adds seats in order to the current grid.
     [ContextMenu("Add Seat Group")]
     public void AddSeatGroup()
