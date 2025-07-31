@@ -9,7 +9,6 @@ public class LevelManager : MonoBehaviour
     public LevelDatabase levelDatabase;
     public GridSystem gridSystem;
     private int currentLevelIndex = 0;
-    public TimerManager timerManager; // Drag from Inspector or GetComponent
 
     public int GetCurrentLevelIndex() => currentLevelIndex;
 
@@ -84,20 +83,8 @@ public class LevelManager : MonoBehaviour
             capy.SitSeat(seat);
         }
 
+        PlayerPrefs.SetInt("Level",currentLevelIndex);
+         
         GameManager.Instance.InitializeSeatGroupsCache();
-
-        // Start timer
-        if (timerManager == null)
-        {
-            timerManager = GetComponent<TimerManager>();
-            if (timerManager == null)
-            {
-                Debug.LogError("TimerManager not found in LevelManager!");
-                return;
-            }
-        }
-
-        timerManager.StopTimer(); // Eski bir süre varsa durdur
-        timerManager.StartTimer(level.levelTime);
     }
 }

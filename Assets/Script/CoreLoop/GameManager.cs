@@ -9,10 +9,12 @@ public class GameManager : MonoBehaviour
     private Capybara selectedCapybara;
     List<SeatGroup> cachedSeatGroups;
     public LevelManager levelManager;
-    public TimerManager timerManager;
+    public GameTimerManager timerManager;
+    public UIManager UIManager;
 
     [SerializeField]
     private int startLevelIndex = 0; // For testing, change later
+    private int LevelIndex = 0; // For testing, change later
 
     private void Awake()
     {
@@ -34,23 +36,14 @@ public class GameManager : MonoBehaviour
         levelManager = GetComponent<LevelManager>();
         if (levelManager != null)
         {
-            levelManager.LoadLevelByIndex(startLevelIndex);
-            Debug.Log($"Loaded level {startLevelIndex}");
+            LevelIndex= PlayerPrefs.GetInt("Level", 0);
+            levelManager.LoadLevelByIndex(LevelIndex);
+            UIManager.UpdateLevel(LevelIndex);
+            Debug.Log($"Loaded level {LevelIndex}");
         }
         else
         {
             Debug.LogError("LevelManager reference is missing in GameManager!");
-        }
-
-        timerManager = GetComponent<TimerManager>();
-        if (timerManager != null)
-        {
-            timerManager.OnTimerFinished += OnTimeExpired;
-            timerManager.OnTimerTick += UpdateTimerUI; // Eğer UI göstereceksen
-        }
-        else
-        {
-            Debug.LogError("TimerManager reference is missing in GameManager!");
         }
     }
 
@@ -67,13 +60,18 @@ public class GameManager : MonoBehaviour
 
     public void ShowWinScreen()
     {
-        Debug.Log("You won! Show win screen here.");
         // Burada kazandığınızda gösterilecek ekranı açabilirsiniz
+        Debug.Log("You won! Show win screen here.");
+        progressManager.SetMaxReachedLevel(levelManager.GetCurrentLevelIndex());
+        UIManager.ShowLevelComplete();
+        // progressManager.AddSoftCurrency(100); // Örnek olarak 100 soft currency ekle
+
     }
 
     public void ShowLoseScreen()
     {
         Debug.Log("You lost! Show lose screen here.");
+        UIManager.ShowLevelFail();
         // Burada kaybettiğinizde gösterilecek ekranı açabilirsiniz
     }
 
@@ -84,13 +82,6 @@ public class GameManager : MonoBehaviour
         {
             // Game Won
             ShowWinScreen();
-            progressManager.SetMaxReachedLevel(levelManager.GetCurrentLevelIndex());
-            progressManager.AddSoftCurrency(100); // Örnek olarak 100 soft currency ekle
-        }
-        else if (timerManager.IsTimerExpired())
-        {
-            // Game Lost
-            ShowLoseScreen();
         }
     }
 
