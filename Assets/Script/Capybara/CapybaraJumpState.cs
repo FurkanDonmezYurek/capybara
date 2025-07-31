@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CapybaraSleepState : CapybaraBaseState
+public class CapybaraJumpState : CapybaraBaseState
 {
-    public CapybaraSleepState(CapybaraStateMachine c) : base(c)
+    public CapybaraJumpState(CapybaraStateMachine c) : base(c)
     {
     }
     public override void Enter()
