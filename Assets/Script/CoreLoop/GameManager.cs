@@ -117,7 +117,13 @@ public class GameManager : MonoBehaviour
         selectedCapybara.SetColor(Color.yellow); // Highlight selected capybara
         */
 
+        if (selectedCapybara != null && selectedCapybara != capybara)
+        {
+            selectedCapybara.SitAnimation();
+        }
+
         selectedCapybara = capybara;
+        selectedCapybara.JumpAnimation();
     }
 
     public void OnSeatClicked(Seat seat)

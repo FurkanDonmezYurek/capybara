@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class FatCapybara : Capybara
 {
-    // FIXME: CORRIDOR MECHANIC DOES NOT WORK FOR THE FAT CAPYBARA RIGHT NOW,
     public override CapybaraType Type => CapybaraType.Fat;
     public override float MoveSpeed => 1.5f;
 
@@ -75,7 +74,7 @@ public class FatCapybara : Capybara
         // Pozisyonu center'a direkt set et
         Vector3 center = (primary.transform.position + secondary.transform.position) / 2f;
         transform.position = center;
-       // transform.localScale = new Vector3(2f, 1f, 1f);
+        // transform.localScale = new Vector3(2f, 1f, 1f);
 
         Debug.Log(
             $"Fat capybara directly set to seats: Primary={primary.name}, Secondary={secondary.name}"
@@ -372,8 +371,6 @@ public class FatCapybara : Capybara
 
             // Yerleşimi kontrol et
             CheckTargetSeatMatch(primary);
-            if (Application.isPlaying)
-                GameManager.Instance.CheckGameCondition();
         });
     }
 
@@ -443,6 +440,7 @@ public class FatCapybara : Capybara
             .OnComplete(() =>
             {
                 CheckTargetSeatMatch(primary);
+                SitAnimation();
             });
     }
 

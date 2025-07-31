@@ -72,6 +72,17 @@ public class Capybara : MonoBehaviour
         ResetRotation();
     }
 
+    public virtual void JumpAnimation()
+    {
+        if (CapybaraStateMachine == null)
+        {
+            Debug.LogError("CapybaraStateMachine is not set for " + gameObject.name);
+            return;
+        }
+
+        CapybaraStateMachine.SetState(CapybaraStateMachine.jumpState);
+    }
+
     public virtual void WalkAnimation()
     {
         if (CapybaraStateMachine == null)
@@ -215,8 +226,6 @@ public class Capybara : MonoBehaviour
                 currentSlot = targetSlot;
                 CheckTargetSeatMatch(targetSlot);
                 SitAnimation();
-                if (Application.isPlaying)
-                    GameManager.Instance.CheckGameCondition();
             });
     }
 
@@ -288,8 +297,6 @@ public class Capybara : MonoBehaviour
         {
             currentSlot = targetSlot;
             CheckTargetSeatMatch(targetSlot);
-            if (Application.isPlaying)
-                GameManager.Instance.CheckGameCondition();
             SitAnimation();
         });
     }
@@ -340,6 +347,8 @@ public class Capybara : MonoBehaviour
     {
         var group = targetSlot.GetComponentInParent<SeatGroup>();
         group?.CheckGroupColor();
+        if (Application.isPlaying)
+            GameManager.Instance.CheckGameCondition();
     }
 
     public virtual void Lock()
