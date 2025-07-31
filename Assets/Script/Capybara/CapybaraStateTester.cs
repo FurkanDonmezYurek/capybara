@@ -16,7 +16,7 @@ public class CapybaraStateTester : MonoBehaviour
 
 
     public CapybaraStateMachine stateMachine;
-
+    
     private void Start()
     {
         stateMachine.FonksiyonStart();

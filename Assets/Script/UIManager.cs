@@ -121,6 +121,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Sprite[] iconSounds;
     [SerializeField] private Sprite[] iconVibrations;
     [SerializeField] private Sprite[] bgSettingsButtons;
+
+
+
+
+    [SerializeField] private GameObject shopPanel;  
+
+
+
+
     #endregion
 
     #endregion
@@ -158,7 +167,7 @@ public class UIManager : MonoBehaviour
 
         boosterButtonTweens = new Tween[boosterButton.Length];
 
-        //StartLevel(); //TODO: Replace with actual level start logic
+        StartLevel(); //TODO: Replace with actual level start logic
     }
 
     #endregion
@@ -170,7 +179,7 @@ public class UIManager : MonoBehaviour
         AnimateCoinChange(amount); 
     }
 
-    public void UpdateLevel(int level) => levelText.text = "Level " + (++level);
+    public void UpdateLevel(int level) => levelText.text = "Level " + level;
 
     public void UpdateTimer(float progress)
     {
@@ -500,7 +509,7 @@ public class UIManager : MonoBehaviour
             }
             else
             {
-                GameManager.Instance.gridSystem.AddSeatGroup();
+                //TODO: Add logic for seat booster
                 ShowBoosterUnlockedPanel(false);
             }
         }
@@ -699,6 +708,8 @@ public class UIManager : MonoBehaviour
 
         UpdateSoundToggleVisual();
         UpdateVibrationToggleVisual();
+         
+   
     }
 
     public void ToggleSound()
@@ -738,25 +749,39 @@ public class UIManager : MonoBehaviour
         // TODO: Optional restart animation
         UnityEngine.SceneManagement.SceneManager.LoadScene(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
-
     }
-    public void NextLevel()
+
+    
+
+
+
+       public void OpenShopFromCoin()
     {
-        HideAllPanels();
-        int LevelIndex = PlayerPrefs.GetInt("Level", 0);
-        LevelIndex++;
-        PlayerPrefs.SetInt("Level", LevelIndex);
-        GameManager.Instance.LevelStart();
-
-        
+        OpenShopPanel();
     }
-    #endregion
+
+    // Gem Artı Butonuna Tıklanıldığında Magaza Sayfasına Yönlendirme
+    public void OpenShopFromGem()
+    {
+        OpenShopPanel();
+    }
+
+    // Mağaza Panelini Açma
+    private void OpenShopPanel()
+    {
+        shopPanel.SetActive(true); // Eğer mağaza bir panelse bunu aktif edebilirsiniz
+        // Ya da, mağaza sayfasına sahne geçişi yapılabilir:
+        // SceneManager.LoadScene("ShopScene"); // Eğer mağaza sahnesi varsa
+    }
+
+#endregion
+
 
     #region === Debug Methods ===
     //TODO: Remove or comment out these methods in production
     void StartLevel()
     {
-        //GameTimerManager.Instance.StartTimer(60f);
+        GameTimerManager.Instance.StartTimer(60f);
     }
 
     #endregion
