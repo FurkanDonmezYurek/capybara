@@ -41,6 +41,7 @@ public class LevelManager : MonoBehaviour
 
         LevelData level = levelDatabase.levels[index];
 
+        GameManager.Instance.ClearCapybaraGroupCache();
         GameManager.Instance.ClearSeatGroupCache();
 
         gridSystem.ClearGrid();
@@ -83,17 +84,11 @@ public class LevelManager : MonoBehaviour
                 capy.Freeze();
 
             capy.SitSeat(seat);
+
+            
         }
 
         GameManager.Instance.InitializeSeatGroupsCache();
-
-        PlayerPrefs.SetInt("Level", currentLevelIndex);
-
-        GameTimerManager.Instance.StartTimer(level.levelTime);
-
-        LoadLevelByIndex(currentLevelIndex);
-        GameManager.Instance.UIManager.UpdateLevel(currentLevelIndex);
-        Debug.Log($"Loaded level {currentLevelIndex}");
 
     }
 }

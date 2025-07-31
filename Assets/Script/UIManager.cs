@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour
     private Tween[] boosterButtonTweens;
 
     [Header("UI Panels")]
-    [SerializeField] private GameObject levelCompletePanel;
+    public GameObject levelCompletePanel;
     [SerializeField] private GameObject levelFailPanel;
     [SerializeField] private GameObject boosterPanel;
     [SerializeField] private GameObject coinBuyPanel;
@@ -158,7 +158,7 @@ public class UIManager : MonoBehaviour
 
         boosterButtonTweens = new Tween[boosterButton.Length];
 
-        StartLevel(); //TODO: Replace with actual level start logic
+        //StartLevel(); //TODO: Replace with actual level start logic
     }
 
     #endregion
@@ -742,7 +742,12 @@ public class UIManager : MonoBehaviour
     }
     public void NextLevel()
     {
-        GameManager.Instance.levelManager.LoadNextLevel();
+        HideAllPanels();
+        int LevelIndex = PlayerPrefs.GetInt("Level", 0);
+        LevelIndex++;
+        PlayerPrefs.SetInt("Level", LevelIndex);
+        GameManager.Instance.LevelStart();
+
         
     }
     #endregion
