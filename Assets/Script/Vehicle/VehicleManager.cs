@@ -10,7 +10,7 @@ public class VehicleManager : MonoBehaviour
     public List<GameObject> vehicles;
 
     private int currentIndex = 0;
-    private const string PREF_KEY = "SelectedVehicleIndex";
+    private bool StartPanelActive;
 
     void Awake()
     {
@@ -20,16 +20,17 @@ public class VehicleManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    void Start()
+    private void OnMouseDown()
     {
-        currentIndex = PlayerPrefs.GetInt(PREF_KEY, 0);
-        ShowOnly(currentIndex);
+        if (!StartPanelActive)
+        {
+            StartPanelActive = true;
+            IdleUIManager.Instance.OpenStartLevelPanel();
+        }
     }
-
     public void VehicleSelect(int VehicleIndex)
     {
         ShowOnly(VehicleIndex);
-        PlayerPrefs.SetInt(PREF_KEY, VehicleIndex);
     }
     void ShowOnly(int indexToShow)
     {

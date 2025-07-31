@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using DG.Tweening.Core.Easing;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines;
@@ -14,8 +15,6 @@ public class VehicleSplineController : MonoBehaviour
 
     private bool isPaused = false;
 
-    private const string PREF_LEVEL_KEY = "Level";
-
     private SplineAnimate splineAnimate;
     private VehicleManager vehicleManager;
 
@@ -27,7 +26,7 @@ public class VehicleSplineController : MonoBehaviour
 
     void Start()
     {
-        targetCheckpointIndex = PlayerPrefs.GetInt(PREF_LEVEL_KEY, 10);
+        targetCheckpointIndex = GameManager.Instance.levelManager.GetCurrentLevelIndex();
         currentCheckpointIndex = 0;
 
         vehicleManager.VehicleSelect(levelCheckpoints[targetCheckpointIndex].vehicleTypeIndex);
@@ -56,7 +55,6 @@ public class VehicleSplineController : MonoBehaviour
                 }
                 currentCheckpointIndex++;
                 vehicleManager.VehicleSelect(levelCheckpoints[currentCheckpointIndex-1].vehicleTypeIndex);
-                PlayerPrefs.SetInt(PREF_LEVEL_KEY, currentCheckpointIndex);
             }
         }
     }
