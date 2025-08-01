@@ -10959,16 +10959,16 @@ MonoBehaviour:
   vehicleBGImage: {fileID: 5968339506216107843}
   vehicleFillImage: {fileID: 5178676018452715868}
   vehicleBGs:
-  - {fileID: 21300000, guid: 212d07eb51d55264a8a8a62ffa79f28c, type: 3}
-  - {fileID: 21300000, guid: 212d07eb51d55264a8a8a62ffa79f28c, type: 3}
+  - {fileID: 21300000, guid: 8ccf605b245db4c47bcd170beb4b9e8a, type: 3}
   - {fileID: 21300000, guid: 212d07eb51d55264a8a8a62ffa79f28c, type: 3}
   - {fileID: 21300000, guid: 260f9deae3fe37145b435a5f8f6c517c, type: 3}
   - {fileID: 21300000, guid: 1122bb5ff20a8774c9782ba7a6bcc038, type: 3}
+  - {fileID: 21300000, guid: 1122bb5ff20a8774c9782ba7a6bcc038, type: 3}
   vehicleFillSprites:
-  - {fileID: 21300000, guid: 212d07eb51d55264a8a8a62ffa79f28c, type: 3}
-  - {fileID: 21300000, guid: 212d07eb51d55264a8a8a62ffa79f28c, type: 3}
+  - {fileID: 21300000, guid: 8ccf605b245db4c47bcd170beb4b9e8a, type: 3}
   - {fileID: 21300000, guid: 212d07eb51d55264a8a8a62ffa79f28c, type: 3}
   - {fileID: 21300000, guid: 260f9deae3fe37145b435a5f8f6c517c, type: 3}
+  - {fileID: 21300000, guid: 1122bb5ff20a8774c9782ba7a6bcc038, type: 3}
   - {fileID: 21300000, guid: 1122bb5ff20a8774c9782ba7a6bcc038, type: 3}
   vehicleProgressBarFillImage: {fileID: 3931139844542496822}
   vehicleProgressText: {fileID: 875228350352663259}
