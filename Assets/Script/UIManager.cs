@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     #region === Serialized Fields ===
 
     [Header("Top Bar Elements")]
+    [SerializeField] private RectTransform currencyPanel;
     [SerializeField] private TextMeshProUGUI coinText;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Image timerFill;
@@ -23,6 +24,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button settingsButton;
     private Tween flashTweenTimerText;
     private Tween coinTween;
+    private Tween coinCurrencyPanelTween;
     private bool suppressTimerUI = false;
     private Coroutine animatedTimeCoroutine;
 
@@ -144,11 +146,21 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region === Cloud Transition ===
+    #region Cloud Transition
     [Header("Cloud Transition")]
     [SerializeField] private GameObject cloudTransitionPanel;
     [SerializeField] private RectTransform leftCloud;
     [SerializeField] private RectTransform rightCloud;
+    #endregion
+
+    #region Coin Fly Effect
+    [Header("Coin Fly Effect")]
+    [SerializeField] private GameObject coinFlyPrefab;
+    [SerializeField] private Transform coinFlyLastPosition;
+    [SerializeField] private Transform coinFlyTarget;  
+    [SerializeField] private int coinFlyCount = 5;    
+    [SerializeField] private float coinFlyInterval = 0.05f;
+    [SerializeField] private float coinFlyDuration = 0.8f;
     #endregion
 
     #endregion
@@ -805,6 +817,8 @@ public class UIManager : MonoBehaviour
 
         CurrencyManager.Instance.AddCoin(coinAmount);
 
+        PlayCoinFlyEffect(new Vector3(2.5f,-4,0));
+
         HideAllPanels();
     }
 
@@ -823,6 +837,64 @@ public class UIManager : MonoBehaviour
             coinText.text = current.ToString();
         }, newCoinAmount, 0.5f).SetEase(Ease.OutQuad);
     }
+    #endregion
+
+    #region === Coin Fly Effect Process ===
+    public void PlayCoinFlyEffect(Vector3 worldStartPos)
+    {
+        StartCoroutine(SpawnCoinFlyRoutine(worldStartPos));
+    }
+
+    private IEnumerator SpawnCoinFlyRoutine(Vector3 worldStartPos)
+    {
+        Vector3 screenStartPos = Camera.main.WorldToScreenPoint(worldStartPos);
+        Vector3 uiStartPos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            coinText.transform.parent as RectTransform,
+            screenStartPos,
+            null,
+            out Vector2 localPoint
+        );
+        uiStartPos = localPoint;
+
+        for (int i = 0; i < coinFlyCount; i++)
+        {
+            GameObject coin = Instantiate(coinFlyPrefab, coinFlyLastPosition);
+            RectTransform coinRT = coin.GetComponent<RectTransform>();
+            coinRT.anchoredPosition = uiStartPos;
+            coinRT.localScale = Vector3.one;
+
+            Vector2 randomOffset = Random.insideUnitCircle * 30f;
+
+            Sequence seq = DOTween.Sequence();
+            seq.Append(coinRT.DOAnchorPos(((Vector2)coinFlyTarget.localPosition) + randomOffset, coinFlyDuration * 0.5f)
+                .SetEase(Ease.OutQuad));
+            seq.AppendCallback(() =>
+            {
+                coinRT.anchoredPosition = coinFlyTarget.localPosition;
+                Destroy(coin);
+                PlayCoinCurrencyBounce();
+            });
+            seq.Join(coinRT.DOScale(0.3f, coinFlyDuration));
+
+            yield return new WaitForSeconds(coinFlyInterval);
+        }
+    }
+    private void PlayCoinCurrencyBounce()
+    {
+        if (coinCurrencyPanelTween != null && coinCurrencyPanelTween.IsActive())
+            coinCurrencyPanelTween.Kill();
+
+        currencyPanel.localScale = new Vector3 (0.8f,0.8f,0.8f);
+
+        coinCurrencyPanelTween = currencyPanel.DOScale(0.9f, 0.1f)
+            .SetEase(Ease.OutQuad)
+            .OnComplete(() =>
+            {
+                currencyPanel.DOScale(0.8f, 0.2f).SetEase(Ease.InQuad);
+            });
+    }
+
     #endregion
 
     #region === Settings and Toggles ===
@@ -913,7 +985,6 @@ public class UIManager : MonoBehaviour
     //}
 
     #endregion
-
 
     #region === Debug Methods ===
     //TODO: Remove or comment out these methods in production

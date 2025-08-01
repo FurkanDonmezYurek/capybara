@@ -1219,6 +1219,7 @@ RectTransform:
   - {fileID: 3662952474401257825}
   - {fileID: 6004211056862083754}
   - {fileID: 1072815360622939745}
+  - {fileID: 3656071138380399197}
   m_Father: {fileID: 5971098443409502473}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3142,7 +3143,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8245073554968698939
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9496,6 +9497,41 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &6104945889022607054
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3656071138380399197}
+  m_Layer: 5
+  m_Name: CoinFlyLastPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3656071138380399197
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6104945889022607054}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.79999995, y: 0.79999995, z: 0.79999995}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2604453461575390749}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -417.3, y: 697.7}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6138216967750734507
 GameObject:
   m_ObjectHideFlags: 0
@@ -10893,6 +10929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3a93bdf666f6c2419f68b68cad58170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currencyPanel: {fileID: 6973781570182116541}
   coinText: {fileID: 2927776892384887000}
   levelText: {fileID: 1178595941795979346}
   timerFill: {fileID: 4404122329298836887}
@@ -10992,6 +11029,13 @@ MonoBehaviour:
   cloudTransitionPanel: {fileID: 8181142773112933121}
   leftCloud: {fileID: 5377433410720318962}
   rightCloud: {fileID: 8396300331662391758}
+  coinFlyPrefab: {fileID: 1479641058248024532, guid: 840a90471f6827f429f4bf348e38bedb,
+    type: 3}
+  coinFlyLastPosition: {fileID: 3656071138380399197}
+  coinFlyTarget: {fileID: 7354640420716965881}
+  coinFlyCount: 5
+  coinFlyInterval: 0.075
+  coinFlyDuration: 1
 --- !u!114 &8070597128442698059
 MonoBehaviour:
   m_ObjectHideFlags: 0
