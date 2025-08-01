@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour
     private Tween[] boosterButtonTweens;
 
     [Header("UI Panels")]
-    [SerializeField] private GameObject levelCompletePanel;
+    public GameObject levelCompletePanel;
     [SerializeField] private GameObject levelFailPanel;
     [SerializeField] private GameObject boosterPanel;
     [SerializeField] private GameObject coinBuyPanel;
@@ -121,6 +121,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Sprite[] iconSounds;
     [SerializeField] private Sprite[] iconVibrations;
     [SerializeField] private Sprite[] bgSettingsButtons;
+
+
+
+
+    [SerializeField] private GameObject shopPanel;  
+
+
+
+
     #endregion
 
     #endregion
@@ -158,7 +167,7 @@ public class UIManager : MonoBehaviour
 
         boosterButtonTweens = new Tween[boosterButton.Length];
 
-        StartLevel(); //TODO: Replace with actual level start logic
+        //StartLevel(); //TODO: Replace with actual level start logic
     }
 
     #endregion
@@ -699,6 +708,8 @@ public class UIManager : MonoBehaviour
 
         UpdateSoundToggleVisual();
         UpdateVibrationToggleVisual();
+         
+   
     }
 
     public void ToggleSound()
@@ -740,7 +751,37 @@ public class UIManager : MonoBehaviour
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
     }
 
-    #endregion
+    public void NextLevel()
+    {
+        int LevelIndex = PlayerPrefs.GetInt("Level", 0);
+        LevelIndex++;
+        PlayerPrefs.SetInt("Level",LevelIndex);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+    }
+
+
+
+    public void OpenShopFromCoin()
+    {
+        OpenShopPanel();
+    }
+
+    // Gem Artı Butonuna Tıklanıldığında Magaza Sayfasına Yönlendirme
+    public void OpenShopFromGem()
+    {
+        OpenShopPanel();
+    }
+
+    // Mağaza Panelini Açma
+    private void OpenShopPanel()
+    {
+        shopPanel.SetActive(true); // Eğer mağaza bir panelse bunu aktif edebilirsiniz
+        // Ya da, mağaza sayfasına sahne geçişi yapılabilir:
+        // SceneManager.LoadScene("ShopScene"); // Eğer mağaza sahnesi varsa
+    }
+
+#endregion
+
 
     #region === Debug Methods ===
     //TODO: Remove or comment out these methods in production

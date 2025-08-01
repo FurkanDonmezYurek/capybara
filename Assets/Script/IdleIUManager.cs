@@ -43,7 +43,7 @@ public class IdleUIManager : MonoBehaviour
     [SerializeField] private Sprite[] bgSettingsButtons;
 
     private Tween coinTween;
-    private int selectedLevelIndex;
+    public int selectedLevelIndex;
     private bool isSoundOn;
     private bool isVibrationOn;
 
@@ -97,11 +97,13 @@ public class IdleUIManager : MonoBehaviour
 
     #region === Start Level ===
 
-    public void OpenStartLevelPanel(int levelIndex)
+    public void OpenStartLevelPanel()
     {
         HideAllPanels();
-        selectedLevelIndex = levelIndex;
-        selectedLevelText.text = "LEVEL " + levelIndex;
+
+        selectedLevelIndex = VehicleManager.Instance.GetCurrentLevelIndex();
+
+        selectedLevelText.text = "LEVEL " + (selectedLevelIndex + 1);
 
         startLevelPanel.SetActive(true);
         startLevelCG.alpha = 0f;
@@ -113,11 +115,23 @@ public class IdleUIManager : MonoBehaviour
         UIAnimator.ScaleIn(playButtonTransform, 0.4f, 0.35f);
     }
 
+
+
     private void OnPlayButtonClicked()
     {
-        // Burada sadece sahneyi deðiþtiriyoruz. Level verisi baþka sistemden çekilebilir.
-        SceneManager.LoadScene("GameScene");
+        //HideAllPanels();
+        //int LevelIndex = PlayerPrefs.GetInt("Level", 0);
+        //LevelIndex++;
+        //PlayerPrefs.SetInt("Level", LevelIndex);
+        ////GameManager.Instance.LevelStart();
+
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        // TODO: Optional restart animation
+        SceneManager.LoadScene(1);
     }
+
+
 
     #endregion
 
@@ -222,7 +236,6 @@ public class IdleUIManager : MonoBehaviour
             coinText.text = current.ToString();
         }, newCoinAmount, 0.5f).SetEase(Ease.OutQuad);
     }
-
 
     #endregion
 }
