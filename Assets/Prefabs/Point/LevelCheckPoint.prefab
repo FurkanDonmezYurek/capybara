@@ -98,13 +98,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07173634a9d05ea429d230e9334d07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalizedPosition: 0
-  worldPosition: {x: 0, y: 0, z: 0}
   isOpen: 1
   openColor: {r: 1, g: 1, b: 1, a: 1}
   closedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  visualRenderer: {fileID: 0}
-  triggerTag: Vehicle
+  visualRenderer: {fileID: 1393331504457730771}
+  vehicleTypeIndex: 0
 --- !u!64 &6301748593957197914
 MeshCollider:
   m_ObjectHideFlags: 0
