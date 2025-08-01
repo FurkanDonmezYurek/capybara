@@ -159,8 +159,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform coinFlyLastPosition;
     [SerializeField] private Transform coinFlyTarget;  
     [SerializeField] private int coinFlyCount = 5;    
-    [SerializeField] private float coinFlyInterval = 0.05f;
-    [SerializeField] private float coinFlyDuration = 0.8f;
+    [SerializeField] private float coinFlyInterval = 0.075f;
+    [SerializeField] private float coinFlyDuration = 1f;
     #endregion
 
     #endregion

@@ -3961,6 +3961,41 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!1 &3983778582307988124
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3793591203828639379}
+  m_Layer: 5
+  m_Name: CoinFlyLastPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3793591203828639379
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3983778582307988124}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.79999995, y: 0.79999995, z: 0.79999995}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7109766100903364312}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -417.3, y: 697.69995}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4023014271438354994
 GameObject:
   m_ObjectHideFlags: 0
@@ -4115,7 +4150,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -96.8}
+  m_AnchoredPosition: {x: 0, y: -43.6}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4343280007437932236
@@ -6178,6 +6213,7 @@ MonoBehaviour:
   playButton: {fileID: 468926314533025264}
   playButtonTransform: {fileID: 4764064845470553251}
   closeButton: {fileID: 5016491771909627701}
+  currencyPanel: {fileID: 3173066712298525136}
   coinText: {fileID: 6341452574213616786}
   coinBuyPanel: {fileID: 6735669967711816797}
   coinBuyCG: {fileID: 4970289333860786739}
@@ -6186,6 +6222,13 @@ MonoBehaviour:
   coinBuyText: {fileID: 784384305521907866}
   coinBuyButton: {fileID: 2801702175527846694}
   coinBuyButtonNoConnection: {fileID: 7462151114322821797}
+  coinFlyPrefab: {fileID: 1479641058248024532, guid: 840a90471f6827f429f4bf348e38bedb,
+    type: 3}
+  coinFlyLastPosition: {fileID: 3793591203828639379}
+  coinFlyTarget: {fileID: 1744723327252144989}
+  coinFlyCount: 5
+  coinFlyInterval: 0.075
+  coinFlyDuration: 1
   settingsPanel: {fileID: 8956807090675479755}
   settingsCG: {fileID: 2158740300000544579}
   settingsContent: {fileID: 7870324296509071492}
@@ -6618,6 +6661,7 @@ RectTransform:
   - {fileID: 4291508336430161666}
   - {fileID: 2437652445962742399}
   - {fileID: 8910872931315667926}
+  - {fileID: 3793591203828639379}
   - {fileID: 94297460190295113}
   m_Father: {fileID: 2511323478442687958}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8430,7 +8474,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -203}
+  m_AnchoredPosition: {x: 0, y: -225}
   m_SizeDelta: {x: 820.8098, y: 161.1004}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2451954774409587501

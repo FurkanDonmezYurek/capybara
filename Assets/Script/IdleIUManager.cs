@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -20,6 +21,7 @@ public class IdleUIManager : MonoBehaviour
     [SerializeField] private Button closeButton;
 
     [Header("Coin Buy Panel")]
+    [SerializeField] private RectTransform currencyPanel;
     [SerializeField] private TextMeshProUGUI coinText;
     [SerializeField] private GameObject coinBuyPanel;
     [SerializeField] private CanvasGroup coinBuyCG;
@@ -28,6 +30,15 @@ public class IdleUIManager : MonoBehaviour
     [SerializeField] private Transform coinBuyText;
     [SerializeField] private Transform coinBuyButton;
     [SerializeField] private Button coinBuyButtonNoConnection;
+    private Tween coinCurrencyPanelTween;
+
+    [Header("Coin Fly Effect")]
+    [SerializeField] private GameObject coinFlyPrefab;
+    [SerializeField] private Transform coinFlyLastPosition;
+    [SerializeField] private Transform coinFlyTarget;
+    [SerializeField] private int coinFlyCount = 5;
+    [SerializeField] private float coinFlyInterval = 0.075f;
+    [SerializeField] private float coinFlyDuration = 1f;
 
     [Header("Settings Panel")]
     [SerializeField] private GameObject settingsPanel;
@@ -241,6 +252,8 @@ public class IdleUIManager : MonoBehaviour
 
         CurrencyManager.Instance.AddCoin(coinAmount);
 
+        PlayCoinFlyEffect(new Vector3(0f, 20, 0));
+
         HideAllPanels();
     }
 
@@ -259,6 +272,63 @@ public class IdleUIManager : MonoBehaviour
             coinText.text = current.ToString();
         }, newCoinAmount, 0.5f).SetEase(Ease.OutQuad);
     }
+    #region === Coin Fly Effect Process ===
+    public void PlayCoinFlyEffect(Vector3 worldStartPos)
+    {
+        StartCoroutine(SpawnCoinFlyRoutine(worldStartPos));
+    }
+
+    private IEnumerator SpawnCoinFlyRoutine(Vector3 worldStartPos)
+    {
+        Vector3 screenStartPos = Camera.main.WorldToScreenPoint(worldStartPos);
+        Vector3 uiStartPos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            coinText.transform.parent as RectTransform,
+            screenStartPos,
+            null,
+            out Vector2 localPoint
+        );
+        uiStartPos = localPoint;
+
+        for (int i = 0; i < coinFlyCount; i++)
+        {
+            GameObject coin = Instantiate(coinFlyPrefab, coinFlyLastPosition);
+            RectTransform coinRT = coin.GetComponent<RectTransform>();
+            coinRT.anchoredPosition = uiStartPos;
+            coinRT.localScale = Vector3.one;
+
+            Vector2 randomOffset = Random.insideUnitCircle * 30f;
+
+            Sequence seq = DOTween.Sequence();
+            seq.Append(coinRT.DOAnchorPos(((Vector2)coinFlyTarget.localPosition) + randomOffset, coinFlyDuration * 0.5f)
+                .SetEase(Ease.OutQuad));
+            seq.AppendCallback(() =>
+            {
+                coinRT.anchoredPosition = coinFlyTarget.localPosition;
+                Destroy(coin);
+                PlayCoinCurrencyBounce();
+            });
+            seq.Join(coinRT.DOScale(0.3f, coinFlyDuration));
+
+            yield return new WaitForSeconds(coinFlyInterval);
+        }
+    }
+    private void PlayCoinCurrencyBounce()
+    {
+        if (coinCurrencyPanelTween != null && coinCurrencyPanelTween.IsActive())
+            coinCurrencyPanelTween.Kill();
+
+        currencyPanel.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+
+        coinCurrencyPanelTween = currencyPanel.DOScale(0.9f, 0.1f)
+            .SetEase(Ease.OutQuad)
+            .OnComplete(() =>
+            {
+                currencyPanel.DOScale(0.8f, 0.2f).SetEase(Ease.InQuad);
+            });
+    }
+
+    #endregion
 
     #endregion
 
