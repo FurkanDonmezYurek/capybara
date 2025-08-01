@@ -295,7 +295,7 @@ public class UIManager : MonoBehaviour
 
         DOTween.Sequence()
             .Append(levelCompleteCoinIcon.DOScale(1f, 0.4f).From(0f).SetEase(Ease.OutBack))
-            .AppendInterval(0.5f) 
+            .AppendInterval(0.3f) 
             .Append(levelCompleteCoinIcon.DOScale(0f, 0.3f).SetEase(Ease.InBack))
             .AppendCallback(() => {
                 vehicleProgressRoot.SetActive(true);
