@@ -9,7 +9,6 @@ public class VehicleManager : MonoBehaviour
     [Header("Araç script referanslarý")]
     public List<GameObject> vehicles;
     private int currentIndex = 0;
-    private bool StartPanelActive;
 
     void Awake()
     {
@@ -21,9 +20,8 @@ public class VehicleManager : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!StartPanelActive)
+        if (!IdleUIManager.Instance.PanelActived())
         {
-            StartPanelActive = true;
             IdleUIManager.Instance.OpenStartLevelPanel();
         }
     }

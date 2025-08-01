@@ -131,7 +131,10 @@ public class IdleUIManager : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
-
+    public bool PanelActived()
+    {
+        return startLevelPanel.activeSelf;
+    }
 
     #endregion
 

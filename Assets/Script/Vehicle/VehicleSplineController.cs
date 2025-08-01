@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using DG.Tweening.Core.Easing;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
 
@@ -15,14 +16,13 @@ public class VehicleSplineController : MonoBehaviour
 
     private bool isPaused = false;
 
-    private SplineAnimate splineAnimate;
-    private VehicleManager vehicleManager;
+    public SplineAnimate splineAnimate;
+    public SplineContainer splineContainer;
+    public VehicleManager vehicleManager;
 
 
     void Start()
     {
-        splineAnimate = GetComponent<SplineAnimate>();
-        vehicleManager = GetComponent<VehicleManager>();
 
         targetCheckpointIndex = vehicleManager.GetCurrentLevelIndex();
         currentCheckpointIndex = 0;
@@ -30,14 +30,45 @@ public class VehicleSplineController : MonoBehaviour
 
         for (int i = 0; i < targetCheckpointIndex; i++)
         {
-            levelCheckpoints[targetCheckpointIndex].isOpen = true;
-            levelCheckpoints[targetCheckpointIndex].UpdateVisual();
+            levelCheckpoints[i].isOpen = true;
+            levelCheckpoints[i].UpdateVisual();
 
         }
 
         vehicleManager.VehicleSelect(levelCheckpoints[targetCheckpointIndex].vehicleTypeIndex);
 
-        ResumeMovement();
+        StartFromNearestSplinePoint(levelCheckpoints[targetCheckpointIndex].transform);
+    }
+
+    public void StartFromNearestSplinePoint(Transform target)
+    {
+        Spline spline = splineContainer.Spline;
+
+        float closestT = 0f;
+        float closestDistance = float.MaxValue;
+
+        // 100 adımda spline üzerindeki pozisyonları tarıyoruz
+        for (float t = 0f; t <= 1f; t += 0.01f)
+        {
+            Vector3 point = SplineUtility.EvaluatePosition(spline, t);
+            float distance = Vector3.Distance(target.position, point);
+
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestT = t;
+            }
+        }
+
+        // En yakın spline pozisyonunu al
+        Vector3 closestPoint = SplineUtility.EvaluatePosition(spline, closestT);
+        target.position = closestPoint;
+
+        // SplineAnimate’i o noktadan başlat
+        splineAnimate.NormalizedTime = closestT;
+        splineAnimate.Pause();
+
+        Camera.main.transform.DOMove(new Vector3(transform.position.x, transform.position.y + 20, transform.position.z - 10), 0.25f);
     }
 
     private void Update()
@@ -75,7 +106,7 @@ public class VehicleSplineController : MonoBehaviour
             isPaused = true;
             Events.VehiclePause?.Invoke(isPaused);
         }
-        Camera.main.transform.DOMoveZ(transform.position.z - 20,0.25f);
+        Camera.main.transform.DOMove(new Vector3(transform.position.x, transform.position.y + 20, transform.position.z - 10),0.25f);
     }
 
     private void ResumeMovement()
