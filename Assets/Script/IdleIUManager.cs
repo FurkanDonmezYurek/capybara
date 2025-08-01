@@ -114,9 +114,6 @@ public class IdleUIManager : MonoBehaviour
         UIAnimator.MoveFromX(selectedLevelText.transform, -800f, 0.4f, Ease.OutExpo, 0.2f);
         UIAnimator.ScaleIn(playButtonTransform, 0.4f, 0.35f);
     }
-
-
-
     private void OnPlayButtonClicked()
     {
         //HideAllPanels();
@@ -130,8 +127,6 @@ public class IdleUIManager : MonoBehaviour
         // TODO: Optional restart animation
         SceneManager.LoadScene(1);
     }
-
-
 
     #endregion
 
