@@ -1,8 +1,10 @@
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using DG.Tweening;
 using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -29,7 +31,7 @@ public class UIManager : MonoBehaviour
     private Tween[] boosterButtonTweens;
 
     [Header("UI Panels")]
-    [SerializeField] private GameObject levelCompletePanel;
+    public GameObject levelCompletePanel;
     [SerializeField] private GameObject levelFailPanel;
     [SerializeField] private GameObject boosterPanel;
     [SerializeField] private GameObject coinBuyPanel;
@@ -44,6 +46,20 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform levelCompleteCoinIcon;
     [SerializeField] private Transform levelCompleteNextButton;
     [SerializeField] private Image levelCompleteShine;
+
+    [Header("Vehicle Unlock Progress")]
+    [SerializeField] private GameObject vehicleProgressRoot;
+    [SerializeField] private CanvasGroup vehicleProgressCG; 
+    [SerializeField] private Transform vehicleProgressScaleTarget; 
+    [SerializeField] private Image vehicleBGImage;
+    [SerializeField] private Image vehicleFillImage;
+    [SerializeField] private List<Sprite> vehicleBGs; 
+    [SerializeField] private List<Sprite> vehicleFillSprites;
+    [SerializeField] private Image vehicleProgressBarFillImage;
+    [SerializeField] private TextMeshProUGUI vehicleProgressText;
+    [SerializeField] private int levelsPerVehicle = 5; 
+
+
     #endregion
 
     #region Level Fail Panel
@@ -67,6 +83,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button unlockBoosterWithCoinButton;
     [SerializeField] private Button unlockBoosterWithAdsButton;
     [SerializeField] private Button unlockBoosterNoAdAvailableButton;
+    #endregion
+
+    #region Seat Booster Process
+    [Header("Seat Booster Process Elements")]
+    private int seatBoosterCount = 2;
+    [SerializeField] private TMP_Text seatBoosterCountText;
     #endregion
 
     #region Coin Buy Panel
@@ -107,28 +129,18 @@ public class UIManager : MonoBehaviour
     [SerializeField] private CanvasGroup settingsCG;
     [SerializeField] private Transform settingsContent;
 
-    [SerializeField] private Button soundToggleButton;
     [SerializeField] private Image soundToggleIcon;
     [SerializeField] private Image soundToggleBackground;
 
-    [SerializeField] private Button vibrationToggleButton;
     [SerializeField] private Image vibrationToggleIcon;
     [SerializeField] private Image vibrationToggleBackground;
-
-    [SerializeField] private Button restartButton;
 
     [Header("Settings Panel - Sprites")]
     [SerializeField] private Sprite[] iconSounds;
     [SerializeField] private Sprite[] iconVibrations;
     [SerializeField] private Sprite[] bgSettingsButtons;
 
-
-
-
-    [SerializeField] private GameObject shopPanel;  
-
-
-
+    //[SerializeField] private GameObject shopPanel;  
 
     #endregion
 
@@ -150,10 +162,6 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        soundToggleButton.onClick.AddListener(ToggleSound);
-        vibrationToggleButton.onClick.AddListener(ToggleVibration);
-        restartButton.onClick.AddListener(RestartLevel);
-
         isSoundOn = PlayerPrefs.GetInt("Sound", 1) == 1;
         isVibrationOn = PlayerPrefs.GetInt("Vibration", 1) == 1;
         UpdateSoundToggleVisual();
@@ -167,7 +175,7 @@ public class UIManager : MonoBehaviour
 
         boosterButtonTweens = new Tween[boosterButton.Length];
 
-        StartLevel(); //TODO: Replace with actual level start logic
+        //StartLevel(); //TODO: Replace with actual level start logic
     }
 
     #endregion
@@ -179,7 +187,11 @@ public class UIManager : MonoBehaviour
         AnimateCoinChange(amount); 
     }
 
-    public void UpdateLevel(int level) => levelText.text = "Level " + level;
+    public void UpdateLevel(int level)
+    {
+        level++;
+        levelText.text = "Level " + level;
+    }
 
     public void UpdateTimer(float progress)
     {
@@ -263,17 +275,36 @@ public class UIManager : MonoBehaviour
         if (GameTimerManager.Instance.isFrozen)
             GameTimerManager.Instance.CancelFreeze();
 
-        UpdateTimer(GameTimerManager.Instance.RemainingTime / GameTimerManager.Instance.totalTime); //For reset timer color
+        UpdateTimer(GameTimerManager.Instance.RemainingTime / GameTimerManager.Instance.totalTime);
+        GameTimerManager.Instance.isRunning = false;
 
-        GameTimerManager.Instance.isRunning = false; 
         HideAllPanels();
         levelCompletePanel.SetActive(true);
 
+        int currentLevel = GameManager.Instance.levelManager.GetCurrentLevelIndex();
+
+        vehicleProgressRoot.SetActive(false);
+        vehicleProgressCG.alpha = 0f;
+        vehicleProgressScaleTarget.localScale = Vector3.one * 0.8f;
+
+        levelCompleteNextButton.localScale = Vector3.zero; 
+
         UIAnimator.FadeIn(levelCompleteCG);
         UIAnimator.ScaleIn(levelCompleteHeader);
-        UIAnimator.ScaleIn(levelCompleteCoinIcon, 0.4f, 0.2f);
-        UIAnimator.ScaleIn(levelCompleteNextButton, 0.3f, 0.4f);
         UIAnimator.RotateLoop(levelCompleteShine.transform);
+
+        DOTween.Sequence()
+            .Append(levelCompleteCoinIcon.DOScale(1f, 0.4f).From(0f).SetEase(Ease.OutBack))
+            .AppendInterval(0.5f) 
+            .Append(levelCompleteCoinIcon.DOScale(0f, 0.3f).SetEase(Ease.InBack))
+            .AppendCallback(() => {
+                vehicleProgressRoot.SetActive(true);
+                UpdateVehicleProgress(currentLevel + 1);
+            })
+            .Append(vehicleProgressCG.DOFade(1f, 0.4f))
+            .Join(vehicleProgressScaleTarget.DOScale(1f, 0.4f).SetEase(Ease.OutBack))
+            .AppendInterval(0.3f)
+            .Append(levelCompleteNextButton.DOScale(1f, 0.4f).SetEase(Ease.OutBack)); 
     }
 
     public void ShowLevelFail()
@@ -510,7 +541,12 @@ public class UIManager : MonoBehaviour
             else
             {
                 //TODO: Add logic for seat booster
-                ShowBoosterUnlockedPanel(false);
+                if (seatBoosterCount > 0)
+                {
+                    seatBoosterCount--;
+                    UpdateSeatBoosterUI();
+                    ShowBoosterUnlockedPanel(false);
+                }
             }
         }
         else
@@ -530,7 +566,12 @@ public class UIManager : MonoBehaviour
         else
         {
             //TODO: Add logic for seat booster
-            ShowBoosterUnlockedPanel(false);
+            if (seatBoosterCount > 0)
+            {
+                seatBoosterCount--;
+                UpdateSeatBoosterUI();
+                ShowBoosterUnlockedPanel(false);
+            }
         }
     }
 
@@ -590,6 +631,7 @@ public class UIManager : MonoBehaviour
             .Append(boosterFrameCG.DOFade(1f, 1f))
             .Join(boosterFrameCG.transform.DOScale(1f, 1f).SetEase(Ease.OutBack));
     }
+
     public void HideBoosterFrame()
     {
         boosterFrameTween?.Kill(true);
@@ -599,6 +641,54 @@ public class UIManager : MonoBehaviour
             .Join(boosterFrameCG.transform.DOScale(1.2f, 1.5f).SetEase(Ease.InBack))
             .OnComplete(() => boosterFrameCG.gameObject.SetActive(false));
     }
+
+    private void UpdateSeatBoosterUI()
+    {
+        seatBoosterCountText.text = seatBoosterCount.ToString();
+
+        if (seatBoosterCount <= 0)
+        {
+            boosterButtonTweens[1]?.Kill();
+            boosterButtonTweens[1] = boosterButton[1].transform.DOScale(0f, 0.3f).SetEase(Ease.InBack)
+                .OnComplete(() =>
+                {
+                    boosterButton[1].interactable = false;
+                    boosterButton[1].gameObject.SetActive(false);
+                });
+        }
+    }
+
+    #endregion
+
+    #region === Vehicle Progress ===
+    private void UpdateVehicleProgress(int currentLevel)
+    {
+        int index = (currentLevel - 1) / levelsPerVehicle;
+        int progressInSet = (currentLevel - 1) % levelsPerVehicle;
+
+        if (index >= vehicleBGs.Count || index >= vehicleFillSprites.Count)
+            return;
+
+        vehicleBGImage.sprite = vehicleBGs[index];
+        vehicleFillImage.sprite = vehicleFillSprites[index];
+
+        float vehicleFillAmount = 1f - (progressInSet + 1) / (float)levelsPerVehicle;
+        vehicleFillImage.fillAmount = 1f;
+        vehicleFillImage.DOFillAmount(vehicleFillAmount, 0.6f).SetEase(Ease.OutCubic);
+
+        float progressFillAmount = (progressInSet + 1) / (float)levelsPerVehicle;
+        vehicleProgressBarFillImage.fillAmount = 0f;
+        vehicleProgressBarFillImage.DOFillAmount(progressFillAmount, 0.6f).SetEase(Ease.OutCubic);
+
+        vehicleProgressText.text = $"{progressInSet + 1} / {levelsPerVehicle}";
+
+        if (progressInSet + 1 == levelsPerVehicle)
+        {
+            // TODO: Tamamen açıldığında araç açıldı efekti oynat
+        }
+
+    }
+
     #endregion
 
     #region === Play On Actions ===
@@ -751,28 +841,37 @@ public class UIManager : MonoBehaviour
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
     }
 
-    
-
-
-
-       public void OpenShopFromCoin()
+    public void NextLevel()
     {
-        OpenShopPanel();
+        int LevelIndex = PlayerPrefs.GetInt("Level", 0);
+        LevelIndex++;
+        PlayerPrefs.SetInt("Level",LevelIndex);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+    }
+    public void ReturnIdleScene()
+    {
+        SceneManager.LoadScene(0);
     }
 
-    // Gem Artı Butonuna Tıklanıldığında Magaza Sayfasına Yönlendirme
-    public void OpenShopFromGem()
-    {
-        OpenShopPanel();
-    }
 
-    // Mağaza Panelini Açma
-    private void OpenShopPanel()
-    {
-        shopPanel.SetActive(true); // Eğer mağaza bir panelse bunu aktif edebilirsiniz
-        // Ya da, mağaza sayfasına sahne geçişi yapılabilir:
-        // SceneManager.LoadScene("ShopScene"); // Eğer mağaza sahnesi varsa
-    }
+    //public void OpenShopFromCoin()
+    //{
+    //    OpenShopPanel();
+    //}
+
+    //// Gem Artı Butonuna Tıklanıldığında Magaza Sayfasına Yönlendirme
+    //public void OpenShopFromGem()
+    //{
+    //    OpenShopPanel();
+    //}
+
+    //// Mağaza Panelini Açma
+    //private void OpenShopPanel()
+    //{
+    //    shopPanel.SetActive(true); // Eğer mağaza bir panelse bunu aktif edebilirsiniz
+    //    // Ya da, mağaza sayfasına sahne geçişi yapılabilir:
+    //    // SceneManager.LoadScene("ShopScene"); // Eğer mağaza sahnesi varsa
+    //}
 
 #endregion
 
