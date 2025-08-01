@@ -10960,9 +10960,13 @@ MonoBehaviour:
   vehicleFillImage: {fileID: 5178676018452715868}
   vehicleBGs:
   - {fileID: 21300000, guid: 212d07eb51d55264a8a8a62ffa79f28c, type: 3}
+  - {fileID: 21300000, guid: 212d07eb51d55264a8a8a62ffa79f28c, type: 3}
+  - {fileID: 21300000, guid: 212d07eb51d55264a8a8a62ffa79f28c, type: 3}
   - {fileID: 21300000, guid: 260f9deae3fe37145b435a5f8f6c517c, type: 3}
   - {fileID: 21300000, guid: 1122bb5ff20a8774c9782ba7a6bcc038, type: 3}
   vehicleFillSprites:
+  - {fileID: 21300000, guid: 212d07eb51d55264a8a8a62ffa79f28c, type: 3}
+  - {fileID: 21300000, guid: 212d07eb51d55264a8a8a62ffa79f28c, type: 3}
   - {fileID: 21300000, guid: 212d07eb51d55264a8a8a62ffa79f28c, type: 3}
   - {fileID: 21300000, guid: 260f9deae3fe37145b435a5f8f6c517c, type: 3}
   - {fileID: 21300000, guid: 1122bb5ff20a8774c9782ba7a6bcc038, type: 3}
@@ -13135,7 +13139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7716113695538149262
 RectTransform:
   m_ObjectHideFlags: 0

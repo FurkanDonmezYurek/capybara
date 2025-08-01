@@ -1,8 +1,9 @@
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using UnityEngine.SceneManagement;
 using DG.Tweening;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class IdleUIManager : MonoBehaviour
 {
@@ -47,6 +48,9 @@ public class IdleUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI regionProgressText;
     [SerializeField] private TextMeshProUGUI regionNameText;
     [SerializeField] private string[] regionNames; //"Desert", "Forest", "Snow"...
+    [SerializeField] private CanvasGroup centerRegionCG;
+    [SerializeField] private Image regionIconImage;
+    [SerializeField] private List<Sprite> regionSprites;
 
     [Header("Shop Panel")]
     [SerializeField] private GameObject shopPanel;
@@ -261,28 +265,89 @@ public class IdleUIManager : MonoBehaviour
     #region === Region Progress Bar ===
     public void UpdateRegionProgressBar(int currentLevel)
     {
-        int completedLevel = currentLevel;
-
         int levelsPerRegion = 5;
 
-        int regionIndex = completedLevel / levelsPerRegion;
-        int progressInRegion = completedLevel % levelsPerRegion;
-
-        if (progressInRegion == 0 && completedLevel > 0)
-        {
-            progressInRegion = 0;
-        }
-
-        if (regionIndex < regionNames.Length)
-            regionNameText.text = regionNames[regionIndex];
-        else
-            regionNameText.text = "Unknown";
+        int regionIndex = currentLevel / levelsPerRegion;
+        int progressInRegion = currentLevel % levelsPerRegion;
 
         float fillAmount = progressInRegion / (float)levelsPerRegion;
         regionProgressFill.fillAmount = fillAmount;
         regionProgressText.text = $"{progressInRegion} / {levelsPerRegion}";
+
+        regionNameText.text = regionIndex < regionNames.Length ? regionNames[regionIndex] : "Unknown";
+
+        if (progressInRegion == 0 && currentLevel != 0)
+        {
+            ShowCenterRegionName(regionIndex);
+        }
+        else
+        {
+            ShowSideRegionName(regionIndex);
+        }
     }
 
+    private void ShowCenterRegionName(int regionIndex)
+    {
+        RectTransform rt = regionNameText.GetComponent<RectTransform>();
+        RectTransform iconRT = regionIconImage.GetComponent<RectTransform>();
+
+        rt.anchoredPosition = new Vector2(0f, -1250f);
+
+        regionNameText.text = regionIndex < regionNames.Length ? regionNames[regionIndex] : "Unknown";
+        regionIconImage.sprite = regionIndex < regionSprites.Count ? regionSprites[regionIndex] : null;
+
+        float originalFontSize = regionNameText.fontSize;
+        regionNameText.fontSize = originalFontSize * 2f;
+
+        iconRT.anchoredPosition = new Vector2(-200f, iconRT.anchoredPosition.y);
+        regionNameText.DOFade(0f, 0f);
+        regionIconImage.DOFade(0f, 0f);
+
+        Sequence seq = DOTween.Sequence();
+        seq.AppendInterval(0.75f);
+
+        seq.Append(regionNameText.DOFade(1f, 2f));
+        seq.Join(regionIconImage.DOFade(1f, 2f));
+
+        seq.Join(iconRT.DOAnchorPosX(200f, 2f).SetEase(Ease.Linear));
+
+        seq.AppendInterval(0.5f);
+
+        seq.Append(regionNameText.DOFade(0f, 2f));
+        seq.Join(regionIconImage.DOFade(0f, 2f));
+
+        seq.OnComplete(() =>
+        {
+            regionNameText.fontSize = originalFontSize;
+        });
+    }
+
+    private void ShowSideRegionName(int regionIndex)
+    {
+        regionNameText.text = regionIndex < regionNames.Length ? regionNames[regionIndex] : "Unknown";
+        regionIconImage.sprite = regionIndex < regionSprites.Count ? regionSprites[regionIndex] : null;
+
+        regionNameText.DOFade(0f, 0f);
+        regionIconImage.DOFade(0f, 0f);
+
+        RectTransform iconRT = regionIconImage.GetComponent<RectTransform>();
+
+        iconRT.anchoredPosition = new Vector2(-100f, iconRT.anchoredPosition.y);
+
+        Sequence seq = DOTween.Sequence();
+
+        seq.AppendInterval(1f);
+
+        seq.Append(regionNameText.DOFade(1f, 2f));
+        seq.Join(regionIconImage.DOFade(1f, 2f));
+
+        seq.Join(iconRT.DOAnchorPosX(100f, 2f).SetEase(Ease.Linear));
+
+        seq.AppendInterval(0.5f);
+
+        seq.Append(regionNameText.DOFade(0f, 2f));
+        seq.Join(regionIconImage.DOFade(0f, 2f));
+    }
 
     #endregion
 
