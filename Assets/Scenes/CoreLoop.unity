@@ -563,9 +563,10 @@ MonoBehaviour:
     type: 3}
   rows: 7
   columns: 6
-  spacing: 1.2
+  horizontalSpacing: 1.2
+  verticalSpacing: 1.2
   groupWidth: 3
-  groupHeight: 1
+  groupHeight: 3
   groupSpacingX: 1
   groupsParent: {fileID: 2052055689}
 --- !u!114 &1365210085
@@ -1021,7 +1022,7 @@ Transform:
   m_GameObject: {fileID: 2052055687}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.41, y: -10.068186, z: 7.7}
+  m_LocalPosition: {x: -8.8, y: 11.6, z: 14.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -10,7 +10,10 @@ public class SleepyCapybara : Capybara
     public override void Start()
     {
         base.Start();
-        sleepEffect.SetActive(true);
+        if (sleepEffect != null)
+        {
+            sleepEffect.SetActive(true);
+        }
     }
 
     private void HideSleepEffect()
