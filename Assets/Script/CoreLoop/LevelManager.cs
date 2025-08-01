@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+
     public GameObject[] capybaraPrefabs;
     public Color[] possibleColors;
     public LevelDatabase levelDatabase;
@@ -40,6 +41,7 @@ public class LevelManager : MonoBehaviour
 
         LevelData level = levelDatabase.levels[index];
 
+        GameManager.Instance.ClearCapybaraGroupCache();
         GameManager.Instance.ClearSeatGroupCache();
 
         gridSystem.ClearGrid();
@@ -81,23 +83,13 @@ public class LevelManager : MonoBehaviour
             if (capyInfo.isFrozen)
                 capy.Freeze();
 
-            capy.SitSeat(seat);
+            capy.SetSeat(seat);
+
+
         }
 
         GameManager.Instance.InitializeSeatGroupsCache();
 
-        // Start timer
-        if (timerManager == null)
-        {
-            timerManager = GetComponent<TimerManager>();
-            if (timerManager == null)
-            {
-                Debug.LogError("TimerManager not found in LevelManager!");
-                return;
-            }
-        }
-
-        timerManager.StopTimer(); // Eski bir süre varsa durdur
-        timerManager.StartTimer(level.levelTime);
     }
 }
+

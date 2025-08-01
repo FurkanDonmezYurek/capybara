@@ -18,7 +18,7 @@ public class Capybara : MonoBehaviour
     public Color color;
     public Seat currentSlot;
     protected bool isLocked;
-    protected bool isFrozen;
+    public bool isFrozen;
     public bool IsFrozen => isFrozen;
     public GameObject iceCubeVisual; // Assigned in prefab or instantiated
     public GameObject capybaraColorMaterialObject;
@@ -70,6 +70,17 @@ public class Capybara : MonoBehaviour
         }
 
         ResetRotation();
+    }
+
+    public virtual void JumpAnimation()
+    {
+        if (CapybaraStateMachine == null)
+        {
+            Debug.LogError("CapybaraStateMachine is not set for " + gameObject.name);
+            return;
+        }
+
+        CapybaraStateMachine.SetState(CapybaraStateMachine.jumpState);
     }
 
     public virtual void WalkAnimation()
@@ -286,8 +297,6 @@ public class Capybara : MonoBehaviour
         {
             currentSlot = targetSlot;
             CheckTargetSeatMatch(targetSlot);
-            if (Application.isPlaying)
-                GameManager.Instance.CheckGameCondition();
             SitAnimation();
         });
     }
@@ -338,6 +347,8 @@ public class Capybara : MonoBehaviour
     {
         var group = targetSlot.GetComponentInParent<SeatGroup>();
         group?.CheckGroupColor();
+        if (Application.isPlaying)
+            GameManager.Instance.CheckGameCondition();
     }
 
     public virtual void Lock()

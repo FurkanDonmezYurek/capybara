@@ -12,6 +12,7 @@ public class CapybaraStateMachine : MonoBehaviour
     public CapybaraRunState runState { get; set; }
     public CapybaraSleepState sleepState { get; set; }
     public CapybaraFreezeState freezeState { get; set; }
+    public CapybaraJumpState jumpState { get; set; }
 
     /// <summary>
     /// Machine reference
@@ -41,6 +42,7 @@ public class CapybaraStateMachine : MonoBehaviour
         runState = new CapybaraRunState(this);
         sleepState = new CapybaraSleepState(this);
         freezeState = new CapybaraFreezeState(this);
+        jumpState = new CapybaraJumpState(this);
     }
     public void SetState(CapybaraBaseState state)
     {

@@ -9,7 +9,7 @@ public class CapybaraSleepState : CapybaraBaseState
     }
     public override void Enter()
     {
-        Capybara.WAnimation.SetSleepyAnim(true);
+        Capybara.WAnimation.SetSleepAnim(true);
         Capybara.WAnimation.SetMovementAnimByMagnitude(0, true);
     }
 
@@ -20,6 +20,6 @@ public class CapybaraSleepState : CapybaraBaseState
 
     public override void Exit()
     {
-        Capybara.WAnimation.SetSleepyAnim(false);
+        Capybara.WAnimation.SetSleepAnim(false);
     }
 }

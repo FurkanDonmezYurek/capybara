@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1982bc48006752841b7c49f233c48996
+guid: 42628be81508b8643a0f8f941a566dde
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -43,9 +43,9 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Run
-      takeName: Armature.002|Armature.001|mixamo.com|Layer0
-      internalID: -7064995993315538601
+      name: Running
+      takeName: Armature.013|Armature.001|mixamo.com|Layer0
+      internalID: 6258501677696557602
       firstFrame: 0
       lastFrame: 27
       wrapMode: 0
@@ -72,9 +72,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: NormalSit
-      takeName: Armature.002|Armature.002|mixamo.com|Layer0
-      internalID: 3145953071299284637
+      name: Normal Sit
+      takeName: Armature.013|Armature.002|mixamo.com|Layer0
+      internalID: -8983916421860973611
       firstFrame: 0
       lastFrame: 127
       wrapMode: 0
@@ -102,8 +102,8 @@ ModelImporter:
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Idle
-      takeName: Armature.002|Armature.003|mixamo.com|Layer0
-      internalID: 2854038970589864894
+      takeName: Armature.013|Armature.003|mixamo.com|Layer0
+      internalID: 2618936903141076071
       firstFrame: 0
       lastFrame: 180
       wrapMode: 0
@@ -131,8 +131,8 @@ ModelImporter:
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Fat Walk
-      takeName: Armature.002|Armature.004|mixamo.com|Layer0
-      internalID: -5776913649677080679
+      takeName: Armature.013|Armature.004|mixamo.com|Layer0
+      internalID: 8562183143285604535
       firstFrame: 0
       lastFrame: 36
       wrapMode: 0
@@ -160,8 +160,8 @@ ModelImporter:
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Fat Idle
-      takeName: Armature.002|Armature.005|mixamo.com|Layer0
-      internalID: 3820574337249681127
+      takeName: Armature.013|Armature.005|mixamo.com|Layer0
+      internalID: 2768384681415089154
       firstFrame: 0
       lastFrame: 160
       wrapMode: 0
@@ -170,7 +170,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -188,9 +188,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Freeze
-      takeName: Armature.002|Armature.006|mixamo.com|Layer0
-      internalID: -5917793513593228086
+      name: Freezing
+      takeName: Armature.013|Armature.006|mixamo.com|Layer0
+      internalID: -3709476387836672366
       firstFrame: 0
       lastFrame: 149
       wrapMode: 0
@@ -217,9 +217,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Sleepy Fat
-      takeName: Armature.002|Armature.007|mixamo.com|Layer0
-      internalID: 8764657273638839126
+      name: Fat Sit 3
+      takeName: Armature.013|Armature.007|mixamo.com|Layer0
+      internalID: -3553982806219873962
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -246,9 +246,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: FatSit2
-      takeName: Armature.002|Armature.008|mixamo.com|Layer0
-      internalID: -2341053395174969281
+      name: Fat Sit 2
+      takeName: Armature.013|Armature.008|mixamo.com|Layer0
+      internalID: -522228248062175226
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -275,9 +275,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: ChildSit
-      takeName: Armature.002|Armature.008|mixamo.com|Layer0.001
-      internalID: -3578827417990238280
+      name: Child Sit
+      takeName: Armature.013|Armature.008|mixamo.com|Layer0.001
+      internalID: -4649849777129282355
       firstFrame: 0
       lastFrame: 63
       wrapMode: 0
@@ -304,9 +304,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: FatSit1
-      takeName: Armature.002|Armature.009|mixamo.com|Layer0
-      internalID: 1964159045287915969
+      name: Fat Sit 1
+      takeName: Armature.013|Armature.009|mixamo.com|Layer0
+      internalID: 1907123361455634403
       firstFrame: 0
       lastFrame: 305
       wrapMode: 0
@@ -333,9 +333,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Sleepy1
-      takeName: Armature.002|Armature.010|mixamo.com|Layer0
-      internalID: -5430155779335653494
+      name: Sleeping 2
+      takeName: Armature.013|Armature.010|mixamo.com|Layer0
+      internalID: -1383410187067069760
       firstFrame: 0
       lastFrame: 178
       wrapMode: 0
@@ -362,11 +362,40 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Sleepy2
-      takeName: Armature.002|Armature.011|mixamo.com|Layer0
-      internalID: 7113710659241659134
+      name: Sleeping
+      takeName: Armature.013|Armature.011|mixamo.com|Layer0
+      internalID: -7885117221842880012
       firstFrame: 0
       lastFrame: 249
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Waving
+      takeName: Armature.013|Armature.013|mixamo.com|Layer0
+      internalID: 8971985697402625755
+      firstFrame: 0
+      lastFrame: 77
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -391,9 +420,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Walk
-      takeName: Armature.002|Armature|mixamo.com|Layer0
-      internalID: 236337077905420913
+      name: Walking
+      takeName: Armature.013|Armature|mixamo.com|Layer0
+      internalID: -4253169017816142181
       firstFrame: 0
       lastFrame: 19
       wrapMode: 0
