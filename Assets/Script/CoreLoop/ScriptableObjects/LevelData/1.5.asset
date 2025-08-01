@@ -13,12 +13,17 @@ MonoBehaviour:
   m_Name: 1.5
   m_EditorClassIdentifier: 
   levelName: New Level
+  levelEnvironment: {fileID: 4032674522607261397, guid: a1dc55d5e566bf24b8c3c67f37611ed1,
+    type: 3}
   difficulty: 0
+  levelTime: 120
   isLocked: 0
   rows: 4
   columns: 6
   groupWidth: 3
   groupHeight: 1
+  horizontalSpacing: 1.2
+  verticalSpacing: 1.2
   capybaras:
   - gridPosition: {x: 3, y: 3}
     type: 0
