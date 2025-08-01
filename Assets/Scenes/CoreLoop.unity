@@ -183,8 +183,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 8
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -208,13 +208,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 97573855}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.8660254, z: -0.5, w: 0}
-  m_LocalPosition: {x: 2.5, y: 7, z: 5}
+  m_LocalRotation: {x: 0, y: 0.92387956, z: -0.38268343, w: 0}
+  m_LocalPosition: {x: 2.5, y: 3, z: 9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 60, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: 180, z: 0}
 --- !u!114 &97573859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -508,12 +508,6 @@ MonoBehaviour:
   gridSystem: {fileID: 1365210084}
   UIManager: {fileID: 589664598}
   gameTimerManager: {fileID: 589664596}
-  outlineLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  defaultLayer:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!4 &1365210082
 Transform:
   m_ObjectHideFlags: 0

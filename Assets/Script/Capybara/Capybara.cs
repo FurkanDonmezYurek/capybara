@@ -14,7 +14,7 @@ public enum CapybaraType
 public class Capybara : MonoBehaviour
 {
     public virtual CapybaraType Type => CapybaraType.Normal;
-    public virtual float MoveSpeed => 4f;
+    public virtual float MoveSpeed => 5f;
     public Color color;
     public Seat currentSlot;
     protected bool isLocked;
