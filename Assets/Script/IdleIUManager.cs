@@ -53,6 +53,11 @@ public class IdleUIManager : MonoBehaviour
     [SerializeField] private CanvasGroup shopCG;
     [SerializeField] private Transform shopContent;
 
+    [Header("Cloud Transition")]
+    [SerializeField] private GameObject cloudTransitionPanel;
+    [SerializeField] private RectTransform leftCloud;
+    [SerializeField] private RectTransform rightCloud;
+
     private Tween coinTween;
     private int selectedLevelIndex;
     private bool isSoundOn;
@@ -81,6 +86,7 @@ public class IdleUIManager : MonoBehaviour
         UpdateRegionProgressBar(VehicleManager.Instance.GetCurrentLevelIndex());
         UpdateSoundToggleVisual();
         UpdateVibrationToggleVisual();
+        PlayCloudOpenTransition();
     }
 
     #region === Panel On/Off ===
@@ -140,9 +146,8 @@ public class IdleUIManager : MonoBehaviour
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
         // TODO: Optional restart animation
-        SceneManager.LoadScene(1);
+        PlayCloudCloseTransition();
     }
-
     public bool PanelActived()
     {
         return startLevelPanel.activeSelf;
@@ -290,8 +295,45 @@ public class IdleUIManager : MonoBehaviour
         shopContent.localScale = Vector3.zero;
 
         UIAnimator.FadeIn(shopCG);
-        UIAnimator.ScaleIn(shopContent); 
+        UIAnimator.ScaleIn(shopContent);
     }
 
+    #endregion
+
+    #region === Cloud Transition ===
+    public void PlayCloudOpenTransition()
+    {
+        cloudTransitionPanel.SetActive(true);
+
+        Vector2 leftStartPos = leftCloud.anchoredPosition;
+        Vector2 rightStartPos = rightCloud.anchoredPosition;
+        leftCloud.anchoredPosition = Vector2.zero;
+        rightCloud.anchoredPosition = Vector2.zero;
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(leftCloud.DOAnchorPos(leftStartPos, 0.8f).SetEase(Ease.OutQuad));
+        seq.Join(rightCloud.DOAnchorPos(rightStartPos, 0.8f).SetEase(Ease.OutQuad));
+        seq.AppendCallback(() =>
+        {
+            cloudTransitionPanel.SetActive(false);
+        });
+    }
+
+    public void PlayCloudCloseTransition()
+    {
+        cloudTransitionPanel.SetActive(true);
+
+        Vector2 leftStartPos = leftCloud.anchoredPosition;
+        Vector2 rightStartPos = rightCloud.anchoredPosition;
+        Vector2 closedPos = Vector2.zero;
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(leftCloud.DOAnchorPos(closedPos, 0.8f).SetEase(Ease.InOutQuad));
+        seq.Join(rightCloud.DOAnchorPos(closedPos, 0.8f).SetEase(Ease.InOutQuad));
+        seq.AppendCallback(() =>
+        {
+            SceneManager.LoadScene(1);
+        });
+    }
     #endregion
 }
