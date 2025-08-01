@@ -6558,7 +6558,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 1}
+  m_Color: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 0.9607843}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10855,7 +10855,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1122bb5ff20a8774c9782ba7a6bcc038, type: 3}
   vehicleProgressBarFillImage: {fileID: 3931139844542496822}
   vehicleProgressText: {fileID: 875228350352663259}
-  levelsPerVehicle: 10
+  levelsPerVehicle: 5
   levelFailCG: {fileID: 6313214029423985252}
   levelFailHeader: {fileID: 7517911872158240354}
   levelFailPlusTimeImage: {fileID: 5033109772775232875}

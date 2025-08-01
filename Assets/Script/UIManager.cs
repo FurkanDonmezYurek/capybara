@@ -57,7 +57,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private List<Sprite> vehicleFillSprites;
     [SerializeField] private Image vehicleProgressBarFillImage;
     [SerializeField] private TextMeshProUGUI vehicleProgressText;
-    [SerializeField] private int levelsPerVehicle = 2; 
+    [SerializeField] private int levelsPerVehicle = 5; 
 
 
     #endregion
