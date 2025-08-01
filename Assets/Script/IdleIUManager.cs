@@ -258,8 +258,10 @@ public class IdleUIManager : MonoBehaviour
     {
         int completedLevel = currentLevel;
 
-        int regionIndex = completedLevel / 10;
-        int progressInRegion = completedLevel % 10;
+        int levelsPerRegion = 5;
+
+        int regionIndex = completedLevel / levelsPerRegion;
+        int progressInRegion = completedLevel % levelsPerRegion;
 
         if (progressInRegion == 0 && completedLevel > 0)
         {
@@ -271,9 +273,9 @@ public class IdleUIManager : MonoBehaviour
         else
             regionNameText.text = "Unknown";
 
-        float fillAmount = progressInRegion / 10f;
+        float fillAmount = progressInRegion / (float)levelsPerRegion;
         regionProgressFill.fillAmount = fillAmount;
-        regionProgressText.text = $"{progressInRegion} / 10";
+        regionProgressText.text = $"{progressInRegion} / {levelsPerRegion}";
     }
 
 
