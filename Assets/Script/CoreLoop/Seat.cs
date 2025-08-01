@@ -26,7 +26,14 @@ public class Seat : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (GameManager.Instance != null)
-            GameManager.Instance.OnSeatClicked(this);
+        if (currentCapybara == null)
+        {
+            if (GameManager.Instance != null)
+                GameManager.Instance.OnSeatClicked(this);
+        }
+        else
+        {
+            currentCapybara.ClickedCapybara();
+        }
     }
 }

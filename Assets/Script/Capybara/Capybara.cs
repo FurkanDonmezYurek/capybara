@@ -14,15 +14,16 @@ public enum CapybaraType
 public class Capybara : MonoBehaviour
 {
     public virtual CapybaraType Type => CapybaraType.Normal;
-    public virtual float MoveSpeed => 2f;
+    public virtual float MoveSpeed => 5f;
     public Color color;
     public Seat currentSlot;
     protected bool isLocked;
-    protected bool isFrozen;
+    public bool isFrozen;
     public bool IsFrozen => isFrozen;
     public GameObject iceCubeVisual; // Assigned in prefab or instantiated
     public GameObject capybaraColorMaterialObject;
     public CapybaraStateMachine CapybaraStateMachine { get; private set; }
+    public bool isMoving = false;
 
     public virtual void Start()
     {
@@ -72,6 +73,17 @@ public class Capybara : MonoBehaviour
         ResetRotation();
     }
 
+    public virtual void JumpAnimation()
+    {
+        if (CapybaraStateMachine == null)
+        {
+            Debug.LogError("CapybaraStateMachine is not set for " + gameObject.name);
+            return;
+        }
+
+        CapybaraStateMachine.SetState(CapybaraStateMachine.jumpState);
+    }
+
     public virtual void WalkAnimation()
     {
         if (CapybaraStateMachine == null)
@@ -116,7 +128,6 @@ public class Capybara : MonoBehaviour
                 mat.color = color;
             }
         }
-
     }
 
     public virtual void Freeze()
@@ -195,6 +206,8 @@ public class Capybara : MonoBehaviour
 
     protected virtual void AnimateDirectMove(Seat targetSlot)
     {
+        isMoving = true;
+
         WalkAnimation();
 
         currentSlot.ClearCapybara();
@@ -215,6 +228,7 @@ public class Capybara : MonoBehaviour
                 currentSlot = targetSlot;
                 CheckTargetSeatMatch(targetSlot);
                 SitAnimation();
+                isMoving = false;
             });
     }
 
@@ -268,6 +282,8 @@ public class Capybara : MonoBehaviour
         pathPoints.Add(toEntry); // C - Hedef grubun corridor giriş noktası
         pathPoints.Add(end); // D - Hedef koltuk
 
+        isMoving = true;
+
         // Animasyon
         Sequence seq = DOTween.Sequence();
         for (int i = 0; i < pathPoints.Count - 1; i++)
@@ -286,9 +302,8 @@ public class Capybara : MonoBehaviour
         {
             currentSlot = targetSlot;
             CheckTargetSeatMatch(targetSlot);
-            if (Application.isPlaying)
-                GameManager.Instance.CheckGameCondition();
             SitAnimation();
+            isMoving = false;
         });
     }
 
@@ -338,6 +353,8 @@ public class Capybara : MonoBehaviour
     {
         var group = targetSlot.GetComponentInParent<SeatGroup>();
         group?.CheckGroupColor();
+        if (Application.isPlaying)
+            GameManager.Instance.CheckGameCondition();
     }
 
     public virtual void Lock()
@@ -346,9 +363,9 @@ public class Capybara : MonoBehaviour
         isLocked = true;
     }
 
-    protected virtual void OnMouseDown()
+    public void ClickedCapybara()
     {
-        if (isLocked || isFrozen)
+        if (isLocked || isFrozen || isMoving)
             return;
 
         GameManager.Instance.OnCapybaraClicked(this);

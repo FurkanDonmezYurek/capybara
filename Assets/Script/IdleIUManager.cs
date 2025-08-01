@@ -43,7 +43,7 @@ public class IdleUIManager : MonoBehaviour
     [SerializeField] private Sprite[] bgSettingsButtons;
 
     private Tween coinTween;
-    private int selectedLevelIndex;
+    public int selectedLevelIndex;
     private bool isSoundOn;
     private bool isVibrationOn;
 
@@ -101,7 +101,7 @@ public class IdleUIManager : MonoBehaviour
     {
         HideAllPanels();
 
-        selectedLevelIndex = GameManager.Instance.levelManager.GetCurrentLevelIndex();
+        selectedLevelIndex = VehicleManager.Instance.GetCurrentLevelIndex();
 
         selectedLevelText.text = "LEVEL " + (selectedLevelIndex + 1);
 
@@ -119,16 +119,22 @@ public class IdleUIManager : MonoBehaviour
 
     private void OnPlayButtonClicked()
     {
-        HideAllPanels();
-        int LevelIndex = PlayerPrefs.GetInt("Level", 0);
-        LevelIndex++;
-        PlayerPrefs.SetInt("Level", LevelIndex);
-        GameManager.Instance.LevelStart();
+        //HideAllPanels();
+        //int LevelIndex = PlayerPrefs.GetInt("Level", 0);
+        //LevelIndex++;
+        //PlayerPrefs.SetInt("Level", LevelIndex);
+        ////GameManager.Instance.LevelStart();
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        // TODO: Optional restart animation
+        SceneManager.LoadScene(1);
     }
 
-
+    public bool PanelActived()
+    {
+        return startLevelPanel.activeSelf;
+    }
 
     #endregion
 
@@ -233,7 +239,6 @@ public class IdleUIManager : MonoBehaviour
             coinText.text = current.ToString();
         }, newCoinAmount, 0.5f).SetEase(Ease.OutQuad);
     }
-
 
     #endregion
 }
