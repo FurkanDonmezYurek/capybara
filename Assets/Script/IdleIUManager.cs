@@ -42,8 +42,19 @@ public class IdleUIManager : MonoBehaviour
     [SerializeField] private Sprite[] iconVibrations;
     [SerializeField] private Sprite[] bgSettingsButtons;
 
+    [Header("Region Progress Bar")]
+    [SerializeField] private Image regionProgressFill;
+    [SerializeField] private TextMeshProUGUI regionProgressText;
+    [SerializeField] private TextMeshProUGUI regionNameText;
+    [SerializeField] private string[] regionNames; //"Desert", "Forest", "Snow"...
+
+    [Header("Shop Panel")]
+    [SerializeField] private GameObject shopPanel;
+    [SerializeField] private CanvasGroup shopCG;
+    [SerializeField] private Transform shopContent;
+
     private Tween coinTween;
-    public int selectedLevelIndex;
+    private int selectedLevelIndex;
     private bool isSoundOn;
     private bool isVibrationOn;
 
@@ -67,6 +78,7 @@ public class IdleUIManager : MonoBehaviour
         CurrencyManager.Instance.OnCoinChanged += UpdateCoin;
         UpdateCoin(CurrencyManager.Instance.Coin);
 
+        UpdateRegionProgressBar(VehicleManager.Instance.GetCurrentLevelIndex());
         UpdateSoundToggleVisual();
         UpdateVibrationToggleVisual();
     }
@@ -83,6 +95,9 @@ public class IdleUIManager : MonoBehaviour
 
         if (settingsPanel.activeSelf)
             HidePanelWithAnimation(settingsCG, settingsContent, settingsPanel);
+
+        if (shopPanel.activeSelf)
+            HidePanelWithAnimation(shopCG, shopContent, shopPanel);
     }
 
     private void HidePanelWithAnimation(CanvasGroup cg, Transform scaleTarget, GameObject panelGO)
@@ -114,9 +129,6 @@ public class IdleUIManager : MonoBehaviour
         UIAnimator.MoveFromX(selectedLevelText.transform, -800f, 0.4f, Ease.OutExpo, 0.2f);
         UIAnimator.ScaleIn(playButtonTransform, 0.4f, 0.35f);
     }
-
-
-
     private void OnPlayButtonClicked()
     {
         //HideAllPanels();
@@ -135,7 +147,6 @@ public class IdleUIManager : MonoBehaviour
     {
         return startLevelPanel.activeSelf;
     }
-
     #endregion
 
     #region === Settings ===
@@ -238,6 +249,46 @@ public class IdleUIManager : MonoBehaviour
             current = x;
             coinText.text = current.ToString();
         }, newCoinAmount, 0.5f).SetEase(Ease.OutQuad);
+    }
+
+    #endregion
+
+    #region === Region Progress Bar ===
+    public void UpdateRegionProgressBar(int currentLevel)
+    {
+        int completedLevel = currentLevel;
+
+        int regionIndex = completedLevel / 10;
+        int progressInRegion = completedLevel % 10;
+
+        if (progressInRegion == 0 && completedLevel > 0)
+        {
+            progressInRegion = 0;
+        }
+
+        if (regionIndex < regionNames.Length)
+            regionNameText.text = regionNames[regionIndex];
+        else
+            regionNameText.text = "Unknown";
+
+        float fillAmount = progressInRegion / 10f;
+        regionProgressFill.fillAmount = fillAmount;
+        regionProgressText.text = $"{progressInRegion} / 10";
+    }
+
+
+    #endregion
+
+    #region === Shop Panel ===
+    public void ShowShopPanel()
+    {
+        HideAllPanels();
+        shopPanel.SetActive(true);
+        shopCG.alpha = 0;
+        shopContent.localScale = Vector3.zero;
+
+        UIAnimator.FadeIn(shopCG);
+        UIAnimator.ScaleIn(shopContent); 
     }
 
     #endregion

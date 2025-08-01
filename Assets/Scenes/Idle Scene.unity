@@ -17289,6 +17289,9 @@ MonoBehaviour:
   - {fileID: 914874104}
   - {fileID: 339553651}
   - {fileID: 1703169218}
+  splineAnimate: {fileID: 1095523021}
+  splineContainer: {fileID: 341540687}
+  vehicleManager: {fileID: 1095523020}
 --- !u!65 &1095523025
 BoxCollider:
   m_ObjectHideFlags: 0
