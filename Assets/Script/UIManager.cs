@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     #region === Serialized Fields ===
 
     [Header("Top Bar Elements")]
+    [SerializeField] private RectTransform currencyPanel;
     [SerializeField] private TextMeshProUGUI coinText;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private Image timerFill;
@@ -23,6 +24,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button settingsButton;
     private Tween flashTweenTimerText;
     private Tween coinTween;
+    private Tween coinCurrencyPanelTween;
     private bool suppressTimerUI = false;
     private Coroutine animatedTimeCoroutine;
 
@@ -144,6 +146,23 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
+    #region Cloud Transition
+    [Header("Cloud Transition")]
+    [SerializeField] private GameObject cloudTransitionPanel;
+    [SerializeField] private RectTransform leftCloud;
+    [SerializeField] private RectTransform rightCloud;
+    #endregion
+
+    #region Coin Fly Effect
+    [Header("Coin Fly Effect")]
+    [SerializeField] private GameObject coinFlyPrefab;
+    [SerializeField] private Transform coinFlyLastPosition;
+    [SerializeField] private Transform coinFlyTarget;  
+    [SerializeField] private int coinFlyCount = 5;    
+    [SerializeField] private float coinFlyInterval = 0.075f;
+    [SerializeField] private float coinFlyDuration = 1f;
+    #endregion
+
     #endregion
 
     #region === Internal States ===
@@ -166,6 +185,7 @@ public class UIManager : MonoBehaviour
         isVibrationOn = PlayerPrefs.GetInt("Vibration", 1) == 1;
         UpdateSoundToggleVisual();
         UpdateVibrationToggleVisual();
+        PlayCloudOpenTransition();
 
         CurrencyManager.Instance.OnCoinChanged += UpdateCoin;
         UpdateCoin(CurrencyManager.Instance.Coin);
@@ -174,8 +194,6 @@ public class UIManager : MonoBehaviour
         GameTimerManager.Instance.OnTimeOver += ShowLevelFail;
 
         boosterButtonTweens = new Tween[boosterButton.Length];
-
-        //StartLevel(); //TODO: Replace with actual level start logic
     }
 
     #endregion
@@ -524,6 +542,42 @@ public class UIManager : MonoBehaviour
         seq.Join(playOnCG.transform.DOScale(0.8f, 0.3f));
         seq.OnComplete(() => playOnPanel.SetActive(false));
     }
+    #region === Cloud Transition ===
+    public void PlayCloudOpenTransition()
+    {
+        cloudTransitionPanel.SetActive(true);
+
+        Vector2 leftStartPos = leftCloud.anchoredPosition;
+        Vector2 rightStartPos = rightCloud.anchoredPosition;
+        leftCloud.anchoredPosition = Vector2.zero;
+        rightCloud.anchoredPosition = Vector2.zero;
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(leftCloud.DOAnchorPos(leftStartPos, 0.8f).SetEase(Ease.OutQuad));
+        seq.Join(rightCloud.DOAnchorPos(rightStartPos, 0.8f).SetEase(Ease.OutQuad));
+        seq.AppendCallback(() =>
+        {
+            cloudTransitionPanel.SetActive(false);
+        });
+    }
+
+    public void PlayCloudCloseTransition(int sceneIndex)
+    {
+        cloudTransitionPanel.SetActive(true);
+
+        Vector2 leftStartPos = leftCloud.anchoredPosition;
+        Vector2 rightStartPos = rightCloud.anchoredPosition;
+        Vector2 closedPos = Vector2.zero;
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(leftCloud.DOAnchorPos(closedPos, 0.8f).SetEase(Ease.InOutQuad));
+        seq.Join(rightCloud.DOAnchorPos(closedPos, 0.8f).SetEase(Ease.InOutQuad));
+        seq.AppendCallback(() =>
+        {
+            SceneManager.LoadScene(sceneIndex);
+        });
+    }
+    #endregion
     #endregion
 
     #region === Booster Actions ===
@@ -540,7 +594,7 @@ public class UIManager : MonoBehaviour
             }
             else
             {
-                //TODO: Add logic for seat booster
+                GameManager.Instance.gridSystem.AddSeatGroup();
                 if (seatBoosterCount > 0)
                 {
                     seatBoosterCount--;
@@ -565,7 +619,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            //TODO: Add logic for seat booster
+            GameManager.Instance.gridSystem.AddSeatGroup();
             if (seatBoosterCount > 0)
             {
                 seatBoosterCount--;
@@ -763,6 +817,8 @@ public class UIManager : MonoBehaviour
 
         CurrencyManager.Instance.AddCoin(coinAmount);
 
+        PlayCoinFlyEffect(new Vector3(2.5f,-4,0));
+
         HideAllPanels();
     }
 
@@ -781,6 +837,64 @@ public class UIManager : MonoBehaviour
             coinText.text = current.ToString();
         }, newCoinAmount, 0.5f).SetEase(Ease.OutQuad);
     }
+    #endregion
+
+    #region === Coin Fly Effect Process ===
+    public void PlayCoinFlyEffect(Vector3 worldStartPos)
+    {
+        StartCoroutine(SpawnCoinFlyRoutine(worldStartPos));
+    }
+
+    private IEnumerator SpawnCoinFlyRoutine(Vector3 worldStartPos)
+    {
+        Vector3 screenStartPos = Camera.main.WorldToScreenPoint(worldStartPos);
+        Vector3 uiStartPos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            coinText.transform.parent as RectTransform,
+            screenStartPos,
+            null,
+            out Vector2 localPoint
+        );
+        uiStartPos = localPoint;
+
+        for (int i = 0; i < coinFlyCount; i++)
+        {
+            GameObject coin = Instantiate(coinFlyPrefab, coinFlyLastPosition);
+            RectTransform coinRT = coin.GetComponent<RectTransform>();
+            coinRT.anchoredPosition = uiStartPos;
+            coinRT.localScale = Vector3.one;
+
+            Vector2 randomOffset = Random.insideUnitCircle * 30f;
+
+            Sequence seq = DOTween.Sequence();
+            seq.Append(coinRT.DOAnchorPos(((Vector2)coinFlyTarget.localPosition) + randomOffset, coinFlyDuration * 0.5f)
+                .SetEase(Ease.OutQuad));
+            seq.AppendCallback(() =>
+            {
+                coinRT.anchoredPosition = coinFlyTarget.localPosition;
+                Destroy(coin);
+                PlayCoinCurrencyBounce();
+            });
+            seq.Join(coinRT.DOScale(0.3f, coinFlyDuration));
+
+            yield return new WaitForSeconds(coinFlyInterval);
+        }
+    }
+    private void PlayCoinCurrencyBounce()
+    {
+        if (coinCurrencyPanelTween != null && coinCurrencyPanelTween.IsActive())
+            coinCurrencyPanelTween.Kill();
+
+        currencyPanel.localScale = new Vector3 (0.8f,0.8f,0.8f);
+
+        coinCurrencyPanelTween = currencyPanel.DOScale(0.9f, 0.1f)
+            .SetEase(Ease.OutQuad)
+            .OnComplete(() =>
+            {
+                currencyPanel.DOScale(0.8f, 0.2f).SetEase(Ease.InQuad);
+            });
+    }
+
     #endregion
 
     #region === Settings and Toggles ===
@@ -836,9 +950,7 @@ public class UIManager : MonoBehaviour
 
     public void RestartLevel()
     {
-        // TODO: Optional restart animation
-        UnityEngine.SceneManagement.SceneManager.LoadScene(
-            UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+        PlayCloudCloseTransition(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void NextLevel()
@@ -846,13 +958,12 @@ public class UIManager : MonoBehaviour
         int LevelIndex = PlayerPrefs.GetInt("Level", 0);
         LevelIndex++;
         PlayerPrefs.SetInt("Level",LevelIndex);
-        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        PlayCloudCloseTransition(0);
     }
     public void ReturnIdleScene()
     {
-        SceneManager.LoadScene(0);
+        PlayCloudCloseTransition(0);
     }
-
 
     //public void OpenShopFromCoin()
     //{
@@ -873,8 +984,7 @@ public class UIManager : MonoBehaviour
     //    // SceneManager.LoadScene("ShopScene"); // Eğer mağaza sahnesi varsa
     //}
 
-#endregion
-
+    #endregion
 
     #region === Debug Methods ===
     //TODO: Remove or comment out these methods in production
