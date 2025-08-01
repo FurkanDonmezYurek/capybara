@@ -4,7 +4,7 @@ using UnityEngine;
 public class SleepyCapybara : Capybara
 {
     public override CapybaraType Type => CapybaraType.Sleepy;
-    public override float MoveSpeed => 1f;
+    public override float MoveSpeed => 3f;
     public GameObject sleepEffect; // (isteğe bağlı) esneme/göz kapama gibi efekt objesi
 
     public override void Start()
