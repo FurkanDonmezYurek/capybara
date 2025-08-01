@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -118,10 +119,12 @@ public class GameManager : MonoBehaviour
         if (selectedCapybara != null && selectedCapybara != capybara)
         {
             selectedCapybara.SitAnimation();
+            selectedCapybara.capybaraColorMaterialObject.layer = LayerMask.NameToLayer("Default");
         }
 
         selectedCapybara = capybara;
         selectedCapybara.JumpAnimation();
+        selectedCapybara.capybaraColorMaterialObject.layer = LayerMask.NameToLayer("Outline");
     }
 
     public void OnSeatClicked(Seat seat)
@@ -144,6 +147,7 @@ public class GameManager : MonoBehaviour
             }
         }
         //selectedCapybara.SetColor(selectedCapybara.color); // Reset color after move
+        selectedCapybara.capybaraColorMaterialObject.layer = LayerMask.NameToLayer("Default");
         selectedCapybara = null;
     }
     #endregion

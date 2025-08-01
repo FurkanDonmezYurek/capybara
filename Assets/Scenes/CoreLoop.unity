@@ -508,7 +508,12 @@ MonoBehaviour:
   gridSystem: {fileID: 1365210084}
   UIManager: {fileID: 589664598}
   gameTimerManager: {fileID: 589664596}
-  startLevelIndex: 1
+  outlineLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  defaultLayer:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!4 &1365210082
 Transform:
   m_ObjectHideFlags: 0

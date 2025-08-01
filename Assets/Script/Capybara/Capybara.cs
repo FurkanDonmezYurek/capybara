@@ -14,7 +14,7 @@ public enum CapybaraType
 public class Capybara : MonoBehaviour
 {
     public virtual CapybaraType Type => CapybaraType.Normal;
-    public virtual float MoveSpeed => 2f;
+    public virtual float MoveSpeed => 4f;
     public Color color;
     public Seat currentSlot;
     protected bool isLocked;
@@ -23,6 +23,7 @@ public class Capybara : MonoBehaviour
     public GameObject iceCubeVisual; // Assigned in prefab or instantiated
     public GameObject capybaraColorMaterialObject;
     public CapybaraStateMachine CapybaraStateMachine { get; private set; }
+    public bool isMoving = false;
 
     public virtual void Start()
     {
@@ -127,7 +128,6 @@ public class Capybara : MonoBehaviour
                 mat.color = color;
             }
         }
-
     }
 
     public virtual void Freeze()
@@ -206,6 +206,8 @@ public class Capybara : MonoBehaviour
 
     protected virtual void AnimateDirectMove(Seat targetSlot)
     {
+        isMoving = true;
+
         WalkAnimation();
 
         currentSlot.ClearCapybara();
@@ -226,6 +228,7 @@ public class Capybara : MonoBehaviour
                 currentSlot = targetSlot;
                 CheckTargetSeatMatch(targetSlot);
                 SitAnimation();
+                isMoving = false;
             });
     }
 
@@ -279,6 +282,8 @@ public class Capybara : MonoBehaviour
         pathPoints.Add(toEntry); // C - Hedef grubun corridor giriş noktası
         pathPoints.Add(end); // D - Hedef koltuk
 
+        isMoving = true;
+
         // Animasyon
         Sequence seq = DOTween.Sequence();
         for (int i = 0; i < pathPoints.Count - 1; i++)
@@ -298,6 +303,7 @@ public class Capybara : MonoBehaviour
             currentSlot = targetSlot;
             CheckTargetSeatMatch(targetSlot);
             SitAnimation();
+            isMoving = false;
         });
     }
 
@@ -357,9 +363,9 @@ public class Capybara : MonoBehaviour
         isLocked = true;
     }
 
-    protected virtual void OnMouseDown()
+    public void ClickedCapybara()
     {
-        if (isLocked || isFrozen)
+        if (isLocked || isFrozen || isMoving)
             return;
 
         GameManager.Instance.OnCapybaraClicked(this);
