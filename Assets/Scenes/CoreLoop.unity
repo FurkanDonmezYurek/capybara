@@ -559,7 +559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91d93eb2d614d4328808a0d85e8ce33a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seatPrefab: {fileID: 4229894146711232555, guid: bf2777f6f61d74fe79de5d74979f1612,
+  seatPrefab: {fileID: 340975106295020946, guid: 5893983cd6ab22a4aa850405758ae8e2,
     type: 3}
   rows: 7
   columns: 6
