@@ -27,6 +27,7 @@ public class UIManager : MonoBehaviour
     private Tween coinCurrencyPanelTween;
     private bool suppressTimerUI = false;
     private Coroutine animatedTimeCoroutine;
+    private bool isFinalCountdownSoundPlaying = false;
 
     [Header("Booster Shortcut")]
     [SerializeField] private Button[] boosterButton;
@@ -245,6 +246,23 @@ public class UIManager : MonoBehaviour
             flashTweenTimerText = null;
             timerText.transform.localScale = Vector3.one;
         }
+        if (remaining <= 5f && remaining > 0f)
+        {
+            if (!isFinalCountdownSoundPlaying)
+            {
+                isFinalCountdownSoundPlaying = true;
+                AudioManager.Instance.PlaySFX("TimerSound");
+            }
+        }
+        else
+        {
+            if (isFinalCountdownSoundPlaying)
+            {
+                isFinalCountdownSoundPlaying = false;
+                AudioManager.Instance.sfxSource.Stop();
+            }
+        }
+
     }
 
     #endregion
@@ -253,6 +271,8 @@ public class UIManager : MonoBehaviour
 
     public void HideAllPanels()
     {
+        AudioManager.Instance.PlaySFX("UI_Click");
+
         if (levelCompletePanel.activeSelf)
             HidePanelWithAnimation(levelCompleteCG, levelCompleteHeader, levelCompletePanel);
 
@@ -328,6 +348,8 @@ public class UIManager : MonoBehaviour
 
     public void ShowLevelFail()
     {
+        AudioManager.Instance.PlaySFX("GameOver");
+
         if (flashTweenTimerText != null)
         {
             flashTweenTimerText.Kill();
@@ -362,6 +384,7 @@ public class UIManager : MonoBehaviour
     public void ShowCoinBuyPanel()
     {
         HideAllPanels();
+        AudioManager.Instance.PlaySFX("OpeningImportantPanel");
         coinBuyPanel.SetActive(true);
 
         //bool isAdReady = AdManager.Instance.IsRewardedAdReady(); //TODO: Ad ready check!!
@@ -389,6 +412,7 @@ public class UIManager : MonoBehaviour
     public void ShowBoosterPanel(bool isFreezeBoster)
     {
         HideAllPanels();
+        AudioManager.Instance.PlaySFX("OpeningImportantPanel");
         boosterPanel.SetActive(true);
 
         bool hasEnoughCoin = CurrencyManager.Instance.Coin >= 100;
@@ -450,7 +474,6 @@ public class UIManager : MonoBehaviour
 
     public void ShowBoosterUnlockedPanel(bool isFreezeBooster)
     {
-
         HideAllPanels();
         boosterUnlockedPanel.SetActive(true);
 
@@ -460,6 +483,7 @@ public class UIManager : MonoBehaviour
         {
             ShowBoosterFrame();
 
+            AudioManager.Instance.PlaySFX("FreezeBooster");
             boosterUnlockedIcon[0].gameObject.SetActive(true);
             boosterUnlockedIcon[1].gameObject.SetActive(false);
 
@@ -488,6 +512,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
+            AudioManager.Instance.PlaySFX("SeatBooster");
             boosterUnlockedIcon[0].gameObject.SetActive(false);
             boosterUnlockedIcon[1].gameObject.SetActive(true);
 
@@ -520,6 +545,7 @@ public class UIManager : MonoBehaviour
     public void ShowPlayOnPanel()
     {
         HideAllPanels();
+        AudioManager.Instance.PlaySFX("OpeningImportantPanel");
         playOnPanel.SetActive(true);
 
         playOnCG.alpha = 0;
@@ -543,9 +569,11 @@ public class UIManager : MonoBehaviour
         seq.Join(playOnCG.transform.DOScale(0.8f, 0.3f));
         seq.OnComplete(() => playOnPanel.SetActive(false));
     }
+
     #region === Cloud Transition ===
     public void PlayCloudOpenTransition()
     {
+        AudioManager.Instance.PlaySFX("CloudEffect");
         cloudTransitionPanel.SetActive(true);
 
         Vector2 leftStartPos = leftCloud.anchoredPosition;
@@ -564,6 +592,7 @@ public class UIManager : MonoBehaviour
 
     public void PlayCloudCloseTransition(int sceneIndex)
     {
+        AudioManager.Instance.PlaySFX("CloudEffect");
         cloudTransitionPanel.SetActive(true);
 
         Vector2 leftStartPos = leftCloud.anchoredPosition;
@@ -739,7 +768,7 @@ public class UIManager : MonoBehaviour
 
         if (progressInSet + 1 == levelsPerVehicle)
         {
-            // TODO: Tamamen açıldığında araç açıldı efekti oynat
+            AudioManager.Instance.PlaySFX("VehicleComplate");
         }
 
     }
@@ -817,6 +846,8 @@ public class UIManager : MonoBehaviour
         //TODO: Rewarded Ad Integration
 
         CurrencyManager.Instance.AddCoin(coinAmount);
+
+        AudioManager.Instance.PlaySFX("AddCoin");
 
         PlayCoinFlyEffect(new Vector3(2.5f, -4, 0));
 
@@ -913,13 +944,24 @@ public class UIManager : MonoBehaviour
 
         UpdateSoundToggleVisual();
         UpdateVibrationToggleVisual();
-
-
     }
 
     public void ToggleSound()
     {
+        AudioManager.Instance.PlaySFX("UI_Click");
         isSoundOn = !isSoundOn;
+
+        if (isSoundOn)
+        {
+            AudioManager.Instance.MuteMusic(false);
+            AudioManager.Instance.MuteMusic(false);
+        }
+        else
+        {
+            AudioManager.Instance.MuteMusic(true);
+            AudioManager.Instance.MuteSFX(true);
+        }
+
         PlayerPrefs.SetInt("Sound", isSoundOn ? 1 : 0);
         // TODO: AudioManager.Instance.SetSound(isSoundOn);
         UpdateSoundToggleVisual();
@@ -927,6 +969,7 @@ public class UIManager : MonoBehaviour
 
     public void ToggleVibration()
     {
+        AudioManager.Instance.PlaySFX("UI_Click");
         isVibrationOn = !isVibrationOn;
         PlayerPrefs.SetInt("Vibration", isVibrationOn ? 1 : 0);
         // TODO: VibrationManager.Instance.SetVibration(isVibrationOn);

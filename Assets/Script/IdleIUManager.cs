@@ -111,6 +111,9 @@ public class IdleUIManager : MonoBehaviour
 
     public void HideAllPanels()
     {
+        if(AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX("UI_Click");
+
         if (startLevelPanel.activeSelf)
             HidePanelWithAnimation(startLevelCG, playButtonTransform, startLevelPanel);
 
@@ -139,6 +142,9 @@ public class IdleUIManager : MonoBehaviour
     public void OpenStartLevelPanel()
     {
         HideAllPanels();
+
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX("OpeningImportantPanel");
 
         selectedLevelIndex = VehicleManager.Instance.GetCurrentLevelIndex();
 
@@ -224,13 +230,27 @@ public class IdleUIManager : MonoBehaviour
 
     public void ToggleSound()
     {
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX("UI_Click");
         isSoundOn = !isSoundOn;
+        if (isSoundOn)
+        {
+            AudioManager.Instance.MuteMusic(false);
+            AudioManager.Instance.MuteMusic(false);
+        }
+        else
+        {
+            AudioManager.Instance.MuteMusic(true);
+            AudioManager.Instance.MuteSFX(true);
+        }
         PlayerPrefs.SetInt("Sound", isSoundOn ? 1 : 0);
         UpdateSoundToggleVisual();
     }
 
     public void ToggleVibration()
     {
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX("UI_Click");
         isVibrationOn = !isVibrationOn;
         PlayerPrefs.SetInt("Vibration", isVibrationOn ? 1 : 0);
         UpdateVibrationToggleVisual();
@@ -255,6 +275,10 @@ public class IdleUIManager : MonoBehaviour
     public void ShowCoinBuyPanel()
     {
         HideAllPanels();
+
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX("OpeningImportantPanel");
+
         coinBuyPanel.SetActive(true);
 
         bool hasInternet = Application.internetReachability != NetworkReachability.NotReachable;
@@ -286,6 +310,9 @@ public class IdleUIManager : MonoBehaviour
     public void BuyCoins(int coinAmount)
     {
         //TODO: Rewarded Ad Integration
+
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX("AddCoin");
 
         CurrencyManager.Instance.AddCoin(coinAmount);
 
@@ -413,6 +440,12 @@ public class IdleUIManager : MonoBehaviour
         Sequence seq = DOTween.Sequence();
         seq.AppendInterval(0.75f);
 
+        seq.AppendCallback(() =>
+        {
+            if (AudioManager.Instance != null)
+                AudioManager.Instance.PlaySFX("NewRegionIdle");
+        });
+
         seq.Append(regionNameText.DOFade(1f, 2f));
         seq.Join(regionIconImage.DOFade(1f, 2f));
 
@@ -475,6 +508,9 @@ public class IdleUIManager : MonoBehaviour
     #region === Cloud Transition ===
     public void PlayCloudOpenTransition()
     {
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX("CloudEffect");
+
         cloudTransitionPanel.SetActive(true);
 
         Vector2 leftStartPos = leftCloud.anchoredPosition;
@@ -493,6 +529,9 @@ public class IdleUIManager : MonoBehaviour
 
     public void PlayCloudCloseTransition()
     {
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySFX("CloudEffect");
+
         cloudTransitionPanel.SetActive(true);
 
         Vector2 leftStartPos = leftCloud.anchoredPosition;
@@ -509,7 +548,4 @@ public class IdleUIManager : MonoBehaviour
     }
     #endregion
 
-    #region === Tutorial ===
-    
-    #endregion
 }

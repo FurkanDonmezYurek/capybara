@@ -51,6 +51,7 @@ public class AudioManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Debug.Log("Scene Loaded: " + scene.name);
+        LoadMuteSettings(); // Load saved mute settings
 
         switch (scene.name)
         {
@@ -122,6 +123,7 @@ public class AudioManager : MonoBehaviour
     {
         musicSource.mute = mute;
         PlayerPrefs.SetInt(MuteMusicKey, mute ? 1 : 0);
+        LoadMuteSettings();
     }
 
     // Toggle SFX mute and save preference
@@ -129,6 +131,7 @@ public class AudioManager : MonoBehaviour
     {
         sfxSource.mute = mute;
         PlayerPrefs.SetInt(MuteSFXKey, mute ? 1 : 0);
+        //LoadMuteSettings();
     }
 
     // Load previously saved mute states from PlayerPrefs
