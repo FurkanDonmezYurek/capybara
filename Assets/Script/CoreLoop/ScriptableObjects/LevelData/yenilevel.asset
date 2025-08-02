@@ -13,13 +13,17 @@ MonoBehaviour:
   m_Name: yenilevel
   m_EditorClassIdentifier: 
   levelName: New Level
+  levelEnvironment: {fileID: 4032674522607261397, guid: a1dc55d5e566bf24b8c3c67f37611ed1,
+    type: 3}
   difficulty: 0
   levelTime: 120
   isLocked: 0
   rows: 7
-  columns: 6
-  groupWidth: 3
+  columns: 4
+  groupWidth: 2
   groupHeight: 1
+  horizontalSpacing: 1.2
+  verticalSpacing: 2
   capybaras:
   - gridPosition: {x: 3, y: 6}
     type: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 public class ChildCapybara : Capybara
 {
     public override CapybaraType Type => CapybaraType.Child;
-    public override float MoveSpeed => 3f;
+    public override float MoveSpeed => 6.5f;
     public float minMoveInterval = 10f;
     public float maxMoveInterval = 20f;
 

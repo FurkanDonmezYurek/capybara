@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,7 +22,14 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject); // Enforce singleton
+            return;
+        }
     }
 
     private void Start()
@@ -42,6 +48,7 @@ public class GameManager : MonoBehaviour
         gameTimerManager.StartTimer(level.levelTime);
         Debug.Log($"Loaded level {LevelIndex}");
     }
+
 
     public void OnTimeExpired()
     {
@@ -67,6 +74,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("You lost! Show lose screen here.");
         UIManager.ShowLevelFail();
+        AudioManager.Instance.PlaySFX("GameOver");
         // Burada kaybettiğinizde gösterilecek ekranı açabilirsiniz
     }
 
@@ -78,6 +86,7 @@ public class GameManager : MonoBehaviour
             // Game Won
             if (!UIManager.levelCompletePanel.activeSelf)
                 ShowWinScreen();
+            AudioManager.Instance.PlaySFX("LevelComplete");
         }
     }
 
@@ -125,6 +134,7 @@ public class GameManager : MonoBehaviour
         selectedCapybara = capybara;
         selectedCapybara.JumpAnimation();
         selectedCapybara.capybaraColorMaterialObject.layer = LayerMask.NameToLayer("Outline");
+        AudioManager.Instance.PlaySFX("CapybaraClick");
     }
 
     public void OnSeatClicked(Seat seat)
@@ -171,8 +181,8 @@ public class GameManager : MonoBehaviour
                 return true;
 
             // 2b. Değilse → oldSeat'in grubundaki koridor koltuk boş mu?
-            var oldCorridor = oldSeat.groupOfSeat.seatsInGroup.FirstOrDefault(s =>
-                s.isCorridorSide && s.IsEmpty
+            var oldCorridor = oldSeat.groupOfSeat.seatsInGroup.FirstOrDefault(
+                s => s.isCorridorSide && s.IsEmpty
             );
 
             if (oldCorridor == null)
@@ -191,8 +201,8 @@ public class GameManager : MonoBehaviour
 
         // 3. Hedef koltuk koridor tarafında değilse →
         //    seat'in grubundaki koridor koltuğu boş mu?
-        var seatCorridor = seat.groupOfSeat.seatsInGroup.FirstOrDefault(s =>
-            s.isCorridorSide && s.IsEmpty
+        var seatCorridor = seat.groupOfSeat.seatsInGroup.FirstOrDefault(
+            s => s.isCorridorSide && s.IsEmpty
         );
 
         if (seatCorridor == null)
@@ -206,8 +216,8 @@ public class GameManager : MonoBehaviour
                 return true;
 
             // 3a-ii. Değilse → oldSeat'in grubundaki koridor koltuk boş mu?
-            var oldCorridor = oldSeat.groupOfSeat.seatsInGroup.FirstOrDefault(s =>
-                s.isCorridorSide && s.IsEmpty
+            var oldCorridor = oldSeat.groupOfSeat.seatsInGroup.FirstOrDefault(
+                s => s.isCorridorSide && s.IsEmpty
             );
 
             if (oldCorridor == null)
@@ -232,8 +242,8 @@ public class GameManager : MonoBehaviour
                 return true;
 
             // 3b-ii. Değilse → oldSeat'in grubundaki koridor koltuk boş mu?
-            var oldCorridor = oldSeat.groupOfSeat.seatsInGroup.FirstOrDefault(s =>
-                s.isCorridorSide && s.IsEmpty
+            var oldCorridor = oldSeat.groupOfSeat.seatsInGroup.FirstOrDefault(
+                s => s.isCorridorSide && s.IsEmpty
             );
 
             if (oldCorridor == null)
@@ -252,8 +262,8 @@ public class GameManager : MonoBehaviour
     public bool IsCorrectMoveFat(Seat targetSeat, Seat currentSeat, Seat secondSeat)
     {
         // 1. CorridorSeat: currentSeat grubundaki koridor koltuğu (isCorridorSide == true)
-        Seat corridorSeat = currentSeat.groupOfSeat.seatsInGroup.FirstOrDefault(s =>
-            s.isCorridorSide
+        Seat corridorSeat = currentSeat.groupOfSeat.seatsInGroup.FirstOrDefault(
+            s => s.isCorridorSide
         );
 
         if (corridorSeat == null)
@@ -335,8 +345,8 @@ public class GameManager : MonoBehaviour
 
             for (int y = minY + 1; y < maxY; y++)
             {
-                var midSeat = a.groupOfSeat.seatsInGroup.Find(s =>
-                    s.gridPosition == new Vector2Int(a.gridPosition.x, y)
+                var midSeat = a.groupOfSeat.seatsInGroup.Find(
+                    s => s.gridPosition == new Vector2Int(a.gridPosition.x, y)
                 );
                 if (midSeat != null && !midSeat.IsEmpty)
                     return false;
@@ -350,8 +360,8 @@ public class GameManager : MonoBehaviour
 
             for (int x = minX + 1; x < maxX; x++)
             {
-                var midSeat = a.groupOfSeat.seatsInGroup.Find(s =>
-                    s.gridPosition == new Vector2Int(x, a.gridPosition.y)
+                var midSeat = a.groupOfSeat.seatsInGroup.Find(
+                    s => s.gridPosition == new Vector2Int(x, a.gridPosition.y)
                 );
                 if (midSeat != null && !midSeat.IsEmpty)
                     return false;

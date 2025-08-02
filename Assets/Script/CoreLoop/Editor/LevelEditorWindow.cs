@@ -10,7 +10,13 @@ public class LevelEditorWindow : EditorWindow
     private int columns = 6;
     private int groupWidth = 3;
     private int groupHeight = 1;
+    private float horizontalSpacing = 1.2f;
+    private float verticalSpacing = 2.0f; // Default value, can be adjusted in the editor
     private GameObject[] capybaraPrefabs;
+    private GameObject[] environmentPrefabs;
+    private int selectedEnvironmentIndex = 0;
+    private GameObject selectedEnvironmentPrefab;
+
     private int selectedCapybaraIndex = 0; // Dropdown için index
     private CapybaraColors colorPaletteAsset;
     private int selectedColorIndex = 0;
@@ -29,7 +35,7 @@ public class LevelEditorWindow : EditorWindow
 
     private Vector2 scrollPosition;
 
-    private bool isTemporary = true;
+    //private bool isTemporary = true;
     private List<GameObject> placedCapybaras = new List<GameObject>();
 
     [MenuItem("LevelDesign/Level Editor")]
@@ -40,7 +46,7 @@ public class LevelEditorWindow : EditorWindow
 
     void OnDisable()
     {
-        if (isTemporary)
+        //if (isTemporary)
         {
             EditorApplication.delayCall += () =>
             {
@@ -54,6 +60,13 @@ public class LevelEditorWindow : EditorWindow
         // Resources/Capybaras klasöründeki tüm Capybara prefabs'larını al
         capybaraPrefabs = Resources.LoadAll<GameObject>("Capybaras");
         colorPaletteAsset = Resources.Load<CapybaraColors>("CapybaraColors");
+        environmentPrefabs = Resources.LoadAll<GameObject>("Level");
+
+        if (environmentPrefabs.Length > 0)
+        {
+            selectedEnvironmentPrefab = environmentPrefabs[0];
+        }
+
 
         // Eğer Capybara prefab'ları varsa, ilkini varsayılan olarak seç
         if (capybaraPrefabs.Length > 0)
@@ -72,6 +85,25 @@ public class LevelEditorWindow : EditorWindow
         columns = EditorGUILayout.IntField("Columns", columns);
         groupWidth = EditorGUILayout.IntField("Group Width", groupWidth);
         groupHeight = EditorGUILayout.IntField("Group Height", groupHeight);
+        horizontalSpacing = EditorGUILayout.FloatField("Horizontal Spacing", horizontalSpacing);
+        verticalSpacing = EditorGUILayout.FloatField("Vertical Spacing", verticalSpacing);
+
+        GUILayout.Space(10);
+        GUILayout.Label("Environment Prefab", EditorStyles.boldLabel);
+
+        if (environmentPrefabs != null && environmentPrefabs.Length > 0)
+        {
+            // Create dropdown from prefab names
+            string[] prefabNames = environmentPrefabs.Select(prefab => prefab.name).ToArray();
+            selectedEnvironmentIndex = EditorGUILayout.Popup("Select Environment", selectedEnvironmentIndex, prefabNames);
+
+            selectedEnvironmentPrefab = environmentPrefabs[selectedEnvironmentIndex];
+        }
+        else
+        {
+            GUILayout.Label("No environment prefabs found in Resources/Level folder!");
+        }
+
 
         // Slider ile cellSize kontrolü
         GUILayout.Label("Cell Size", EditorStyles.boldLabel);
@@ -143,7 +175,7 @@ public class LevelEditorWindow : EditorWindow
         {
             ExportLevel(levelName, difficulty, isLocked);
         }
-        isTemporary = EditorGUILayout.Toggle("Is Temporary", isTemporary);
+        //isTemporary = EditorGUILayout.Toggle("Is Temporary", isTemporary);
 
         // Eğer grid oluşturulduysa grid'i görselleştir
         if (isGridGenerated)
@@ -199,6 +231,8 @@ public class LevelEditorWindow : EditorWindow
         gridSystem.columns = columns;
         gridSystem.groupWidth = groupWidth;
         gridSystem.groupHeight = groupHeight;
+        gridSystem.horizontalSpacing = horizontalSpacing;
+        gridSystem.verticalSpacing = verticalSpacing;
 
         // Grid'i oluştur
         gridSystem.GenerateGrid();
@@ -222,6 +256,8 @@ public class LevelEditorWindow : EditorWindow
             gridSystem.columns = columns;
             gridSystem.groupWidth = groupWidth;
             gridSystem.groupHeight = groupHeight;
+            gridSystem.horizontalSpacing = horizontalSpacing;
+            gridSystem.verticalSpacing = verticalSpacing;
 
             isGridGenerated = true;
         }
@@ -323,6 +359,9 @@ public class LevelEditorWindow : EditorWindow
         newLevel.columns = columns;
         newLevel.groupWidth = groupWidth;
         newLevel.groupHeight = groupHeight;
+        newLevel.horizontalSpacing = horizontalSpacing;
+        newLevel.verticalSpacing = verticalSpacing;
+        newLevel.levelEnvironment = selectedEnvironmentPrefab;
 
         // Grid ve Capybara bilgilerini al
         List<LevelData.CapybaraInfo> capybaras = new();

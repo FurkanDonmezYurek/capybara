@@ -43,15 +43,24 @@ public class LevelManager : MonoBehaviour
 
         GameManager.Instance.ClearCapybaraGroupCache();
         GameManager.Instance.ClearSeatGroupCache();
+        // Destroy gameobjects tagged with "LevelEnvironment" in scene
+        GameObject[] existingEnvironments = GameObject.FindGameObjectsWithTag("LevelEnvironment");
+        foreach (GameObject env in existingEnvironments)
+        {
+            Destroy(env);
+        }
+        Instantiate(level.levelEnvironment, Vector3.zero, Quaternion.Euler(0, 180, 0)); // Rotate to face the camera
 
         gridSystem.ClearGrid();
         gridSystem.SetGridParameters(
             level.rows,
             level.columns,
             level.groupWidth,
-            level.groupHeight
+            level.groupHeight,
+            level.horizontalSpacing,
+            level.verticalSpacing
         );
-        gridSystem.GenerateGrid();
+        gridSystem.GenerateGrid(); // This also sets grid position to environment grid spawn point (this is a game object with "GridSpawn" tag)
         gridSystem.InitPathGrid();
 
         foreach (var capyInfo in level.capybaras)

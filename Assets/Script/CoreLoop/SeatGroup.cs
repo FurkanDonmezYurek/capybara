@@ -26,8 +26,7 @@ public class SeatGroup : MonoBehaviour
         if (distinctColors.Count() == 1)
         {
             LockGroup();
-            Color matchedColor = seatsInGroup[0].currentCapybara.color;
-            TryUnfreezeVerticalNeighbors(matchedColor);
+            TryUnfreezeVerticalNeighbors();
         }
     }
 
@@ -40,10 +39,12 @@ public class SeatGroup : MonoBehaviour
         foreach (var seat in seatsInGroup)
             seat.currentCapybara?.Lock();
 
+        AudioManager.Instance.PlaySFX("Match");
         //koltuk kilitlendi efekti atacaz...
     }
 
-    private void TryUnfreezeVerticalNeighbors(Color matchingColor)
+    // Bu metot, dikey komşu gruplardaki kapybaraları serbest bırakır
+    private void TryUnfreezeVerticalNeighbors()
     {
         foreach (var group in GameManager.Instance.GetCachedSeatGroups())
         {
@@ -58,9 +59,10 @@ public class SeatGroup : MonoBehaviour
                     var capy = seat.currentCapybara;
                     Debug.Log("Capybara name: " + (capy != null ? capy.name : "null"));
                     Debug.Log("IsFrozen: " + (capy != null ? capy.IsFrozen : "null"));
-                    if (capy != null && capy.IsFrozen && capy.color == matchingColor)
+                    if (capy != null && capy.IsFrozen)
                     {
                         capy.Unfreeze();
+                        AudioManager.Instance.PlaySFX("Unfreeze");
                     }
                 }
             }

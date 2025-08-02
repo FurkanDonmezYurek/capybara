@@ -3,8 +3,8 @@ using UnityEngine;
 public class LevelCheckpoint : MonoBehaviour
 {
     public bool isOpen = false;
-    public Color openColor = Color.white;
-    public Color closedColor = Color.gray;
+    public Material openMaterial;
+    public Material closedMaterial;
     [SerializeField] private MeshRenderer visualRenderer;
 
     public int vehicleTypeIndex;
@@ -21,7 +21,7 @@ public class LevelCheckpoint : MonoBehaviour
     {
         if (visualRenderer != null)
         {
-            visualRenderer.material.color = isOpen ? openColor : closedColor;
+            visualRenderer.material = isOpen ? openMaterial : closedMaterial;
         }
     }
 }

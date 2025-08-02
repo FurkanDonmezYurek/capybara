@@ -36,8 +36,12 @@ public class VehicleSplineController : MonoBehaviour
         }
 
         vehicleManager.VehicleSelect(levelCheckpoints[targetCheckpointIndex].vehicleTypeIndex);
-
-        StartFromNearestSplinePoint(levelCheckpoints[targetCheckpointIndex].transform);
+        int lastCheckPoint = 0;
+        if (targetCheckpointIndex > 0)
+        {
+            lastCheckPoint = targetCheckpointIndex - 1;
+            StartFromNearestSplinePoint(levelCheckpoints[lastCheckPoint].transform);
+        }
     }
 
     public void StartFromNearestSplinePoint(Transform target)
@@ -62,11 +66,11 @@ public class VehicleSplineController : MonoBehaviour
 
         // En yakın spline pozisyonunu al
         Vector3 closestPoint = SplineUtility.EvaluatePosition(spline, closestT);
-        target.position = closestPoint;
+        //target.position = closestPoint;
 
         // SplineAnimate’i o noktadan başlat
         splineAnimate.NormalizedTime = closestT;
-        splineAnimate.Pause();
+        splineAnimate.Play();
 
         Camera.main.transform.DOMove(new Vector3(transform.position.x, transform.position.y + 20, transform.position.z - 10), 0.25f);
     }
@@ -87,13 +91,8 @@ public class VehicleSplineController : MonoBehaviour
             {
                 checkpoint.isOpen = true;
                 checkpoint.UpdateVisual();
-
-                if (currentCheckpointIndex >= targetCheckpointIndex)
-                {
-                    PauseMovement();
-                }
-                currentCheckpointIndex++;
-                vehicleManager.VehicleSelect(levelCheckpoints[currentCheckpointIndex-1].vehicleTypeIndex);
+                PauseMovement();
+                vehicleManager.VehicleSelect(levelCheckpoints[targetCheckpointIndex].vehicleTypeIndex);
             }
         }
     }
