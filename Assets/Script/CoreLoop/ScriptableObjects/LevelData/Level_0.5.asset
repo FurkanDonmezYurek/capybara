@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c6aee26f58974152871384824b50d21, type: 3}
   m_Name: Level_0.5
   m_EditorClassIdentifier: 
-  levelName: Level_0.5
+  levelName: New Level
   levelEnvironment: {fileID: 4032674522607261397, guid: a1dc55d5e566bf24b8c3c67f37611ed1,
     type: 3}
   difficulty: 0
-  levelTime: 120
+  levelTime: 46
   isLocked: 0
   rows: 2
   columns: 4
@@ -34,7 +34,7 @@ MonoBehaviour:
     isFrozen: 0
     color: {r: 0.9031561, g: 0.972549, b: 0.07058822, a: 0}
   - gridPosition: {x: 2, y: 0}
-    type: 2
+    type: 0
     isFrozen: 0
     color: {r: 0, g: 0.0004093647, b: 1, a: 0}
   - gridPosition: {x: 3, y: 0}
@@ -46,6 +46,6 @@ MonoBehaviour:
     isFrozen: 0
     color: {r: 0, g: 1, b: 0.79420686, a: 0}
   - gridPosition: {x: 1, y: 0}
-    type: 2
+    type: 0
     isFrozen: 1
     color: {r: 0, g: 0.0004093647, b: 1, a: 0}
