@@ -19,6 +19,8 @@ public class IdleUIManager : MonoBehaviour
     [SerializeField] private Button playButton;
     [SerializeField] private Transform playButtonTransform;
     [SerializeField] private Button closeButton;
+    [SerializeField] private Image regionLoopIconImage;
+    [SerializeField] private RectTransform regionLoopIconTransform;
 
     [Header("Coin Buy Panel")]
     [SerializeField] private RectTransform currencyPanel;
@@ -74,6 +76,7 @@ public class IdleUIManager : MonoBehaviour
     [SerializeField] private RectTransform rightCloud;
 
     private Tween coinTween;
+    private Tween loopTween;
     private int selectedLevelIndex;
     private bool isSoundOn;
     private bool isVibrationOn;
@@ -144,6 +147,8 @@ public class IdleUIManager : MonoBehaviour
         startLevelPanel.SetActive(true);
         startLevelCG.alpha = 0f;
 
+        StartLoopVehicleIconAnimation(selectedLevelIndex / 5);
+
         UIAnimator.FadeIn(startLevelCG);
         UIAnimator.MoveFromY(header, 200f, 0.4f, Ease.OutBack, 0f);
         UIAnimator.ScaleIn(levelImage, 0.4f, 0.1f);
@@ -167,6 +172,38 @@ public class IdleUIManager : MonoBehaviour
     {
         return startLevelPanel.activeSelf;
     }
+    public void StartLoopVehicleIconAnimation(int regionIndex)
+    {
+        if (regionIndex < regionSprites.Count)
+            regionLoopIconImage.sprite = regionSprites[regionIndex];
+        else
+            regionLoopIconImage.sprite = null;
+
+        regionLoopIconImage.DOFade(1f, 0.5f);
+
+        if (loopTween != null && loopTween.IsActive())
+            loopTween.Kill();
+
+        float distance = 150f; 
+        float duration = 5f;
+
+        RectTransform rt = regionLoopIconTransform;
+
+        rt.anchoredPosition = new Vector2(-distance, rt.anchoredPosition.y);
+        rt.localRotation = Quaternion.Euler(0, 180f, 0); 
+
+        loopTween = DOTween.Sequence()
+            .AppendCallback(() => rt.localRotation = Quaternion.Euler(0, 180f, 0)) 
+            .Append(
+                rt.DOAnchorPosX(distance, duration).SetEase(Ease.InOutSine)
+            )
+            .AppendCallback(() => rt.localRotation = Quaternion.Euler(0, 0f, 0)) 
+            .Append(
+                rt.DOAnchorPosX(-distance, duration).SetEase(Ease.InOutSine)
+            )
+            .SetLoops(-1);
+    }
+
     #endregion
 
     #region === Settings ===
