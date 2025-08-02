@@ -17,12 +17,23 @@ public class VehicleManager : MonoBehaviour
         else
             Destroy(gameObject);
     }
-
-    private void OnMouseDown()
+    private void Update()
     {
-        if (!IdleUIManager.Instance.PanelActived())
+        if (Input.GetMouseButtonDown(0)) // PC ve mobilde geçerli
         {
-            IdleUIManager.Instance.OpenStartLevelPanel();
+            Vector2 touchPos = Input.mousePosition;
+            Ray ray = Camera.main.ScreenPointToRay(touchPos);
+
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if (hit.transform == transform)
+                {
+                    if (!IdleUIManager.Instance.PanelActived())
+                    {
+                        IdleUIManager.Instance.OpenStartLevelPanel();
+                    }
+                }
+            }
         }
     }
     public void VehicleSelect(int VehicleIndex)
