@@ -147,7 +147,7 @@ Transform:
   m_GameObject: {fileID: 78148379}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21.2, y: 0, z: 70.4}
+  m_LocalPosition: {x: 2.6, y: 0, z: 77.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -165,16 +165,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level Check Point
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 100.00001
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -226,16 +216,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
       objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: vehicleTypeIndex
-      value: 3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -279,7 +259,6 @@ Transform:
   m_Children:
   - {fileID: 543450651991469532}
   - {fileID: 416085396}
-  - {fileID: 1265012051}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &99497002
@@ -325,11 +304,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level Check Point
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -381,16 +355,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
       objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: levelIndex
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -427,7 +391,7 @@ Transform:
   m_GameObject: {fileID: 202801860}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.5, y: 0, z: 15.9}
+  m_LocalPosition: {x: 18.77, y: 0, z: 86.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -445,16 +409,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level Check Point
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 99.99999
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -506,11 +460,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
       objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -559,7 +508,7 @@ Transform:
   m_GameObject: {fileID: 277232177}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 57.9}
+  m_LocalPosition: {x: 13.8, y: 0, z: 18.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -577,21 +526,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level Check Point
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 100.00002
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 100.00001
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -643,16 +577,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
       objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: vehicleTypeIndex
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -676,16 +600,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level Check Point
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 100.00003
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -736,16 +650,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: vehicleTypeIndex
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3010,16 +2914,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.8570812
       objectReference: {fileID: 0}
@@ -3067,16 +2961,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: vehicleTypeIndex
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3216,6 +3100,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 416085396}
+  - component: {fileID: 416085397}
   m_Layer: 0
   m_Name: Move Targets
   m_TagString: Untagged
@@ -3246,6 +3131,32 @@ Transform:
   - {fileID: 1870731173}
   m_Father: {fileID: 99497001}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &416085397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416085395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 191df39361d7b764ebe5c65c41eca935, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  capybaraPrefab: {fileID: 8305335921210198510, guid: c71ba54c822302441a32cd1260e625df,
+    type: 3}
+  totalCapybaras: 25
+  minSpawnDelay: 2
+  maxSpawnDelay: 5
+  moveTargets:
+  - {fileID: 1475457938}
+  - {fileID: 277232178}
+  - {fileID: 1388057061}
+  - {fileID: 1787084499}
+  - {fileID: 78148380}
+  - {fileID: 1391591772}
+  - {fileID: 202801861}
+  - {fileID: 1870731173}
 --- !u!1001 &456476789
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3258,11 +3169,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level Check Point
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -3314,16 +3220,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
       objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: vehicleTypeIndex
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3347,16 +3243,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level Check Point
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 100.00001
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -3408,16 +3294,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
       objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: levelIndex
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3453,21 +3329,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level Check Point
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 100.00003
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 100.000015
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -3519,11 +3380,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
       objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3559,16 +3415,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level Check Point
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 99.99999
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -3619,16 +3465,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: vehicleTypeIndex
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3741,11 +3577,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: 16.69803
       objectReference: {fileID: 0}
@@ -3793,16 +3624,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: vehicleTypeIndex
-      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4065,8 +3886,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.9833906, y: 6.9302173, z: 8.167779}
-  m_Center: {x: 0.022584245, y: 2.9651086, z: -4.06222}
+  m_Size: {x: 3.9833906, y: 6.9302173, z: 0.8858065}
+  m_Center: {x: 0.022584269, y: 2.9651086, z: -3.0860345}
 --- !u!208 &1095523026
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -4095,16 +3916,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level Check Point
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 99.99999
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -4156,16 +3967,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
       objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: vehicleTypeIndex
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4201,64 +4002,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07173634a9d05ea429d230e9334d07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1265012050
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1265012051}
-  - component: {fileID: 1265012052}
-  m_Layer: 0
-  m_Name: 'CapybaraSpawner '
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!4 &1265012051
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1265012050}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.45, y: -0.3000002, z: -120.35}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 99497001}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1265012052
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1265012050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 191df39361d7b764ebe5c65c41eca935, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  capybaraPrefab: {fileID: 8305335921210198510, guid: c71ba54c822302441a32cd1260e625df,
-    type: 3}
-  totalCapybaras: 25
-  minSpawnDelay: 4
-  maxSpawnDelay: 5
-  moveTargets:
-  - {fileID: 1475457938}
-  - {fileID: 277232178}
-  - {fileID: 1388057061}
-  - {fileID: 1787084499}
-  - {fileID: 78148380}
-  - {fileID: 1391591772}
-  - {fileID: 202801861}
-  - {fileID: 1870731173}
 --- !u!1001 &1308723526
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4271,16 +4014,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level Check Point
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 100.00001
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -4332,16 +4065,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
       objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: vehicleTypeIndex
-      value: 3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4378,7 +4101,7 @@ Transform:
   m_GameObject: {fileID: 1388057060}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 90.1}
+  m_LocalPosition: {x: 10, y: 0, z: 27.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4409,7 +4132,7 @@ Transform:
   m_GameObject: {fileID: 1391591771}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21.2, y: 0, z: 52.2}
+  m_LocalPosition: {x: 22.93, y: 0, z: 81.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4427,11 +4150,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level Check Point
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -4483,16 +4201,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
       objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: vehicleTypeIndex
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4541,7 +4249,7 @@ Transform:
   m_GameObject: {fileID: 1475457937}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 34.4}
+  m_LocalPosition: {x: -8.5, y: 0, z: 7.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4559,11 +4267,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level Check Point
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -4614,16 +4317,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: vehicleTypeIndex
-      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4684,6 +4377,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Zeppelin
+      objectReference: {fileID: 0}
+    - target: {fileID: 1391362570675356622, guid: c3f9f00d0744a884ea46178fa93ecdb7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8790599979068174986, guid: c3f9f00d0744a884ea46178fa93ecdb7,
         type: 3}
@@ -4767,11 +4465,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.014818
       objectReference: {fileID: 0}
@@ -4819,16 +4512,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: vehicleTypeIndex
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4923,7 +4606,7 @@ Transform:
   m_GameObject: {fileID: 1787084498}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21.2, y: 0, z: 90.1}
+  m_LocalPosition: {x: 2.2, y: 0, z: 30.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4941,16 +4624,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level Check Point
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 100.00002
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -5001,16 +4674,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: vehicleTypeIndex
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5178,7 +4841,7 @@ Transform:
   m_GameObject: {fileID: 1870731172}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.95, y: 0, z: 3.68}
+  m_LocalPosition: {x: 22.45, y: 0, z: 89.21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5272,11 +4935,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: 13.337744
       objectReference: {fileID: 0}
@@ -5325,16 +4983,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
       objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: vehicleTypeIndex
-      value: 3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5370,11 +5018,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level Check Point
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -5426,16 +5069,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
       objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: vehicleTypeIndex
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5471,16 +5104,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level Check Point
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 100.00001
-      objectReference: {fileID: 0}
-    - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 19.7
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -5531,11 +5154,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 153.146
-      objectReference: {fileID: 0}
-    - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
-        type: 3}
-      propertyPath: isOpen
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6734,7 +6352,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1329380250192638101
 Transform:
   m_ObjectHideFlags: 0
@@ -7070,6 +6688,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Train
       objectReference: {fileID: 0}
+    - target: {fileID: 4092459164547410193, guid: f08fde82d2fac9e4a8f64f81a106f451,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7916876894758067241, guid: f08fde82d2fac9e4a8f64f81a106f451,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7078,12 +6701,12 @@ PrefabInstance:
     - target: {fileID: 7916876894758067241, guid: f08fde82d2fac9e4a8f64f81a106f451,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.31
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7916876894758067241, guid: f08fde82d2fac9e4a8f64f81a106f451,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.05
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 7916876894758067241, guid: f08fde82d2fac9e4a8f64f81a106f451,
         type: 3}
@@ -8298,12 +7921,12 @@ PrefabInstance:
     - target: {fileID: 1270412367096129555, guid: bb4faa77c10da104b8767bd09b85136a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.59
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1270412367096129555, guid: bb4faa77c10da104b8767bd09b85136a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.61
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1270412367096129555, guid: bb4faa77c10da104b8767bd09b85136a,
         type: 3}
@@ -8344,6 +7967,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Bus
+      objectReference: {fileID: 0}
+    - target: {fileID: 6265929164285768736, guid: bb4faa77c10da104b8767bd09b85136a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8540,7 +8168,7 @@ Transform:
   m_GameObject: {fileID: 1301221404402724053}
   serializedVersion: 2
   m_LocalRotation: {x: 0.000000090022965, y: 0.000000036683513, z: 0.3948091, w: 0.9187632}
-  m_LocalPosition: {x: -0.00018533468, y: -0.018064728, z: 0.0028174222}
+  m_LocalPosition: {x: -0.00016, y: -0.01804, z: 0.00282}
   m_LocalScale: {x: 0.26160267, y: 0.26160267, z: 0.20546421}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10149,6 +9777,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wagon
       objectReference: {fileID: 0}
+    - target: {fileID: 2722543677666654761, guid: 172cb5cb8f85d7349a116e6edfa28e06,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8765219350014980031, guid: 172cb5cb8f85d7349a116e6edfa28e06,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10162,7 +9795,7 @@ PrefabInstance:
     - target: {fileID: 8765219350014980031, guid: 172cb5cb8f85d7349a116e6edfa28e06,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8765219350014980031, guid: 172cb5cb8f85d7349a116e6edfa28e06,
         type: 3}
@@ -10359,12 +9992,12 @@ PrefabInstance:
     - target: {fileID: 6943437807291487143, guid: e7f26dda012ac664b87a8f0f0c5a862f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.55
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6943437807291487143, guid: e7f26dda012ac664b87a8f0f0c5a862f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.98
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 6943437807291487143, guid: e7f26dda012ac664b87a8f0f0c5a862f,
         type: 3}
@@ -10405,6 +10038,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Ship
+      objectReference: {fileID: 0}
+    - target: {fileID: 9190218124944398700, guid: e7f26dda012ac664b87a8f0f0c5a862f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12110,7 +11748,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &8714700344932593057
 GameObject:
   m_ObjectHideFlags: 0

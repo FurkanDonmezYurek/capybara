@@ -51,15 +51,15 @@ public class UIManager : MonoBehaviour
 
     [Header("Vehicle Unlock Progress")]
     [SerializeField] private GameObject vehicleProgressRoot;
-    [SerializeField] private CanvasGroup vehicleProgressCG; 
-    [SerializeField] private Transform vehicleProgressScaleTarget; 
+    [SerializeField] private CanvasGroup vehicleProgressCG;
+    [SerializeField] private Transform vehicleProgressScaleTarget;
     [SerializeField] private Image vehicleBGImage;
     [SerializeField] private Image vehicleFillImage;
-    [SerializeField] private List<Sprite> vehicleBGs; 
+    [SerializeField] private List<Sprite> vehicleBGs;
     [SerializeField] private List<Sprite> vehicleFillSprites;
     [SerializeField] private Image vehicleProgressBarFillImage;
     [SerializeField] private TextMeshProUGUI vehicleProgressText;
-    [SerializeField] private int levelsPerVehicle = 5; 
+    [SerializeField] private int levelsPerVehicle = 5;
 
 
     #endregion
@@ -157,8 +157,8 @@ public class UIManager : MonoBehaviour
     [Header("Coin Fly Effect")]
     [SerializeField] private GameObject coinFlyPrefab;
     [SerializeField] private Transform coinFlyLastPosition;
-    [SerializeField] private Transform coinFlyTarget;  
-    [SerializeField] private int coinFlyCount = 5;    
+    [SerializeField] private Transform coinFlyTarget;
+    [SerializeField] private int coinFlyCount = 5;
     [SerializeField] private float coinFlyInterval = 0.075f;
     [SerializeField] private float coinFlyDuration = 1f;
     #endregion
@@ -202,7 +202,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateCoin(int amount)
     {
-        AnimateCoinChange(amount); 
+        AnimateCoinChange(amount);
     }
 
     public void UpdateLevel(int level)
@@ -261,7 +261,7 @@ public class UIManager : MonoBehaviour
 
         if (boosterPanel.activeSelf)
         {
-            for (int i = 0;i< boosterHeader.Length; i++)
+            for (int i = 0; i < boosterHeader.Length; i++)
             {
                 HidePanelWithAnimation(boosterCG, boosterHeader[i], boosterPanel);
             }
@@ -305,7 +305,7 @@ public class UIManager : MonoBehaviour
         vehicleProgressCG.alpha = 0f;
         vehicleProgressScaleTarget.localScale = Vector3.one * 0.8f;
 
-        levelCompleteNextButton.localScale = Vector3.zero; 
+        levelCompleteNextButton.localScale = Vector3.zero;
 
         UIAnimator.FadeIn(levelCompleteCG);
         UIAnimator.ScaleIn(levelCompleteHeader);
@@ -313,16 +313,17 @@ public class UIManager : MonoBehaviour
 
         DOTween.Sequence()
             .Append(levelCompleteCoinIcon.DOScale(1f, 0.4f).From(0f).SetEase(Ease.OutBack))
-            .AppendInterval(0.3f) 
+            .AppendInterval(0.5f)
             .Append(levelCompleteCoinIcon.DOScale(0f, 0.3f).SetEase(Ease.InBack))
-            .AppendCallback(() => {
+            .AppendCallback(() =>
+            {
                 vehicleProgressRoot.SetActive(true);
                 UpdateVehicleProgress(currentLevel + 1);
             })
             .Append(vehicleProgressCG.DOFade(1f, 0.4f))
             .Join(vehicleProgressScaleTarget.DOScale(1f, 0.4f).SetEase(Ease.OutBack))
             .AppendInterval(0.3f)
-            .Append(levelCompleteNextButton.DOScale(1f, 0.4f).SetEase(Ease.OutBack)); 
+            .Append(levelCompleteNextButton.DOScale(1f, 0.4f).SetEase(Ease.OutBack));
     }
 
     public void ShowLevelFail()
@@ -428,7 +429,7 @@ public class UIManager : MonoBehaviour
 
             UIAnimator.ScaleIn(boosterHeader[0]);
             UIAnimator.ScaleIn(boosterIcon[0], 0.3f, 0.2f);
-            UIAnimator.MoveFromX(boosterText[0], -1000, 0.3f, Ease.OutExpo, 0.4f); 
+            UIAnimator.MoveFromX(boosterText[0], -1000, 0.3f, Ease.OutExpo, 0.4f);
         }
         else
         {
@@ -513,7 +514,7 @@ public class UIManager : MonoBehaviour
             seq.Join(boosterUnlockedCG.transform.DOScale(0.8f, 0.3f));
             seq.OnComplete(() => boosterUnlockedPanel.SetActive(false));
         }
-        
+
     }
 
     public void ShowPlayOnPanel()
@@ -817,7 +818,7 @@ public class UIManager : MonoBehaviour
 
         CurrencyManager.Instance.AddCoin(coinAmount);
 
-        PlayCoinFlyEffect(new Vector3(2.5f,-4,0));
+        PlayCoinFlyEffect(new Vector3(2.5f, -4, 0));
 
         HideAllPanels();
     }
@@ -885,7 +886,7 @@ public class UIManager : MonoBehaviour
         if (coinCurrencyPanelTween != null && coinCurrencyPanelTween.IsActive())
             coinCurrencyPanelTween.Kill();
 
-        currencyPanel.localScale = new Vector3 (0.8f,0.8f,0.8f);
+        currencyPanel.localScale = new Vector3(0.8f, 0.8f, 0.8f);
 
         coinCurrencyPanelTween = currencyPanel.DOScale(0.9f, 0.1f)
             .SetEase(Ease.OutQuad)
@@ -912,8 +913,8 @@ public class UIManager : MonoBehaviour
 
         UpdateSoundToggleVisual();
         UpdateVibrationToggleVisual();
-         
-   
+
+
     }
 
     public void ToggleSound()
@@ -957,7 +958,7 @@ public class UIManager : MonoBehaviour
     {
         int LevelIndex = PlayerPrefs.GetInt("Level", 0);
         LevelIndex++;
-        PlayerPrefs.SetInt("Level",LevelIndex);
+        PlayerPrefs.SetInt("Level", LevelIndex);
         PlayCloudCloseTransition(0);
     }
     public void ReturnIdleScene()

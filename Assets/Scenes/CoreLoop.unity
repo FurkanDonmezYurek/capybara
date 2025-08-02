@@ -591,9 +591,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1371797669}
-  - component: {fileID: 1371797668}
   - component: {fileID: 1371797667}
   - component: {fileID: 1371797666}
+  - component: {fileID: 1371797670}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -793,22 +793,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1371797668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1371797665}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83be09cf4c32dc04aacefb518f81dc6b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  musicSource: {fileID: 1371797667}
-  sfxSource: {fileID: 1371797666}
-  musicClips: []
-  sfxClips: []
 --- !u!4 &1371797669
 Transform:
   m_ObjectHideFlags: 0
@@ -824,6 +808,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1371797670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371797665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83be09cf4c32dc04aacefb518f81dc6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicSource: {fileID: 1371797667}
+  sfxSource: {fileID: 1371797666}
+  musicClips:
+  - name: PuzzleTrack
+    clip: {fileID: 8300000, guid: 89796e617bfa5a64c9b3423b357649f2, type: 3}
+  - name: IdleTrack
+    clip: {fileID: 8300000, guid: 27ae1c388058f92499783d43293edf51, type: 3}
+  sfxClips:
+  - name: CapybaraClick
+    clip: {fileID: 8300000, guid: 866f029a4f40f854c9b26e2035a067fa, type: 3}
+  - name: Match
+    clip: {fileID: 8300000, guid: 81d50703c5b527c43a48efea86fa8868, type: 3}
+  - name: LevelComplete
+    clip: {fileID: 8300000, guid: ef8680878c1feb7478f818f26f8874ec, type: 3}
+  - name: GameOver
+    clip: {fileID: 8300000, guid: 14e4c11ee0472c1439817025ce7db7b0, type: 3}
+  - name: Unfreeze
+    clip: {fileID: 8300000, guid: 5b80da9eea16123449fb864eac680934, type: 3}
 --- !u!1001 &2042082382
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -39,6 +39,7 @@ public class SeatGroup : MonoBehaviour
         foreach (var seat in seatsInGroup)
             seat.currentCapybara?.Lock();
 
+        AudioManager.Instance.PlaySFX("Match");
         //koltuk kilitlendi efekti atacaz...
     }
 
@@ -61,6 +62,7 @@ public class SeatGroup : MonoBehaviour
                     if (capy != null && capy.IsFrozen)
                     {
                         capy.Unfreeze();
+                        AudioManager.Instance.PlaySFX("Unfreeze");
                     }
                 }
             }
