@@ -288,6 +288,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowLevelComplete()
     {
+        ParticleManager.Instance.Play(ParticleType.Confetti,Vector3.zero);
         BuyCoins(100);
 
         if (GameTimerManager.Instance.isFrozen)

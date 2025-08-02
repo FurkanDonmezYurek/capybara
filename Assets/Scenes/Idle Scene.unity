@@ -3487,7 +3487,7 @@ Transform:
   m_GameObject: {fileID: 764319000}
   serializedVersion: 2
   m_LocalRotation: {x: -0.6830127, y: 0.18301274, z: 0.18301274, w: 0.6830127}
-  m_LocalPosition: {x: 0, y: 14.7, z: 66.4}
+  m_LocalPosition: {x: 0, y: 0, z: 61}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -4057,7 +4057,7 @@ Transform:
   m_GameObject: {fileID: 1263341232}
   serializedVersion: 2
   m_LocalRotation: {x: -0.6830127, y: -0.18301266, z: -0.18301266, w: 0.6830127}
-  m_LocalPosition: {x: 0, y: 14.7, z: 66.4}
+  m_LocalPosition: {x: 0, y: 0, z: 61}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -8126,6 +8126,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819667881709351208, guid: bb4faa77c10da104b8767bd09b85136a,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.6226415
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819667881709351208, guid: bb4faa77c10da104b8767bd09b85136a,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.6226415
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819667881709351208, guid: bb4faa77c10da104b8767bd09b85136a,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.6226415
       objectReference: {fileID: 0}
     - target: {fileID: 6265929164285768736, guid: bb4faa77c10da104b8767bd09b85136a,
         type: 3}
