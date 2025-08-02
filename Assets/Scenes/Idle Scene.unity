@@ -27124,6 +27124,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: IdleCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 6499250841203318310, guid: f7b6f67f2db7693418002231c99882d4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -30619,7 +30624,7 @@ PrefabInstance:
     - target: {fileID: 7594808088541980040, guid: 1fa4a9568d2992242b4533ff01d598e4,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8101729827552972526, guid: 1fa4a9568d2992242b4533ff01d598e4,
         type: 3}
