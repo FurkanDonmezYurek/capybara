@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level_0.2
   m_EditorClassIdentifier: 
   levelName: Level_0.2
-  levelEnvironment: {fileID: 4032674522607261397, guid: a1dc55d5e566bf24b8c3c67f37611ed1,
+  levelEnvironment: {fileID: 565749888770946570, guid: 9773ebec963bb4b3cab0023c1b403196,
     type: 3}
   difficulty: 0
   levelTime: 46
