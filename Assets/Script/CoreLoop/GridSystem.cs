@@ -8,7 +8,8 @@ public class GridSystem : MonoBehaviour
     public GameObject seatPrefab;
     public int rows = 7;
     public int columns = 6;
-    public float spacing = 1.2f;
+    public float horizontalSpacing = 1.2f;
+    public float verticalSpacing = 1.2f;
 
     [Header("Grouping Settings")]
     public int groupWidth = 3;
@@ -25,6 +26,17 @@ public class GridSystem : MonoBehaviour
     [ContextMenu("Generate Grid and Groups")] //for run in the editor
     public void GenerateGrid()
     {
+        // Align the grid system with the "GridSpawn" tagged object before spawning seats
+        GameObject gridSpawn = GameObject.FindGameObjectWithTag("GridSpawn");
+        if (gridSpawn != null)
+        {
+            transform.position = gridSpawn.transform.position;
+        }
+        else
+        {
+            Debug.LogWarning("No object with tag 'GridSpawn' found in the scene.");
+        }
+
         var seats = new Seat[columns, rows];
 
         int groupCountX = columns / groupWidth;
@@ -48,7 +60,8 @@ public class GridSystem : MonoBehaviour
                         int y = groupY * groupHeight + dy;
 
                         Vector3 groupOffset = new Vector3(groupX * groupSpacingX, 0, 0);
-                        Vector3 pos = new Vector3(x * spacing, 0, -y * spacing) + groupOffset;
+                        Vector3 pos = new Vector3(x * horizontalSpacing, 0, -y * verticalSpacing) + groupOffset;
+
 
 #if UNITY_EDITOR
                         GameObject obj =
@@ -117,7 +130,7 @@ public class GridSystem : MonoBehaviour
                     columns = x + 1;
 
                 Vector3 groupOffset = new Vector3(groupX * groupSpacingX, 0, 0);
-                Vector3 pos = new Vector3(x * spacing, 0, -y * spacing) + groupOffset;
+                Vector3 pos = new Vector3(x * horizontalSpacing, 0, -y * verticalSpacing) + groupOffset;
 
 #if UNITY_EDITOR
                 GameObject obj =
@@ -178,12 +191,14 @@ public class GridSystem : MonoBehaviour
         return null;
     }
 
-    public void SetGridParameters(int rows, int columns, int groupWidth, int groupHeight)
+    public void SetGridParameters(int rows, int columns, int groupWidth, int groupHeight, float horizontalSpacing = 1.2f, float verticalSpacing = 1.2f)
     {
         this.rows = rows;
         this.columns = columns;
         this.groupWidth = groupWidth;
         this.groupHeight = groupHeight;
+        this.horizontalSpacing = horizontalSpacing;
+        this.verticalSpacing = verticalSpacing;
     }
 
     public void InitPathGrid()

@@ -1124,7 +1124,6 @@ GameObject:
   - component: {fileID: 4008192717027430298}
   - component: {fileID: 4330313249775413232}
   - component: {fileID: 3383455566742042994}
-  - component: {fileID: 8261387384551320261}
   - component: {fileID: 8732216478733245760}
   m_Layer: 0
   m_Name: capybara_child
@@ -1191,27 +1190,6 @@ MonoBehaviour:
   capybaraColorMaterialObject: {fileID: 38694478527596561}
   minMoveInterval: 10
   maxMoveInterval: 20
---- !u!65 &8261387384551320261
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7817169657867875490}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1.315512, z: 1}
-  m_Center: {x: 0, y: 0.6451342, z: 0}
 --- !u!114 &8732216478733245760
 MonoBehaviour:
   m_ObjectHideFlags: 0

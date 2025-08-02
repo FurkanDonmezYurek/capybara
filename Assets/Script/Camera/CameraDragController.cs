@@ -13,6 +13,7 @@ public class CameraDragController : MonoBehaviour
 
     void Update()
     {
+        if (IdleUIManager.Instance.PanelActived()) return;
         if (Input.GetMouseButtonDown(0))
         {
             isDragging = true;

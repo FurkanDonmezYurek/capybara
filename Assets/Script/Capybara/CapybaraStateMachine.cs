@@ -21,7 +21,7 @@ public class CapybaraStateMachine : MonoBehaviour
     protected StateMachine Machine { get; private set; }
     [field: SerializeField]
     public CapybaraAnimation WAnimation { get; set; }
-
+    [field: SerializeField]
     public Animator _animator;
     public void FonksiyonStart()
     {

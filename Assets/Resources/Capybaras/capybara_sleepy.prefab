@@ -1187,7 +1187,6 @@ GameObject:
   - component: {fileID: 4008192717027430298}
   - component: {fileID: 4330313249775413232}
   - component: {fileID: 1276143879561495753}
-  - component: {fileID: 777450587672920958}
   - component: {fileID: 6784135269827970541}
   m_Layer: 0
   m_Name: capybara_sleepy
@@ -1253,27 +1252,6 @@ MonoBehaviour:
   iceCubeVisual: {fileID: 8869353417126897324}
   capybaraColorMaterialObject: {fileID: 1533846357604888944}
   sleepEffect: {fileID: 0}
---- !u!65 &777450587672920958
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7817169657867875490}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1.315512, z: 1}
-  m_Center: {x: 0, y: 0.6451342, z: 0}
 --- !u!114 &6784135269827970541
 MonoBehaviour:
   m_ObjectHideFlags: 0

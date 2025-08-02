@@ -1218,7 +1218,6 @@ GameObject:
   - component: {fileID: 4008192717027430298}
   - component: {fileID: 4330313249775413232}
   - component: {fileID: 4571879282446346017}
-  - component: {fileID: 3094498265120773126}
   - component: {fileID: 1753660782881235699}
   m_Layer: 0
   m_Name: capybara_base
@@ -1280,29 +1279,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   color: {r: 0, g: 0, b: 0, a: 0}
   currentSlot: {fileID: 0}
+  isFrozen: 0
   iceCubeVisual: {fileID: 8190426229298898482}
   capybaraColorMaterialObject: {fileID: 2371689984856056009}
---- !u!65 &3094498265120773126
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7817169657867875490}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1.315512, z: 1}
-  m_Center: {x: 0, y: 0.6451342, z: 0}
 --- !u!114 &1753660782881235699
 MonoBehaviour:
   m_ObjectHideFlags: 0
