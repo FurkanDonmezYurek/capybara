@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // Serializable class to define named audio clips (for dynamic assignment in Inspector)
 [System.Serializable]
@@ -36,6 +37,7 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject); // Persist between scenes
+            SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to scene loaded event
 
             BuildClipDictionaries(); // Convert lists to dictionaries
             LoadMuteSettings(); // Load saved mute settings
@@ -44,6 +46,27 @@ public class AudioManager : MonoBehaviour
         {
             Destroy(gameObject); // Enforce singleton
         }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("Scene Loaded: " + scene.name);
+
+        switch (scene.name)
+        {
+            case "CoreLoop":
+                AudioManager.Instance.PlayMusic("PuzzleTrack");
+                break;
+            case "Idle Scene":
+                AudioManager.Instance.PlayMusic("IdleTrack");
+                break;
+
+        }
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded; // Unsubscribe from scene loaded event
     }
 
     // Convert Inspector clip lists into fast-access dictionaries
