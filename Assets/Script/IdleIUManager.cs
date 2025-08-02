@@ -508,4 +508,8 @@ public class IdleUIManager : MonoBehaviour
         });
     }
     #endregion
+
+    #region === Tutorial ===
+    
+    #endregion
 }
