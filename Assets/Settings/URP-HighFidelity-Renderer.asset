@@ -1,5 +1,19 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-3522162211784622177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 943c5dfe18a3f21499c4fc971aa171b2, type: 3}
+  m_Name: HighlighterRenderFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  renderPassEvent: 550
 --- !u!114 &-1878332245247344467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55,7 +69,8 @@ MonoBehaviour:
   - {fileID: -1878332245247344467}
   - {fileID: 5297155030619286699}
   - {fileID: 6182117927704148035}
-  m_RendererFeatureMap: adc0de57c6d2eee5ab6c3c506f46834943386140804bcb55
+  - {fileID: -3522162211784622177}
+  m_RendererFeatureMap: adc0de57c6d2eee5ab6c3c506f46834943386140804bcb559fff452d21c41ecf
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
