@@ -26,38 +26,38 @@ MonoBehaviour:
   verticalSpacing: 2
   capybaras:
   - gridPosition: {x: 3, y: 1}
-    type: 2
+    type: 0
     isFrozen: 0
     color: {r: 0, g: 1, b: 0.79420686, a: 0}
   - gridPosition: {x: 4, y: 1}
-    type: 2
+    type: 0
     isFrozen: 0
     color: {r: 0, g: 0.0004093647, b: 1, a: 0}
   - gridPosition: {x: 5, y: 1}
-    type: 2
+    type: 0
     isFrozen: 0
     color: {r: 0.9031561, g: 0.972549, b: 0.07058822, a: 0}
   - gridPosition: {x: 0, y: 1}
-    type: 2
+    type: 0
     isFrozen: 1
     color: {r: 0, g: 0.0004093647, b: 1, a: 0}
   - gridPosition: {x: 1, y: 1}
-    type: 2
+    type: 0
     isFrozen: 0
     color: {r: 0, g: 1, b: 0.79420686, a: 0}
   - gridPosition: {x: 2, y: 1}
-    type: 2
+    type: 0
     isFrozen: 0
     color: {r: 0.9031561, g: 0.972549, b: 0.07058822, a: 0}
   - gridPosition: {x: 0, y: 0}
-    type: 2
+    type: 0
     isFrozen: 0
     color: {r: 0, g: 1, b: 0.79420686, a: 0}
   - gridPosition: {x: 1, y: 0}
-    type: 2
+    type: 0
     isFrozen: 0
     color: {r: 0.9031561, g: 0.972549, b: 0.07058822, a: 0}
   - gridPosition: {x: 2, y: 0}
-    type: 2
+    type: 0
     isFrozen: 0
     color: {r: 0, g: 0.0004093647, b: 1, a: 0}
