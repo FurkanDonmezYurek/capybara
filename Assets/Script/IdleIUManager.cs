@@ -119,7 +119,6 @@ public class IdleUIManager : MonoBehaviour
         if (!PlayerPrefs.HasKey("HasSeenIdleTutorial"))
         {
             ShowTutorial();
-            PlayerPrefs.SetInt("HasSeenIdleTutorial", 1);
         }
     }
 
@@ -181,6 +180,10 @@ public class IdleUIManager : MonoBehaviour
         UIAnimator.ScaleIn(levelImage, 0.4f, 0.1f);
         UIAnimator.MoveFromX(selectedLevelText.transform, -800f, 0.4f, Ease.OutExpo, 0.2f);
         UIAnimator.ScaleIn(playButtonTransform, 0.4f, 0.35f);
+        if (!PlayerPrefs.HasKey("HasSeenIdleTutorial"))
+        {
+            PlayerPrefs.SetInt("HasSeenIdleTutorial", 1);
+        }
     }
     private void OnPlayButtonClicked()
     {
@@ -193,6 +196,7 @@ public class IdleUIManager : MonoBehaviour
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
         // TODO: Optional restart animation
+
         PlayCloudCloseTransition();
     }
     public bool PanelActived()
@@ -570,7 +574,7 @@ public class IdleUIManager : MonoBehaviour
     #endregion
 
     #region === Tutorial ===
-    private void ShowTutorial()
+    public void ShowTutorial()
     {
         tutorialActive = true;
 
@@ -601,7 +605,7 @@ public class IdleUIManager : MonoBehaviour
                 .SetUpdate(true));
     }
 
-    private void HideTutorialPanel()
+    public void HideTutorialPanel()
     {
         tutorialActive = false;
 
