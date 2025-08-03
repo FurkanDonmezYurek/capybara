@@ -6606,15 +6606,15 @@ MonoBehaviour:
   regionNames:
   - Forest
   - Desert
-  - Desert
+  - Cave
   - Snow
   - Waterfall
   centerRegionCG: {fileID: 6777954539692098468}
   regionIconImage: {fileID: 4847315003410101223}
   regionSprites:
   - {fileID: 21300000, guid: 5bb8041bf50fc12489e318bae08af87f, type: 3}
-  - {fileID: 21300000, guid: 245b6d326551310409c7870f6cdc375d, type: 3}
   - {fileID: 21300000, guid: 56e1859e91f369f49b46b012d25c5332, type: 3}
+  - {fileID: 21300000, guid: 245b6d326551310409c7870f6cdc375d, type: 3}
   - {fileID: 21300000, guid: 81c6f8df3a309aa4dbefbd96521e6429, type: 3}
   - {fileID: 21300000, guid: 5bb8041bf50fc12489e318bae08af87f, type: 3}
   shopPanel: {fileID: 3171632240833282811}
@@ -6630,6 +6630,7 @@ MonoBehaviour:
   tutorialCircleOffset: {x: 0, y: -330, z: 0}
   fingerImage: {fileID: 1261484201051580777}
   tutorialVerticalOffset: -5
+  isVibrationOn: 0
 --- !u!1 &6511871843107882106
 GameObject:
   m_ObjectHideFlags: 0
