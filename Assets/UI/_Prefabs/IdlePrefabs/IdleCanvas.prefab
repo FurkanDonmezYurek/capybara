@@ -3872,6 +3872,7 @@ GameObject:
   - component: {fileID: 7648752100710148568}
   - component: {fileID: 141932830062125913}
   - component: {fileID: 7578674863040458614}
+  - component: {fileID: 1822706856907443476}
   m_Layer: 5
   m_Name: TutorialBGPanel
   m_TagString: Untagged
@@ -3936,6 +3937,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &1822706856907443476
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3503255034031448535}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &3735893432878891784
 GameObject:
   m_ObjectHideFlags: 0
@@ -6586,8 +6599,8 @@ MonoBehaviour:
   regionIconImage: {fileID: 4847315003410101223}
   regionSprites:
   - {fileID: 21300000, guid: 5bb8041bf50fc12489e318bae08af87f, type: 3}
-  - {fileID: 21300000, guid: 245b6d326551310409c7870f6cdc375d, type: 3}
   - {fileID: 21300000, guid: 56e1859e91f369f49b46b012d25c5332, type: 3}
+  - {fileID: 21300000, guid: 245b6d326551310409c7870f6cdc375d, type: 3}
   - {fileID: 21300000, guid: 81c6f8df3a309aa4dbefbd96521e6429, type: 3}
   - {fileID: 21300000, guid: 5bb8041bf50fc12489e318bae08af87f, type: 3}
   shopPanel: {fileID: 3171632240833282811}
@@ -6596,6 +6609,12 @@ MonoBehaviour:
   cloudTransitionPanel: {fileID: 750679960556016306}
   leftCloud: {fileID: 6380393148010154443}
   rightCloud: {fileID: 2928309761567554829}
+  tutorialPanel: {fileID: 1942298470873133139}
+  tutorialCG: {fileID: 1822706856907443476}
+  tutorialHighlightCircle: {fileID: 1130257207610471407}
+  tutorialFadeDuration: 0.5
+  tutorialDelayBeforeAutoClose: 1.5
+  tutorialCircleOffset: {x: 0, y: -330, z: 0}
 --- !u!1 &6511871843107882106
 GameObject:
   m_ObjectHideFlags: 0
@@ -6705,8 +6724,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5.7, y: -441}
-  m_SizeDelta: {x: 299.625, y: 299.625}
+  m_AnchoredPosition: {x: 0, y: -450}
+  m_SizeDelta: {x: 250, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2100662458882235161
 CanvasRenderer:
