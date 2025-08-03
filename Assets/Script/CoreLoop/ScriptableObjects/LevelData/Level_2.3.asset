@@ -22,8 +22,8 @@ MonoBehaviour:
   columns: 6
   groupWidth: 3
   groupHeight: 1
-  horizontalSpacing: 1.2
-  verticalSpacing: 2
+  horizontalSpacing: 1.3
+  verticalSpacing: 3.5
   capybaras:
   - gridPosition: {x: 3, y: 2}
     type: 0

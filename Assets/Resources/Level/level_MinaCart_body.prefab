@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1759568924376496768}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.85, y: 0, z: 7}
+  m_LocalPosition: {x: 3, y: 0, z: 7}
   m_LocalScale: {x: 1.1999999, y: 1.1999999, z: 1.1999999}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -56,7 +56,7 @@ Transform:
   m_GameObject: {fileID: 3497268586062839109}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.85, y: 0, z: 7}
+  m_LocalPosition: {x: -3, y: 0, z: 7}
   m_LocalScale: {x: 1.1999999, y: 1.1999999, z: 1.1999999}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -118,7 +118,7 @@ Transform:
   m_GameObject: {fileID: 7751031884420719735}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.85, y: 0, z: -3.5}
+  m_LocalPosition: {x: 3, y: 0, z: -3.5}
   m_LocalScale: {x: 1.1999999, y: 1.1999999, z: 1.1999999}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -149,7 +149,7 @@ Transform:
   m_GameObject: {fileID: 8942707810470850468}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.85, y: 0, z: -3.5}
+  m_LocalPosition: {x: -3, y: 0, z: -3.5}
   m_LocalScale: {x: 1.1999999, y: 1.1999999, z: 1.1999999}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -213,6 +213,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7549497731744200012, guid: 7f38fbdc17b6a874db9a832de1cdad8d,
+        type: 3}
+      propertyPath: m_RenderShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7f38fbdc17b6a874db9a832de1cdad8d,
         type: 3}
       propertyPath: m_Name
@@ -255,8 +260,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6187514752696492879, guid: 7f38fbdc17b6a874db9a832de1cdad8d,
         type: 3}
+      propertyPath: m_LocalScale.y
+      value: 206.0034
+      objectReference: {fileID: 0}
+    - target: {fileID: 6187514752696492879, guid: 7f38fbdc17b6a874db9a832de1cdad8d,
+        type: 3}
       propertyPath: m_LocalPosition.y
       value: -2.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6187514752696492879, guid: 7f38fbdc17b6a874db9a832de1cdad8d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -6.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
