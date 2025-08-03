@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("You won! Show win screen here.");
         progressManager.SetMaxReachedLevel(levelManager.GetCurrentLevelIndex());
         UIManager.ShowLevelComplete();
+        ParticleManager.Instance.Play(ParticleType.Confetti,new Vector3(0,5,0));
         // progressManager.AddSoftCurrency(100); // Örnek olarak 100 soft currency ekle
     }
 

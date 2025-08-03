@@ -29,7 +29,6 @@ public class ParticleManager : MonoBehaviour
 
     public void Play(ParticleType type, Vector3 _position)
     {
-        if(_position == Vector3.zero) _position = particles[(int)type].position;
         if (particleDict.TryGetValue(type, out var particle))
         {
             particle.transform.position = _position;

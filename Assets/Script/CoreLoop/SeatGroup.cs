@@ -35,11 +35,11 @@ public class SeatGroup : MonoBehaviour
         Debug.Log("Locking seats in group...");
 
         IsGroupLocked = true;
-
         foreach (var seat in seatsInGroup)
             seat.currentCapybara?.Lock();
 
         AudioManager.Instance.PlaySFX("Match");
+        ParticleManager.Instance.Play(ParticleType.Explosion, seatsInGroup[1].transform.position+new Vector3(0,1.5f,0));
         //koltuk kilitlendi efekti atacaz...
     }
 
