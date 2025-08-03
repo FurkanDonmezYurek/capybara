@@ -1,24 +1,9 @@
 fileFormatVersion: 2
-guid: 7f38fbdc17b6a874db9a832de1cdad8d
+guid: b33359990160d77438d15f5575e2718a
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Atlas_Gradient
-    second: {fileID: 2100000, guid: 47e75eb718de6aa44b0918a5c6a73fd5, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Atlas_Gradient.002
-    second: {fileID: 2100000, guid: 47e75eb718de6aa44b0918a5c6a73fd5, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Atlas_Gradient.003
-    second: {fileID: 2100000, guid: 47e75eb718de6aa44b0918a5c6a73fd5, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

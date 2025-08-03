@@ -11,7 +11,7 @@ public class SeatGroup : MonoBehaviour
 
     public void CheckGroupColor()
     {
-        //Debug.Log("Checking group color for SeatGroup: " + name);
+        Debug.Log("Checking group color for SeatGroup: " + name);
 
         if (IsGroupLocked)
             return;
@@ -39,7 +39,10 @@ public class SeatGroup : MonoBehaviour
             seat.currentCapybara?.Lock();
 
         AudioManager.Instance.PlaySFX("Match");
-        GameManager.Instance.hapticsManager.PlayHeavyImpactVibration();
+        if(HapticsManager.Instance != null)
+            HapticsManager.Instance.PlayLightImpactVibration();
+
+        HapticsManager.Instance.PlayHeavyImpactVibration();
 
         ParticleManager.Instance.Play(ParticleType.Explosion, seatsInGroup[1].transform.position+new Vector3(0,1.5f,0));
         //koltuk kilitlendi efekti atacaz...
@@ -65,7 +68,8 @@ public class SeatGroup : MonoBehaviour
                     {
                         capy.Unfreeze();
                         AudioManager.Instance.PlaySFX("Unfreeze");
-                        GameManager.Instance.hapticsManager.PlaySoftImpactVibration();
+                        if (HapticsManager.Instance != null)
+                            HapticsManager.Instance.PlaySoftImpactVibration();
                     }
                 }
             }

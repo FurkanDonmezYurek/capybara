@@ -11,7 +11,7 @@ public class IdleUIManager : MonoBehaviour
     public static IdleUIManager Instance;
 
     [Header("Start Level Panel")]
-    [SerializeField] private GameObject startLevelPanel;
+    [SerializeField] public GameObject startLevelPanel;
     [SerializeField] private CanvasGroup startLevelCG;
     [SerializeField] private Transform header;
     [SerializeField] private Transform levelImage;
@@ -78,10 +78,11 @@ public class IdleUIManager : MonoBehaviour
     [Header("Tutorial")]
     [SerializeField] private GameObject tutorialPanel;
     [SerializeField] private CanvasGroup tutorialCG;
-    [SerializeField] private Transform tutorialHighlightCircle;
+    [SerializeField] private RectTransform tutorialHighlightCircle;
     [SerializeField] private float tutorialDelayBeforeAutoClose = 1.5f;
     [SerializeField] private Vector3 tutorialCircleOffset = new Vector3(0, 50, 0);
     [SerializeField] private Image fingerImage;
+    [SerializeField] private float tutorialVerticalOffset = -5f;
 
     private Tween tutorialPulseTween;
     private bool tutorialActive = false;
@@ -90,7 +91,7 @@ public class IdleUIManager : MonoBehaviour
     private Tween loopTween;
     private int selectedLevelIndex;
     private bool isSoundOn;
-    private bool isVibrationOn;
+    public bool isVibrationOn;
 
     private void Awake()
     {
@@ -119,7 +120,6 @@ public class IdleUIManager : MonoBehaviour
         if (!PlayerPrefs.HasKey("HasSeenIdleTutorial"))
         {
             ShowTutorial();
-            PlayerPrefs.SetInt("HasSeenIdleTutorial", 1);
         }
     }
 
@@ -130,7 +130,7 @@ public class IdleUIManager : MonoBehaviour
         if(AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySFX("UI_Click");
-            GameManager.Instance.hapticsManager.PlayMediumImpactVibration();
+            HapticsManager.Instance.PlayMediumImpactVibration();
         }
 
 
@@ -161,11 +161,8 @@ public class IdleUIManager : MonoBehaviour
 
     public void OpenStartLevelPanel()
     {
-        if (tutorialActive)
-        {
-            HideTutorialPanel();
-        }
-
+        SetTutorialAsSeen();
+        HideTutorialPanel();
         HideAllPanels();
 
         if (AudioManager.Instance != null)
@@ -258,7 +255,7 @@ public class IdleUIManager : MonoBehaviour
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySFX("UI_Click");
-            GameManager.Instance.hapticsManager.PlaySelectionImpactVibration();
+            HapticsManager.Instance.PlaySelectionImpactVibration();
         }
 
         isSoundOn = !isSoundOn;
@@ -280,7 +277,7 @@ public class IdleUIManager : MonoBehaviour
     {
         if (AudioManager.Instance != null)
         {
-            GameManager.Instance.hapticsManager.PlaySelectionImpactVibration();
+            HapticsManager.Instance.PlaySelectionImpactVibration();
             AudioManager.Instance.PlaySFX("UI_Click");
         }
         isVibrationOn = !isVibrationOn;
@@ -389,7 +386,7 @@ public class IdleUIManager : MonoBehaviour
         for (int i = 0; i < coinFlyCount; i++)
         {
             GameObject coin = Instantiate(coinFlyPrefab, coinFlyLastPosition);
-            GameManager.Instance.hapticsManager.PlayRigidImpactVibration();
+            HapticsManager.Instance.PlayRigidImpactVibration();
             RectTransform coinRT = coin.GetComponent<RectTransform>();
             coinRT.anchoredPosition = uiStartPos;
             coinRT.localScale = Vector3.one;
@@ -478,7 +475,7 @@ public class IdleUIManager : MonoBehaviour
             if (AudioManager.Instance != null)
             {
                 AudioManager.Instance.PlaySFX("NewRegionIdle");
-                GameManager.Instance.hapticsManager.PlaySuccessVibration();
+                HapticsManager.Instance.PlaySuccessVibration();
             }
         });
 
@@ -547,7 +544,7 @@ public class IdleUIManager : MonoBehaviour
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySFX("CloudEffect");
-            GameManager.Instance.hapticsManager.PlaySoftImpactVibration();
+            HapticsManager.Instance.PlaySoftImpactVibration();
         }
 
         cloudTransitionPanel.SetActive(true);
@@ -571,7 +568,7 @@ public class IdleUIManager : MonoBehaviour
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySFX("CloudEffect");
-            GameManager.Instance.hapticsManager.PlaySoftImpactVibration();
+            HapticsManager.Instance.PlaySoftImpactVibration();
         }
 
         cloudTransitionPanel.SetActive(true);
@@ -591,8 +588,15 @@ public class IdleUIManager : MonoBehaviour
     #endregion
 
     #region === Tutorial ===
-    private void ShowTutorial()
+    public void ShowTutorial()
     {
+        CameraDragController cam = Camera.main.GetComponent<CameraDragController>();
+        if (cam != null)
+        {
+            cam.SetTutorialStartPosition(Camera.main.transform.position);
+        }
+
+
         tutorialActive = true;
 
         tutorialPanel.SetActive(true);
@@ -602,8 +606,22 @@ public class IdleUIManager : MonoBehaviour
 
         tutorialCG.DOFade(1f, 2.5f);
 
-        Vector3 targetPos = playButton.transform.position + tutorialCircleOffset;
-        tutorialHighlightCircle.position = targetPos;
+        Vector3 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, playButton.transform.position);
+        RectTransform canvasRect = tutorialHighlightCircle.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
+
+        Vector2 localPos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            screenPos + tutorialCircleOffset,
+            Camera.main,
+            out localPos
+        );
+
+        float verticalUIOffset = tutorialVerticalOffset * 100f; 
+        localPos.y += verticalUIOffset;
+
+        tutorialHighlightCircle.anchoredPosition = localPos;
+
         tutorialHighlightCircle.localScale = Vector3.one;
         tutorialHighlightCircle.GetComponent<Image>().color = new Color(1, 1, 1, 0.6f);
 
@@ -615,6 +633,7 @@ public class IdleUIManager : MonoBehaviour
             .SetLoops(-1)
             .SetUpdate(true);
 
+        fingerImage.gameObject.SetActive(true);
         DOTween.Sequence()
             .Append(fingerImage.transform.DOScale(0.9f, 0.55f)
                 .SetLoops(-1, LoopType.Yoyo)
@@ -622,7 +641,7 @@ public class IdleUIManager : MonoBehaviour
                 .SetUpdate(true));
     }
 
-    private void HideTutorialPanel()
+    public void HideTutorialPanel()
     {
         tutorialActive = false;
 
@@ -641,6 +660,12 @@ public class IdleUIManager : MonoBehaviour
         fingerImage.transform.DOKill();
         fingerImage.gameObject.SetActive(false);
 
+    }
+
+    public void SetTutorialAsSeen()
+    {
+        PlayerPrefs.SetInt("HasSeenIdleTutorial", 1);
+        PlayerPrefs.Save();
     }
 
     #endregion
