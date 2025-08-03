@@ -135,6 +135,7 @@ public class GameManager : MonoBehaviour
         selectedCapybara.JumpAnimation();
         selectedCapybara.capybaraColorMaterialObject.layer = LayerMask.NameToLayer("Outline");
         AudioManager.Instance.PlaySFX("CapybaraClick");
+        HapticsManager.Instance.PlaySelectionImpactVibration();
 
         if (UIManager.Instance != null && !UIManager.Instance.seatClickedTutorial)
         {
@@ -165,7 +166,6 @@ public class GameManager : MonoBehaviour
         //selectedCapybara.SetColor(selectedCapybara.color); // Reset color after move
         selectedCapybara.capybaraColorMaterialObject.layer = LayerMask.NameToLayer("Default");
         selectedCapybara = null;
-
         if (UIManager.Instance != null && UIManager.Instance.seatClickedTutorial)
         {
             UIManager.Instance.MoveToCurrentSeatStep();

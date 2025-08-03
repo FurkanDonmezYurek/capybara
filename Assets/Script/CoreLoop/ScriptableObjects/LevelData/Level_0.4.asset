@@ -16,14 +16,14 @@ MonoBehaviour:
   levelEnvironment: {fileID: 565749888770946570, guid: 9773ebec963bb4b3cab0023c1b403196,
     type: 3}
   difficulty: 0
-  levelTime: 46
+  levelTime: 36
   isLocked: 0
   rows: 2
   columns: 4
   groupWidth: 2
   groupHeight: 1
   horizontalSpacing: 1.2
-  verticalSpacing: 2
+  verticalSpacing: 4
   capybaras:
   - gridPosition: {x: 0, y: 1}
     type: 0
@@ -33,11 +33,11 @@ MonoBehaviour:
     type: 0
     isFrozen: 1
     color: {r: 0, g: 1, b: 0.79420686, a: 0}
-  - gridPosition: {x: 2, y: 0}
+  - gridPosition: {x: 3, y: 1}
     type: 0
     isFrozen: 0
     color: {r: 0, g: 1, b: 0.79420686, a: 0}
-  - gridPosition: {x: 3, y: 0}
+  - gridPosition: {x: 2, y: 0}
     type: 0
     isFrozen: 0
     color: {r: 0.9031561, g: 0.972549, b: 0.07058822, a: 0}
@@ -45,7 +45,7 @@ MonoBehaviour:
     type: 0
     isFrozen: 0
     color: {r: 0.9031561, g: 0.972549, b: 0.07058822, a: 0}
-  - gridPosition: {x: 1, y: 0}
+  - gridPosition: {x: 3, y: 0}
     type: 0
     isFrozen: 0
     color: {r: 0, g: 0.0004093647, b: 1, a: 0}

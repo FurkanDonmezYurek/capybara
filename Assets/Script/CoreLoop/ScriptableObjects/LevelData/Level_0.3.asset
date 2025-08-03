@@ -16,14 +16,14 @@ MonoBehaviour:
   levelEnvironment: {fileID: 565749888770946570, guid: 9773ebec963bb4b3cab0023c1b403196,
     type: 3}
   difficulty: 0
-  levelTime: 46
+  levelTime: 31
   isLocked: 0
   rows: 2
   columns: 4
   groupWidth: 2
   groupHeight: 1
   horizontalSpacing: 1.2
-  verticalSpacing: 2
+  verticalSpacing: 4
   capybaras:
   - gridPosition: {x: 2, y: 1}
     type: 0
