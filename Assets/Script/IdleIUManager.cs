@@ -81,6 +81,8 @@ public class IdleUIManager : MonoBehaviour
     [SerializeField] private Transform tutorialHighlightCircle;
     [SerializeField] private float tutorialDelayBeforeAutoClose = 1.5f;
     [SerializeField] private Vector3 tutorialCircleOffset = new Vector3(0, 50, 0);
+    [SerializeField] private Image fingerImage;
+
     private Tween tutorialPulseTween;
     private bool tutorialActive = false;
 
@@ -116,8 +118,8 @@ public class IdleUIManager : MonoBehaviour
         PlayCloudOpenTransition();
         if (!PlayerPrefs.HasKey("HasSeenIdleTutorial"))
         {
-            //PlayerPrefs.SetInt("HasSeenIdleTutorial", 1);
             ShowTutorial();
+            PlayerPrefs.SetInt("HasSeenIdleTutorial", 1);
         }
     }
 
@@ -581,7 +583,7 @@ public class IdleUIManager : MonoBehaviour
 
         Vector3 targetPos = playButton.transform.position + tutorialCircleOffset;
         tutorialHighlightCircle.position = targetPos;
-        tutorialHighlightCircle.localScale = Vector3.one * 1.0f;
+        tutorialHighlightCircle.localScale = Vector3.one;
         tutorialHighlightCircle.GetComponent<Image>().color = new Color(1, 1, 1, 0.6f);
 
         tutorialPulseTween = DOTween.Sequence()
@@ -591,6 +593,12 @@ public class IdleUIManager : MonoBehaviour
             .Join(tutorialHighlightCircle.GetComponent<Image>().DOFade(0.6f, 0.6f))
             .SetLoops(-1)
             .SetUpdate(true);
+
+        DOTween.Sequence()
+            .Append(fingerImage.transform.DOScale(0.9f, 0.55f)
+                .SetLoops(-1, LoopType.Yoyo)
+                .SetEase(Ease.InOutSine)
+                .SetUpdate(true));
     }
 
     private void HideTutorialPanel()
@@ -608,6 +616,10 @@ public class IdleUIManager : MonoBehaviour
         {
             tutorialPanel.SetActive(false);
         });
+
+        fingerImage.transform.DOKill();
+        fingerImage.gameObject.SetActive(false);
+
     }
 
     #endregion

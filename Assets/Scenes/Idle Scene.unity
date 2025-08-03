@@ -13887,11 +13887,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1942298470873133139, guid: f7b6f67f2db7693418002231c99882d4,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2511323478442687958, guid: f7b6f67f2db7693418002231c99882d4,
         type: 3}
       propertyPath: m_Pivot.x
@@ -13996,11 +13991,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: IdleCanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 7940042792384068037, guid: f7b6f67f2db7693418002231c99882d4,
-        type: 3}
-      propertyPath: tutorialFadeDuration
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
