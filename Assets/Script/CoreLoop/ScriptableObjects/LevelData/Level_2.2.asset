@@ -16,7 +16,7 @@ MonoBehaviour:
   levelEnvironment: {fileID: 5258673909555049586, guid: 547a2ea9648eb0240b35e1970a2b45f3,
     type: 3}
   difficulty: 0
-  levelTime: 120
+  levelTime: 100
   isLocked: 0
   rows: 3
   columns: 6
