@@ -1,9 +1,11 @@
 fileFormatVersion: 2
-guid: 3cd1b28bfb498314ba668aec87e7d546
+guid: f6edaf3ef3c66fe40bad2514ff6888b6
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - elImage: {fileID: 7372451909126603762, guid: 0e7a607018862f546accae69ceccf290,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

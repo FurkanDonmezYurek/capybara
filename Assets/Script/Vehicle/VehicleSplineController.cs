@@ -21,24 +21,35 @@ public class VehicleSplineController : MonoBehaviour
     public VehicleManager vehicleManager;
 
 
-    void Start()
+   void Start()
+{
+    if (vehicleManager == null)
     {
+        Debug.LogError("VehicleManager is not assigned!");
+        return;
+    }
 
-        targetCheckpointIndex = vehicleManager.GetCurrentLevelIndex();
-        currentCheckpointIndex = 0;
-        
+    if (levelCheckpoints == null || levelCheckpoints.Count == 0)
+    {
+        Debug.LogError("Level checkpoints not assigned!");
+        return;
+    }
 
-        for (int i = 0; i < targetCheckpointIndex; i++)
+    targetCheckpointIndex = vehicleManager.GetCurrentLevelIndex();
+    currentCheckpointIndex = 0;
+
+    for (int i = 0; i < targetCheckpointIndex; i++)
+    {
+        if (levelCheckpoints[i] != null)
         {
             levelCheckpoints[i].isOpen = true;
             levelCheckpoints[i].UpdateVisual();
-
         }
-
-        vehicleManager.VehicleSelect(levelCheckpoints[targetCheckpointIndex].vehicleTypeIndex);
-
-        StartFromNearestSplinePoint(levelCheckpoints[targetCheckpointIndex].transform);
     }
+
+    vehicleManager.VehicleSelect(levelCheckpoints[targetCheckpointIndex].vehicleTypeIndex);
+    StartFromNearestSplinePoint(levelCheckpoints[targetCheckpointIndex].transform);
+}
 
     public void StartFromNearestSplinePoint(Transform target)
     {

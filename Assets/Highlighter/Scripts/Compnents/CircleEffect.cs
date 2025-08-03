@@ -8,8 +8,8 @@ namespace Highlighter
         public uint radius = 400;
         [Tooltip("Circle edge softness")]
         public uint softEdge = 300;
-        [Tooltip("Opacity of the highlight circle")]
-public float alpha = 1f;
+        
+
 
     
         private EffectData.Circule parameter;

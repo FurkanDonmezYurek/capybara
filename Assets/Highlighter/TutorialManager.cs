@@ -1,47 +1,45 @@
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
+
+public enum TutorialStep
+{
+    Step1_TapToStart,
+    Step2_ClickPlayButton
+}
 
 public class TutorialManager : MonoBehaviour
 {
-    public TutorialStep[] steps;
-    public Image overlay;
-    public Image hand;
-    public TextMeshProUGUI tutorialText;
+    public GameObject tapToStartUI; // El işareti ve yazı UI
+    public GameObject playButtonTutorialUI; // 2. tutorial için el ve yazı
 
-    private int currentStep = 0;
+    public Highlighter.CircleEffect highlightHole; // İlk delik
+    public Highlighter.CircleEffect highlightPlayButton; // Buton
+
+    private TutorialStep currentStep;
 
     void Start()
     {
-        ShowStep(0);
+        currentStep = TutorialStep.Step1_TapToStart;
+        ShowStep(currentStep);
     }
 
-    void ShowStep(int index)
+    void Update()
     {
-        if (index >= steps.Length)
+        if (currentStep == TutorialStep.Step1_TapToStart && Input.GetMouseButtonDown(0))
         {
-            overlay.gameObject.SetActive(false);
-            hand.gameObject.SetActive(false);
-            tutorialText.gameObject.SetActive(false);
-            return;
+            currentStep = TutorialStep.Step2_ClickPlayButton;
+            ShowStep(currentStep);
         }
-
-        TutorialStep step = steps[index];
-        tutorialText.text = step.message;
-        hand.rectTransform.position = step.targetUI.position + step.handOffset;
-
-        overlay.gameObject.SetActive(true);
-        hand.gameObject.SetActive(true);
-        tutorialText.gameObject.SetActive(true);
-
-        currentStep = index;
     }
 
-    public void OnUserClickArea(RectTransform clickedArea)
+    void ShowStep(TutorialStep step)
     {
-        if (clickedArea == steps[currentStep].targetUI)
-        {
-            ShowStep(currentStep + 1);
-        }
+        tapToStartUI?.SetActive(step == TutorialStep.Step1_TapToStart);
+        playButtonTutorialUI?.SetActive(step == TutorialStep.Step2_ClickPlayButton);
+
+        if (highlightHole != null)
+            highlightHole.enabled = (step == TutorialStep.Step1_TapToStart);
+        
+        if (highlightPlayButton != null)
+            highlightPlayButton.enabled = (step == TutorialStep.Step2_ClickPlayButton);
     }
 }
