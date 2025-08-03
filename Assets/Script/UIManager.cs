@@ -164,6 +164,21 @@ public class UIManager : MonoBehaviour
     [SerializeField] private float coinFlyDuration = 1f;
     #endregion
 
+    #region Gameplay Tutorial
+    [Header("Gameplay Seat Tutorial")]
+    [SerializeField] private GameObject seatTutorialPanel;
+    [SerializeField] private CanvasGroup seatTutorialCG;
+    [SerializeField] private Image seatTutorialCircle;
+    [SerializeField] private List<SeatTutorialStep> seatTutorialSteps;
+    [SerializeField] private float seatTutorialMoveDuration = 0.3f;
+    [SerializeField] private float pulseScale = 1.2f;
+
+    private int currentSeatTutorialIndex = 0;
+    private Tween seatTutorialTween;
+    public bool seatTutorialActive = false;
+    public bool seatClickedTutorial = false;
+    #endregion
+
     #endregion
 
     #region === Internal States ===
@@ -195,6 +210,12 @@ public class UIManager : MonoBehaviour
         GameTimerManager.Instance.OnTimeOver += ShowLevelFail;
 
         boosterButtonTweens = new Tween[boosterButton.Length];
+
+        if (!PlayerPrefs.HasKey("HasSeenSeatTutorial"))
+        {
+            StartCoroutine(StartSeatTutorialDelayed());
+            PlayerPrefs.SetInt("HasSeenSeatTutorial", 1);
+        }
     }
 
     #endregion
@@ -252,6 +273,7 @@ public class UIManager : MonoBehaviour
             {
                 isFinalCountdownSoundPlaying = true;
                 AudioManager.Instance.PlaySFX("TimerSound");
+                HapticsManager.Instance.PlayWarningImpactVibration();
             }
         }
         else
@@ -272,6 +294,7 @@ public class UIManager : MonoBehaviour
     public void HideAllPanels()
     {
         AudioManager.Instance.PlaySFX("UI_Click");
+        HapticsManager.Instance.PlayMediumImpactVibration();
 
         if (levelCompletePanel.activeSelf)
             HidePanelWithAnimation(levelCompleteCG, levelCompleteHeader, levelCompletePanel);
@@ -309,6 +332,7 @@ public class UIManager : MonoBehaviour
     public void ShowLevelComplete()
     {
         BuyCoins(100);
+        HapticsManager.Instance.PlaySuccessVibration();
 
         if (GameTimerManager.Instance.isFrozen)
             GameTimerManager.Instance.CancelFreeze();
@@ -349,6 +373,7 @@ public class UIManager : MonoBehaviour
     public void ShowLevelFail()
     {
         AudioManager.Instance.PlaySFX("GameOver");
+        HapticsManager.Instance.PlayFailureImpactVibration();
 
         if (flashTweenTimerText != null)
         {
@@ -411,6 +436,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowBoosterPanel(bool isFreezeBoster)
     {
+        MoveToCurrentSeatStep();
         HideAllPanels();
         AudioManager.Instance.PlaySFX("OpeningImportantPanel");
         boosterPanel.SetActive(true);
@@ -484,6 +510,8 @@ public class UIManager : MonoBehaviour
             ShowBoosterFrame();
 
             AudioManager.Instance.PlaySFX("FreezeBooster");
+            HapticsManager.Instance.PlayRigidImpactVibration();
+
             boosterUnlockedIcon[0].gameObject.SetActive(true);
             boosterUnlockedIcon[1].gameObject.SetActive(false);
 
@@ -513,6 +541,7 @@ public class UIManager : MonoBehaviour
         else
         {
             AudioManager.Instance.PlaySFX("SeatBooster");
+            HapticsManager.Instance.PlayRigidImpactVibration();
             boosterUnlockedIcon[0].gameObject.SetActive(false);
             boosterUnlockedIcon[1].gameObject.SetActive(true);
 
@@ -546,6 +575,8 @@ public class UIManager : MonoBehaviour
     {
         HideAllPanels();
         AudioManager.Instance.PlaySFX("OpeningImportantPanel");
+        HapticsManager.Instance.PlayRigidImpactVibration();
+
         playOnPanel.SetActive(true);
 
         playOnCG.alpha = 0;
@@ -574,6 +605,7 @@ public class UIManager : MonoBehaviour
     public void PlayCloudOpenTransition()
     {
         AudioManager.Instance.PlaySFX("CloudEffect");
+        HapticsManager.Instance.PlaySoftImpactVibration();
         cloudTransitionPanel.SetActive(true);
 
         Vector2 leftStartPos = leftCloud.anchoredPosition;
@@ -593,6 +625,8 @@ public class UIManager : MonoBehaviour
     public void PlayCloudCloseTransition(int sceneIndex)
     {
         AudioManager.Instance.PlaySFX("CloudEffect");
+        HapticsManager.Instance.PlaySoftImpactVibration();
+
         cloudTransitionPanel.SetActive(true);
 
         Vector2 leftStartPos = leftCloud.anchoredPosition;
@@ -769,6 +803,7 @@ public class UIManager : MonoBehaviour
         if (progressInSet + 1 == levelsPerVehicle)
         {
             AudioManager.Instance.PlaySFX("VehicleComplate");
+            HapticsManager.Instance.PlaySelectionImpactVibration();
         }
 
     }
@@ -892,6 +927,7 @@ public class UIManager : MonoBehaviour
         for (int i = 0; i < coinFlyCount; i++)
         {
             GameObject coin = Instantiate(coinFlyPrefab, coinFlyLastPosition);
+            HapticsManager.Instance.PlayRigidImpactVibration();
             RectTransform coinRT = coin.GetComponent<RectTransform>();
             coinRT.anchoredPosition = uiStartPos;
             coinRT.localScale = Vector3.one;
@@ -949,6 +985,7 @@ public class UIManager : MonoBehaviour
     public void ToggleSound()
     {
         AudioManager.Instance.PlaySFX("UI_Click");
+        HapticsManager.Instance.PlaySelectionImpactVibration();
         isSoundOn = !isSoundOn;
 
         if (isSoundOn)
@@ -970,6 +1007,7 @@ public class UIManager : MonoBehaviour
     public void ToggleVibration()
     {
         AudioManager.Instance.PlaySFX("UI_Click");
+        HapticsManager.Instance.PlaySelectionImpactVibration();
         isVibrationOn = !isVibrationOn;
         PlayerPrefs.SetInt("Vibration", isVibrationOn ? 1 : 0);
         // TODO: VibrationManager.Instance.SetVibration(isVibrationOn);
@@ -986,6 +1024,95 @@ public class UIManager : MonoBehaviour
     {
         vibrationToggleIcon.sprite = isVibrationOn ? iconVibrations[1] : iconVibrations[0];
         vibrationToggleBackground.sprite = isVibrationOn ? bgSettingsButtons[1] : bgSettingsButtons[0];
+    }
+
+    #endregion
+
+    #region === Gameplay Tutorial ===
+    private IEnumerator StartSeatTutorialDelayed()
+    {
+        yield return null; 
+        StartSeatTutorial();
+    }
+    public void StartSeatTutorial()
+    {
+        if (seatTutorialSteps == null || seatTutorialSteps.Count == 0) return;
+
+        GameTimerManager.Instance.isRunning = false;
+        seatTutorialActive = true;
+        currentSeatTutorialIndex = 0;
+        seatTutorialPanel.SetActive(true);
+        seatTutorialCG.alpha = 0f;
+
+        seatTutorialCG.DOFade(1f, 1.5f).SetEase(Ease.OutQuad);
+
+        MoveToCurrentSeatStep();
+    }
+    private Seat FindSeatByGridPosition(Vector2Int gridPos)
+    {
+        Seat[] allSeats = FindObjectsOfType<Seat>();
+        foreach (var seat in allSeats)
+        {
+            if (seat.gridPosition == gridPos)
+                return seat;
+        }
+        return null;
+    }
+    public void MoveToCurrentSeatStep()
+    {
+        if (currentSeatTutorialIndex >= seatTutorialSteps.Count)
+        {
+            EndSeatTutorial();
+            return;
+        }
+
+        SeatTutorialStep step = seatTutorialSteps[currentSeatTutorialIndex++];
+        Debug.Log($"Moving to step {currentSeatTutorialIndex} at grid position {step.targetGridPos}");
+        Seat seat = FindSeatByGridPosition(step.targetGridPos);
+
+        if (seat == null)
+        {
+            Debug.LogWarning($"Seat not found at {step.targetGridPos}");
+            return;
+        }
+
+        Vector3 worldPos = seat.transform.position + step.offset;
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+
+        seatTutorialTween?.Kill();
+
+        if (currentSeatTutorialIndex == 1) 
+        {
+            seatTutorialCircle.transform.position = screenPos; 
+        }
+        else
+        {
+            seatTutorialCircle.transform.DOMove(screenPos, 0.75f).SetEase(Ease.OutCubic);
+        }
+
+        seatTutorialCircle.transform.localScale = Vector3.one;
+
+        seatTutorialTween = DOTween.Sequence()
+            .Append(seatTutorialCircle.transform.DOScale(pulseScale, 0.6f).SetEase(Ease.OutQuad))
+            .Append(seatTutorialCircle.transform.DOScale(1f, 0.6f).SetEase(Ease.InQuad))
+            .SetLoops(-1);
+    }
+
+    private void EndSeatTutorial()
+    {
+        GameTimerManager.Instance.isRunning = true;
+        seatTutorialActive = false;
+        seatTutorialTween?.Kill();
+        seatTutorialCG.DOFade(0f, 0.75f).OnComplete(() =>
+        {
+            seatTutorialPanel.SetActive(false);
+        });
+    }
+    public SeatTutorialStep GetCurrentSeatTutorialStep()
+    {
+        if (seatTutorialActive && currentSeatTutorialIndex < seatTutorialSteps.Count)
+            return seatTutorialSteps[currentSeatTutorialIndex];
+        return null;
     }
 
     #endregion
@@ -1039,3 +1166,12 @@ public class UIManager : MonoBehaviour
 
     #endregion
 }
+
+[System.Serializable]
+public class SeatTutorialStep
+{
+    public Vector2Int targetGridPos;
+    public Vector3 offset;
+}
+
+

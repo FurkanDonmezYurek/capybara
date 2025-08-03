@@ -561,12 +561,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   seatPrefab: {fileID: 340975106295020946, guid: 5893983cd6ab22a4aa850405758ae8e2,
     type: 3}
-  rows: 7
+  rows: 5
   columns: 6
   horizontalSpacing: 1.2
-  verticalSpacing: 1.2
+  verticalSpacing: 2
   groupWidth: 3
-  groupHeight: 3
+  groupHeight: 1
   groupSpacingX: 1
   groupsParent: {fileID: 2052055689}
 --- !u!114 &1365210085
