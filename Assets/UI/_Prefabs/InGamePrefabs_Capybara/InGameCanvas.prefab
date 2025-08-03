@@ -486,15 +486,15 @@ RectTransform:
   m_GameObject: {fileID: 306118134499193659}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_LocalScale: {x: 1.75, y: 1.75, z: 1.75}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 253577472739132089}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -160}
-  m_SizeDelta: {x: 1080, y: 1919.9999}
+  m_AnchoredPosition: {x: 0, y: -200}
+  m_SizeDelta: {x: 256, y: 256}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2301099758398498340
 CanvasRenderer:
@@ -524,7 +524,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 212d07eb51d55264a8a8a62ffa79f28c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3c6bc57039e7f844783e34b0513d03e9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6664,15 +6664,15 @@ RectTransform:
   m_GameObject: {fileID: 3981000303419924388}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_LocalScale: {x: 1.75, y: 1.75, z: 1.75}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 253577472739132089}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -160}
-  m_SizeDelta: {x: 1080, y: 1919.9999}
+  m_AnchoredPosition: {x: 0, y: -200}
+  m_SizeDelta: {x: 256, y: 256}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &622431252004180834
 CanvasRenderer:
@@ -6695,14 +6695,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 0.9607843}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.9411765}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 212d07eb51d55264a8a8a62ffa79f28c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b99b1bb8007157f418ae8669ded01e6c, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11095,17 +11095,17 @@ MonoBehaviour:
   vehicleBGImage: {fileID: 5968339506216107843}
   vehicleFillImage: {fileID: 5178676018452715868}
   vehicleBGs:
-  - {fileID: 21300000, guid: 8ccf605b245db4c47bcd170beb4b9e8a, type: 3}
-  - {fileID: 21300000, guid: 212d07eb51d55264a8a8a62ffa79f28c, type: 3}
-  - {fileID: 21300000, guid: 260f9deae3fe37145b435a5f8f6c517c, type: 3}
-  - {fileID: 21300000, guid: 1122bb5ff20a8774c9782ba7a6bcc038, type: 3}
-  - {fileID: 21300000, guid: 1122bb5ff20a8774c9782ba7a6bcc038, type: 3}
+  - {fileID: 21300000, guid: 6779db9af0752354e89ca011d7f27ca7, type: 3}
+  - {fileID: 21300000, guid: 3c6bc57039e7f844783e34b0513d03e9, type: 3}
+  - {fileID: 21300000, guid: ded32819147571e4aaf483a343e6f0f3, type: 3}
+  - {fileID: 21300000, guid: f5ff70db2abbd4343a89e5cbe65189a4, type: 3}
+  - {fileID: 21300000, guid: f5ff70db2abbd4343a89e5cbe65189a4, type: 3}
   vehicleFillSprites:
-  - {fileID: 21300000, guid: 8ccf605b245db4c47bcd170beb4b9e8a, type: 3}
-  - {fileID: 21300000, guid: 212d07eb51d55264a8a8a62ffa79f28c, type: 3}
-  - {fileID: 21300000, guid: 260f9deae3fe37145b435a5f8f6c517c, type: 3}
-  - {fileID: 21300000, guid: 1122bb5ff20a8774c9782ba7a6bcc038, type: 3}
-  - {fileID: 21300000, guid: 1122bb5ff20a8774c9782ba7a6bcc038, type: 3}
+  - {fileID: 21300000, guid: 2553a4bd2674c0f4eaf9948e557babe7, type: 3}
+  - {fileID: 21300000, guid: b99b1bb8007157f418ae8669ded01e6c, type: 3}
+  - {fileID: 21300000, guid: ff4a413a16b0cad4d9705b53e6b5efc3, type: 3}
+  - {fileID: 21300000, guid: 40ad689eeab932d4f924f3c5bc126e26, type: 3}
+  - {fileID: 21300000, guid: 40ad689eeab932d4f924f3c5bc126e26, type: 3}
   vehicleProgressBarFillImage: {fileID: 3931139844542496822}
   vehicleProgressText: {fileID: 875228350352663259}
   levelsPerVehicle: 5
