@@ -127,7 +127,11 @@ public class IdleUIManager : MonoBehaviour
     public void HideAllPanels()
     {
         if(AudioManager.Instance != null)
+        {
             AudioManager.Instance.PlaySFX("UI_Click");
+            HapticsManager.Instance.PlayMediumImpactVibration();
+        }
+
 
         if (startLevelPanel.activeSelf)
             HidePanelWithAnimation(startLevelCG, playButtonTransform, startLevelPanel);
@@ -196,7 +200,6 @@ public class IdleUIManager : MonoBehaviour
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
         // TODO: Optional restart animation
-
         PlayCloudCloseTransition();
     }
     public bool PanelActived()
@@ -256,7 +259,11 @@ public class IdleUIManager : MonoBehaviour
     public void ToggleSound()
     {
         if (AudioManager.Instance != null)
+        {
             AudioManager.Instance.PlaySFX("UI_Click");
+            HapticsManager.Instance.PlaySelectionImpactVibration();
+        }
+
         isSoundOn = !isSoundOn;
         if (isSoundOn)
         {
@@ -275,7 +282,10 @@ public class IdleUIManager : MonoBehaviour
     public void ToggleVibration()
     {
         if (AudioManager.Instance != null)
+        {
+            HapticsManager.Instance.PlaySelectionImpactVibration();
             AudioManager.Instance.PlaySFX("UI_Click");
+        }
         isVibrationOn = !isVibrationOn;
         PlayerPrefs.SetInt("Vibration", isVibrationOn ? 1 : 0);
         UpdateVibrationToggleVisual();
@@ -382,6 +392,7 @@ public class IdleUIManager : MonoBehaviour
         for (int i = 0; i < coinFlyCount; i++)
         {
             GameObject coin = Instantiate(coinFlyPrefab, coinFlyLastPosition);
+            HapticsManager.Instance.PlayRigidImpactVibration();
             RectTransform coinRT = coin.GetComponent<RectTransform>();
             coinRT.anchoredPosition = uiStartPos;
             coinRT.localScale = Vector3.one;
@@ -468,7 +479,10 @@ public class IdleUIManager : MonoBehaviour
         seq.AppendCallback(() =>
         {
             if (AudioManager.Instance != null)
+            {
                 AudioManager.Instance.PlaySFX("NewRegionIdle");
+                HapticsManager.Instance.PlaySuccessVibration();
+            }
         });
 
         seq.Append(regionNameText.DOFade(1f, 2f));
@@ -534,7 +548,10 @@ public class IdleUIManager : MonoBehaviour
     public void PlayCloudOpenTransition()
     {
         if (AudioManager.Instance != null)
+        {
             AudioManager.Instance.PlaySFX("CloudEffect");
+            HapticsManager.Instance.PlaySoftImpactVibration();
+        }
 
         cloudTransitionPanel.SetActive(true);
 
@@ -555,7 +572,10 @@ public class IdleUIManager : MonoBehaviour
     public void PlayCloudCloseTransition()
     {
         if (AudioManager.Instance != null)
+        {
             AudioManager.Instance.PlaySFX("CloudEffect");
+            HapticsManager.Instance.PlaySoftImpactVibration();
+        }
 
         cloudTransitionPanel.SetActive(true);
 
