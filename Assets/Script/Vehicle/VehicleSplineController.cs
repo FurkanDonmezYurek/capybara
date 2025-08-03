@@ -92,7 +92,7 @@ public class VehicleSplineController : MonoBehaviour
                 checkpoint.isOpen = true;
                 checkpoint.UpdateVisual();
                 PauseMovement();
-                vehicleManager.VehicleSelect(levelCheckpoints[targetCheckpointIndex].vehicleTypeIndex);
+                vehicleManager.VehicleSelect(checkpoint.vehicleTypeIndex);
             }
         }
     }

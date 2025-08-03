@@ -164,6 +164,21 @@ public class UIManager : MonoBehaviour
     [SerializeField] private float coinFlyDuration = 1f;
     #endregion
 
+    #region Gameplay Tutorial
+    [Header("Gameplay Seat Tutorial")]
+    [SerializeField] private GameObject seatTutorialPanel;
+    [SerializeField] private CanvasGroup seatTutorialCG;
+    [SerializeField] private Image seatTutorialCircle;
+    [SerializeField] private List<SeatTutorialStep> seatTutorialSteps;
+    [SerializeField] private float seatTutorialMoveDuration = 0.3f;
+    [SerializeField] private float pulseScale = 1.2f;
+
+    private int currentSeatTutorialIndex = 0;
+    private Tween seatTutorialTween;
+    public bool seatTutorialActive = false;
+    public bool seatClickedTutorial = false;
+    #endregion
+
     #endregion
 
     #region === Internal States ===
@@ -195,6 +210,12 @@ public class UIManager : MonoBehaviour
         GameTimerManager.Instance.OnTimeOver += ShowLevelFail;
 
         boosterButtonTweens = new Tween[boosterButton.Length];
+
+        if (!PlayerPrefs.HasKey("HasSeenSeatTutorial"))
+        {
+            StartCoroutine(StartSeatTutorialDelayed());
+            PlayerPrefs.SetInt("HasSeenSeatTutorial", 1);
+        }
     }
 
     #endregion
@@ -411,6 +432,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowBoosterPanel(bool isFreezeBoster)
     {
+        MoveToCurrentSeatStep();
         HideAllPanels();
         AudioManager.Instance.PlaySFX("OpeningImportantPanel");
         boosterPanel.SetActive(true);
@@ -990,6 +1012,95 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
+    #region === Gameplay Tutorial ===
+    private IEnumerator StartSeatTutorialDelayed()
+    {
+        yield return null; 
+        StartSeatTutorial();
+    }
+    public void StartSeatTutorial()
+    {
+        if (seatTutorialSteps == null || seatTutorialSteps.Count == 0) return;
+
+        GameTimerManager.Instance.isRunning = false;
+        seatTutorialActive = true;
+        currentSeatTutorialIndex = 0;
+        seatTutorialPanel.SetActive(true);
+        seatTutorialCG.alpha = 0f;
+
+        seatTutorialCG.DOFade(1f, 1.5f).SetEase(Ease.OutQuad);
+
+        MoveToCurrentSeatStep();
+    }
+    private Seat FindSeatByGridPosition(Vector2Int gridPos)
+    {
+        Seat[] allSeats = FindObjectsOfType<Seat>();
+        foreach (var seat in allSeats)
+        {
+            if (seat.gridPosition == gridPos)
+                return seat;
+        }
+        return null;
+    }
+    public void MoveToCurrentSeatStep()
+    {
+        if (currentSeatTutorialIndex >= seatTutorialSteps.Count)
+        {
+            EndSeatTutorial();
+            return;
+        }
+
+        SeatTutorialStep step = seatTutorialSteps[currentSeatTutorialIndex++];
+        Debug.Log($"Moving to step {currentSeatTutorialIndex} at grid position {step.targetGridPos}");
+        Seat seat = FindSeatByGridPosition(step.targetGridPos);
+
+        if (seat == null)
+        {
+            Debug.LogWarning($"Seat not found at {step.targetGridPos}");
+            return;
+        }
+
+        Vector3 worldPos = seat.transform.position + step.offset;
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+
+        seatTutorialTween?.Kill();
+
+        if (currentSeatTutorialIndex == 1) 
+        {
+            seatTutorialCircle.transform.position = screenPos; 
+        }
+        else
+        {
+            seatTutorialCircle.transform.DOMove(screenPos, 0.75f).SetEase(Ease.OutCubic);
+        }
+
+        seatTutorialCircle.transform.localScale = Vector3.one;
+
+        seatTutorialTween = DOTween.Sequence()
+            .Append(seatTutorialCircle.transform.DOScale(pulseScale, 0.6f).SetEase(Ease.OutQuad))
+            .Append(seatTutorialCircle.transform.DOScale(1f, 0.6f).SetEase(Ease.InQuad))
+            .SetLoops(-1);
+    }
+
+    private void EndSeatTutorial()
+    {
+        GameTimerManager.Instance.isRunning = true;
+        seatTutorialActive = false;
+        seatTutorialTween?.Kill();
+        seatTutorialCG.DOFade(0f, 0.75f).OnComplete(() =>
+        {
+            seatTutorialPanel.SetActive(false);
+        });
+    }
+    public SeatTutorialStep GetCurrentSeatTutorialStep()
+    {
+        if (seatTutorialActive && currentSeatTutorialIndex < seatTutorialSteps.Count)
+            return seatTutorialSteps[currentSeatTutorialIndex];
+        return null;
+    }
+
+    #endregion
+
     #region === Utilities ===
 
     public void RestartLevel()
@@ -1039,3 +1150,12 @@ public class UIManager : MonoBehaviour
 
     #endregion
 }
+
+[System.Serializable]
+public class SeatTutorialStep
+{
+    public Vector2Int targetGridPos;
+    public Vector3 offset;
+}
+
+
