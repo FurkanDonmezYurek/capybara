@@ -5689,7 +5689,7 @@ GameObject:
   - component: {fileID: 416085396}
   - component: {fileID: 416085397}
   m_Layer: 0
-  m_Name: Move Targets
+  m_Name: Capybara spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
