@@ -135,7 +135,8 @@ public class GameManager : MonoBehaviour
         selectedCapybara.JumpAnimation();
         selectedCapybara.capybaraColorMaterialObject.layer = LayerMask.NameToLayer("Outline");
         AudioManager.Instance.PlaySFX("CapybaraClick");
-        HapticsManager.Instance.PlaySelectionImpactVibration();
+        if (HapticsManager.Instance != null)
+            HapticsManager.Instance.PlaySelectionImpactVibration();
 
         if (UIManager.Instance != null && !UIManager.Instance.seatClickedTutorial)
         {

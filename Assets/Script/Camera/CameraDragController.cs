@@ -9,14 +9,14 @@ public class CameraDragController : MonoBehaviour
     [SerializeField] private Vector2 MinMaxZ ;
 
     private Vector3 lastMousePosition;
+    private Vector3 tutorialStartPosition;
+
     private bool isDragging = false;
     private int isTurorial ;
     private void Start()
     {
         isTurorial=PlayerPrefs.GetInt("HasSeenIdleTutorial", 0);
     }
-
-
     void Update()
     {
         if (isTurorial == 0)
@@ -31,9 +31,19 @@ public class CameraDragController : MonoBehaviour
             if (Input.GetMouseButtonUp(0))
             {
                 isDragging = false;
-                transform.DOMove(new Vector3(-1, 30, -5), 0.1f);
-                IdleUIManager.Instance.ShowTutorial();
+
+                if (isTurorial == 0)
+                {
+                    transform.DOMove(tutorialStartPosition, 0.5f)
+                        .SetEase(Ease.InOutQuad)
+                        .OnComplete(() =>
+                        {
+                            if(!IdleUIManager.Instance.startLevelPanel.activeSelf && !PlayerPrefs.HasKey("HasSeenIdleTutorial"))
+                                IdleUIManager.Instance.ShowTutorial();
+                        });
+                }
             }
+
 
             if (isDragging)
             {
@@ -87,4 +97,12 @@ public class CameraDragController : MonoBehaviour
         }
 
     }
+    public void SetTutorialStartPosition(Vector3 pos)
+    {
+        if (tutorialStartPosition == Vector3.zero)
+        {
+            tutorialStartPosition = new Vector3(pos.x, pos.y - 3f, pos.z);
+        }
+    }
+
 }
