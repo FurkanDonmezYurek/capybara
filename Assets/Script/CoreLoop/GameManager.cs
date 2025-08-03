@@ -135,6 +135,12 @@ public class GameManager : MonoBehaviour
         selectedCapybara.JumpAnimation();
         selectedCapybara.capybaraColorMaterialObject.layer = LayerMask.NameToLayer("Outline");
         AudioManager.Instance.PlaySFX("CapybaraClick");
+
+        if(UIManager.Instance != null && !UIManager.Instance.seatClickedTutorial)
+        {
+            UIManager.Instance.MoveToCurrentSeatStep();
+            UIManager.Instance.seatClickedTutorial = true;
+        }
     }
 
     public void OnSeatClicked(Seat seat)
@@ -159,6 +165,11 @@ public class GameManager : MonoBehaviour
         //selectedCapybara.SetColor(selectedCapybara.color); // Reset color after move
         selectedCapybara.capybaraColorMaterialObject.layer = LayerMask.NameToLayer("Default");
         selectedCapybara = null;
+        if (UIManager.Instance != null && UIManager.Instance.seatClickedTutorial)
+        {
+            UIManager.Instance.MoveToCurrentSeatStep();
+            UIManager.Instance.seatClickedTutorial = false;
+        }
     }
     #endregion
 

@@ -75,6 +75,17 @@ public class IdleUIManager : MonoBehaviour
     [SerializeField] private RectTransform leftCloud;
     [SerializeField] private RectTransform rightCloud;
 
+    [Header("Tutorial")]
+    [SerializeField] private GameObject tutorialPanel;
+    [SerializeField] private CanvasGroup tutorialCG;
+    [SerializeField] private Transform tutorialHighlightCircle;
+    [SerializeField] private float tutorialDelayBeforeAutoClose = 1.5f;
+    [SerializeField] private Vector3 tutorialCircleOffset = new Vector3(0, 50, 0);
+    [SerializeField] private Image fingerImage;
+
+    private Tween tutorialPulseTween;
+    private bool tutorialActive = false;
+
     private Tween coinTween;
     private Tween loopTween;
     private int selectedLevelIndex;
@@ -105,6 +116,11 @@ public class IdleUIManager : MonoBehaviour
         UpdateSoundToggleVisual();
         UpdateVibrationToggleVisual();
         PlayCloudOpenTransition();
+        if (!PlayerPrefs.HasKey("HasSeenIdleTutorial"))
+        {
+            ShowTutorial();
+            PlayerPrefs.SetInt("HasSeenIdleTutorial", 1);
+        }
     }
 
     #region === Panel On/Off ===
@@ -141,6 +157,11 @@ public class IdleUIManager : MonoBehaviour
 
     public void OpenStartLevelPanel()
     {
+        if (tutorialActive)
+        {
+            HideTutorialPanel();
+        }
+
         HideAllPanels();
 
         if (AudioManager.Instance != null)
@@ -546,6 +567,61 @@ public class IdleUIManager : MonoBehaviour
             SceneManager.LoadScene(1);
         });
     }
+    #endregion
+
+    #region === Tutorial ===
+    private void ShowTutorial()
+    {
+        tutorialActive = true;
+
+        tutorialPanel.SetActive(true);
+        tutorialCG.alpha = 0f;
+        tutorialCG.blocksRaycasts = true;
+        tutorialCG.interactable = false;
+
+        tutorialCG.DOFade(1f, 2.5f);
+
+        Vector3 targetPos = playButton.transform.position + tutorialCircleOffset;
+        tutorialHighlightCircle.position = targetPos;
+        tutorialHighlightCircle.localScale = Vector3.one;
+        tutorialHighlightCircle.GetComponent<Image>().color = new Color(1, 1, 1, 0.6f);
+
+        tutorialPulseTween = DOTween.Sequence()
+            .Append(tutorialHighlightCircle.DOScale(1.2f, 0.6f).SetEase(Ease.OutQuad))
+            .Join(tutorialHighlightCircle.GetComponent<Image>().DOFade(0.9f, 0.6f))
+            .Append(tutorialHighlightCircle.DOScale(1.0f, 0.6f).SetEase(Ease.InQuad))
+            .Join(tutorialHighlightCircle.GetComponent<Image>().DOFade(0.6f, 0.6f))
+            .SetLoops(-1)
+            .SetUpdate(true);
+
+        DOTween.Sequence()
+            .Append(fingerImage.transform.DOScale(0.9f, 0.55f)
+                .SetLoops(-1, LoopType.Yoyo)
+                .SetEase(Ease.InOutSine)
+                .SetUpdate(true));
+    }
+
+    private void HideTutorialPanel()
+    {
+        tutorialActive = false;
+
+        tutorialCG.blocksRaycasts = false;
+
+        if (tutorialPulseTween != null && tutorialPulseTween.IsActive())
+            tutorialPulseTween.Kill();
+
+        tutorialHighlightCircle.DOScale(0.6f, 0.3f).SetEase(Ease.InBack);
+
+        tutorialCG.DOFade(0f, 0.5f).OnComplete(() =>
+        {
+            tutorialPanel.SetActive(false);
+        });
+
+        fingerImage.transform.DOKill();
+        fingerImage.gameObject.SetActive(false);
+
+    }
+
     #endregion
 
 }
