@@ -121,7 +121,3 @@ MonoBehaviour:
     type: 3
     isFrozen: 0
     color: {r: 0.8457632, g: 0.0047169924, b: 1, a: 0}
-  - gridPosition: {x: 2, y: 0}
-    type: 0
-    isFrozen: 0
-    color: {r: 0.9031561, g: 0.972549, b: 0.07058822, a: 0}
