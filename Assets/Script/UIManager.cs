@@ -954,7 +954,7 @@ public class UIManager : MonoBehaviour
         if (isSoundOn)
         {
             AudioManager.Instance.MuteMusic(false);
-            AudioManager.Instance.MuteMusic(false);
+            AudioManager.Instance.MuteSFX(false);
         }
         else
         {

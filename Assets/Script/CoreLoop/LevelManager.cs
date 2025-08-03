@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-
     public GameObject[] capybaraPrefabs;
     public Color[] possibleColors;
     public LevelDatabase levelDatabase;
@@ -61,8 +60,8 @@ public class LevelManager : MonoBehaviour
             level.verticalSpacing
         );
         gridSystem.GenerateGrid(); // This also sets grid position to environment grid spawn point (this is a game object with "GridSpawn" tag)
+        gridSystem.FitGridToReferenceArea();
         gridSystem.InitPathGrid();
-
         foreach (var capyInfo in level.capybaras)
         {
             GameObject prefab = capybaraPrefabs.FirstOrDefault(p =>
@@ -93,12 +92,16 @@ public class LevelManager : MonoBehaviour
                 capy.Freeze();
 
             capy.SetSeat(seat);
-
-
         }
 
         GameManager.Instance.InitializeSeatGroupsCache();
+    }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            gridSystem.FitGridToReferenceArea();
+        }
     }
 }
-

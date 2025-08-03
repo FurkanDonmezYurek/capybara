@@ -3,26 +3,15 @@ using UnityEngine;
 public class LevelCheckpoint : MonoBehaviour
 {
     public bool isOpen = false;
-    public Material openMaterial;
-    public Material closedMaterial;
-    [SerializeField] private MeshRenderer visualRenderer;
+    public GameObject openObje;
+    public GameObject closedClosed;
 
     public int vehicleTypeIndex;
 
-    private void Awake()
-    {
-        if (visualRenderer == null)
-            visualRenderer = GetComponent<MeshRenderer>();
-
-        UpdateVisual();
-    }
-
     public void UpdateVisual()
     {
-        if (visualRenderer != null)
-        {
-            visualRenderer.material = isOpen ? openMaterial : closedMaterial;
-        }
+         openObje.SetActive(isOpen);
+         closedClosed.SetActive(!isOpen);
     }
 }
 

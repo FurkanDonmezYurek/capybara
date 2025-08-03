@@ -131,7 +131,7 @@ public class AudioManager : MonoBehaviour
     {
         sfxSource.mute = mute;
         PlayerPrefs.SetInt(MuteSFXKey, mute ? 1 : 0);
-        //LoadMuteSettings();
+        LoadMuteSettings();
     }
 
     // Load previously saved mute states from PlayerPrefs
