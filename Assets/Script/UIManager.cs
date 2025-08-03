@@ -273,6 +273,7 @@ public class UIManager : MonoBehaviour
             {
                 isFinalCountdownSoundPlaying = true;
                 AudioManager.Instance.PlaySFX("TimerSound");
+                GameManager.Instance.hapticsManager.PlayWarningImpactVibration();
             }
         }
         else
@@ -293,6 +294,7 @@ public class UIManager : MonoBehaviour
     public void HideAllPanels()
     {
         AudioManager.Instance.PlaySFX("UI_Click");
+        GameManager.Instance.hapticsManager.PlayMediumImpactVibration();
 
         if (levelCompletePanel.activeSelf)
             HidePanelWithAnimation(levelCompleteCG, levelCompleteHeader, levelCompletePanel);
@@ -330,6 +332,7 @@ public class UIManager : MonoBehaviour
     public void ShowLevelComplete()
     {
         BuyCoins(100);
+        GameManager.Instance.hapticsManager.PlaySuccessVibration();
 
         if (GameTimerManager.Instance.isFrozen)
             GameTimerManager.Instance.CancelFreeze();
@@ -370,6 +373,7 @@ public class UIManager : MonoBehaviour
     public void ShowLevelFail()
     {
         AudioManager.Instance.PlaySFX("GameOver");
+        GameManager.Instance.hapticsManager.PlayFailureImpactVibration();
 
         if (flashTweenTimerText != null)
         {
@@ -506,6 +510,8 @@ public class UIManager : MonoBehaviour
             ShowBoosterFrame();
 
             AudioManager.Instance.PlaySFX("FreezeBooster");
+            GameManager.Instance.hapticsManager.PlayRigidImpactVibration();
+
             boosterUnlockedIcon[0].gameObject.SetActive(true);
             boosterUnlockedIcon[1].gameObject.SetActive(false);
 
@@ -535,6 +541,7 @@ public class UIManager : MonoBehaviour
         else
         {
             AudioManager.Instance.PlaySFX("SeatBooster");
+            GameManager.Instance.hapticsManager.PlayRigidImpactVibration();
             boosterUnlockedIcon[0].gameObject.SetActive(false);
             boosterUnlockedIcon[1].gameObject.SetActive(true);
 
@@ -568,6 +575,8 @@ public class UIManager : MonoBehaviour
     {
         HideAllPanels();
         AudioManager.Instance.PlaySFX("OpeningImportantPanel");
+        GameManager.Instance.hapticsManager.PlayRigidImpactVibration();
+
         playOnPanel.SetActive(true);
 
         playOnCG.alpha = 0;
@@ -596,6 +605,7 @@ public class UIManager : MonoBehaviour
     public void PlayCloudOpenTransition()
     {
         AudioManager.Instance.PlaySFX("CloudEffect");
+        GameManager.Instance.hapticsManager.PlaySoftImpactVibration();
         cloudTransitionPanel.SetActive(true);
 
         Vector2 leftStartPos = leftCloud.anchoredPosition;
@@ -615,6 +625,8 @@ public class UIManager : MonoBehaviour
     public void PlayCloudCloseTransition(int sceneIndex)
     {
         AudioManager.Instance.PlaySFX("CloudEffect");
+        GameManager.Instance.hapticsManager.PlaySoftImpactVibration();
+
         cloudTransitionPanel.SetActive(true);
 
         Vector2 leftStartPos = leftCloud.anchoredPosition;
@@ -791,6 +803,7 @@ public class UIManager : MonoBehaviour
         if (progressInSet + 1 == levelsPerVehicle)
         {
             AudioManager.Instance.PlaySFX("VehicleComplate");
+            GameManager.Instance.hapticsManager.PlaySelectionImpactVibration();
         }
 
     }
@@ -914,6 +927,7 @@ public class UIManager : MonoBehaviour
         for (int i = 0; i < coinFlyCount; i++)
         {
             GameObject coin = Instantiate(coinFlyPrefab, coinFlyLastPosition);
+            GameManager.Instance.hapticsManager.PlayRigidImpactVibration();
             RectTransform coinRT = coin.GetComponent<RectTransform>();
             coinRT.anchoredPosition = uiStartPos;
             coinRT.localScale = Vector3.one;
@@ -971,6 +985,7 @@ public class UIManager : MonoBehaviour
     public void ToggleSound()
     {
         AudioManager.Instance.PlaySFX("UI_Click");
+        GameManager.Instance.hapticsManager.PlaySelectionImpactVibration();
         isSoundOn = !isSoundOn;
 
         if (isSoundOn)
@@ -992,6 +1007,7 @@ public class UIManager : MonoBehaviour
     public void ToggleVibration()
     {
         AudioManager.Instance.PlaySFX("UI_Click");
+        GameManager.Instance.hapticsManager.PlaySelectionImpactVibration();
         isVibrationOn = !isVibrationOn;
         PlayerPrefs.SetInt("Vibration", isVibrationOn ? 1 : 0);
         // TODO: VibrationManager.Instance.SetVibration(isVibrationOn);
