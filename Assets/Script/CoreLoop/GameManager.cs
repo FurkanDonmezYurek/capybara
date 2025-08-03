@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,7 +22,14 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject); // Enforce singleton
+            return;
+        }
     }
 
     private void Start()
@@ -60,6 +66,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("You won! Show win screen here.");
         progressManager.SetMaxReachedLevel(levelManager.GetCurrentLevelIndex());
         UIManager.ShowLevelComplete();
+        ParticleManager.Instance.Play(ParticleType.Confetti,new Vector3(0,5,0));
         // progressManager.AddSoftCurrency(100); // Örnek olarak 100 soft currency ekle
     }
 
@@ -67,6 +74,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("You lost! Show lose screen here.");
         UIManager.ShowLevelFail();
+        AudioManager.Instance.PlaySFX("GameOver");
         // Burada kaybettiğinizde gösterilecek ekranı açabilirsiniz
     }
 
@@ -78,6 +86,7 @@ public class GameManager : MonoBehaviour
             // Game Won
             if (!UIManager.levelCompletePanel.activeSelf)
                 ShowWinScreen();
+            AudioManager.Instance.PlaySFX("LevelComplete");
         }
     }
 
@@ -125,6 +134,7 @@ public class GameManager : MonoBehaviour
         selectedCapybara = capybara;
         selectedCapybara.JumpAnimation();
         selectedCapybara.capybaraColorMaterialObject.layer = LayerMask.NameToLayer("Outline");
+        AudioManager.Instance.PlaySFX("CapybaraClick");
     }
 
     public void OnSeatClicked(Seat seat)

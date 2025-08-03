@@ -5,7 +5,7 @@ using UnityEngine;
 public class FatCapybara : Capybara
 {
     public override CapybaraType Type => CapybaraType.Fat;
-    public override float MoveSpeed => 1.5f;
+    public override float MoveSpeed => 3f;
 
     public Seat secondSlot;
 

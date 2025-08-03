@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-
     public GameObject[] capybaraPrefabs;
     public Color[] possibleColors;
     public LevelDatabase levelDatabase;
@@ -43,17 +42,26 @@ public class LevelManager : MonoBehaviour
 
         GameManager.Instance.ClearCapybaraGroupCache();
         GameManager.Instance.ClearSeatGroupCache();
+        // Destroy gameobjects tagged with "LevelEnvironment" in scene
+        GameObject[] existingEnvironments = GameObject.FindGameObjectsWithTag("LevelEnvironment");
+        foreach (GameObject env in existingEnvironments)
+        {
+            Destroy(env);
+        }
+        Instantiate(level.levelEnvironment, Vector3.zero, Quaternion.Euler(0, 180, 0)); // Rotate to face the camera
 
         gridSystem.ClearGrid();
         gridSystem.SetGridParameters(
             level.rows,
             level.columns,
             level.groupWidth,
-            level.groupHeight
+            level.groupHeight,
+            level.horizontalSpacing,
+            level.verticalSpacing
         );
-        gridSystem.GenerateGrid();
+        gridSystem.GenerateGrid(); // This also sets grid position to environment grid spawn point (this is a game object with "GridSpawn" tag)
+        gridSystem.FitGridToReferenceArea();
         gridSystem.InitPathGrid();
-
         foreach (var capyInfo in level.capybaras)
         {
             GameObject prefab = capybaraPrefabs.FirstOrDefault(p =>
@@ -84,12 +92,16 @@ public class LevelManager : MonoBehaviour
                 capy.Freeze();
 
             capy.SetSeat(seat);
-
-
         }
 
         GameManager.Instance.InitializeSeatGroupsCache();
+    }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            gridSystem.FitGridToReferenceArea();
+        }
     }
 }
-

@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c6aee26f58974152871384824b50d21, type: 3}
+  m_Name: Level_0.3
+  m_EditorClassIdentifier: 
+  levelName: Level_0.3
+  levelEnvironment: {fileID: 565749888770946570, guid: 9773ebec963bb4b3cab0023c1b403196,
+    type: 3}
+  difficulty: 0
+  levelTime: 46
+  isLocked: 0
+  rows: 2
+  columns: 4
+  groupWidth: 2
+  groupHeight: 1
+  horizontalSpacing: 1.2
+  verticalSpacing: 2
+  capybaras:
+  - gridPosition: {x: 2, y: 1}
+    type: 0
+    isFrozen: 0
+    color: {r: 0, g: 0.0004093647, b: 1, a: 0}
+  - gridPosition: {x: 1, y: 1}
+    type: 0
+    isFrozen: 0
+    color: {r: 0.9031561, g: 0.972549, b: 0.07058822, a: 0}
+  - gridPosition: {x: 3, y: 0}
+    type: 0
+    isFrozen: 0
+    color: {r: 0.9031561, g: 0.972549, b: 0.07058822, a: 0}
+  - gridPosition: {x: 1, y: 0}
+    type: 0
+    isFrozen: 0
+    color: {r: 0, g: 0.0004093647, b: 1, a: 0}

@@ -21,35 +21,28 @@ public class VehicleSplineController : MonoBehaviour
     public VehicleManager vehicleManager;
 
 
-   void Start()
-{
-    if (vehicleManager == null)
+    void Start()
     {
-        Debug.LogError("VehicleManager is not assigned!");
-        return;
-    }
 
-    if (levelCheckpoints == null || levelCheckpoints.Count == 0)
-    {
-        Debug.LogError("Level checkpoints not assigned!");
-        return;
-    }
+        targetCheckpointIndex = vehicleManager.GetCurrentLevelIndex();
+        currentCheckpointIndex = 0;
+        
 
-    targetCheckpointIndex = vehicleManager.GetCurrentLevelIndex();
-    currentCheckpointIndex = 0;
-
-    for (int i = 0; i < targetCheckpointIndex; i++)
-    {
-        if (levelCheckpoints[i] != null)
+        for (int i = 0; i < targetCheckpointIndex; i++)
         {
             levelCheckpoints[i].isOpen = true;
             levelCheckpoints[i].UpdateVisual();
+
+        }
+
+        vehicleManager.VehicleSelect(levelCheckpoints[targetCheckpointIndex].vehicleTypeIndex);
+        int lastCheckPoint = 0;
+        if (targetCheckpointIndex > 0)
+        {
+            lastCheckPoint = targetCheckpointIndex - 1;
+            StartFromNearestSplinePoint(levelCheckpoints[lastCheckPoint].transform);
         }
     }
-
-    vehicleManager.VehicleSelect(levelCheckpoints[targetCheckpointIndex].vehicleTypeIndex);
-    StartFromNearestSplinePoint(levelCheckpoints[targetCheckpointIndex].transform);
-}
 
     public void StartFromNearestSplinePoint(Transform target)
     {
@@ -73,11 +66,11 @@ public class VehicleSplineController : MonoBehaviour
 
         // En yakın spline pozisyonunu al
         Vector3 closestPoint = SplineUtility.EvaluatePosition(spline, closestT);
-        target.position = closestPoint;
+        //target.position = closestPoint;
 
         // SplineAnimate’i o noktadan başlat
         splineAnimate.NormalizedTime = closestT;
-        splineAnimate.Pause();
+        splineAnimate.Play();
 
         Camera.main.transform.DOMove(new Vector3(transform.position.x, transform.position.y + 20, transform.position.z - 10), 0.25f);
     }
@@ -98,13 +91,8 @@ public class VehicleSplineController : MonoBehaviour
             {
                 checkpoint.isOpen = true;
                 checkpoint.UpdateVisual();
-
-                if (currentCheckpointIndex >= targetCheckpointIndex)
-                {
-                    PauseMovement();
-                }
-                currentCheckpointIndex++;
-                vehicleManager.VehicleSelect(levelCheckpoints[currentCheckpointIndex-1].vehicleTypeIndex);
+                PauseMovement();
+                vehicleManager.VehicleSelect(checkpoint.vehicleTypeIndex);
             }
         }
     }
