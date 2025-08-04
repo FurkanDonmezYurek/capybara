@@ -19,46 +19,64 @@ public class HapticsManager : MonoBehaviour
 
     public void PlaySelectionImpactVibration()
     {
+        if(IdleUIManager.Instance.isVibrationOn == false)
+            return;
         HapticPatterns.PlayPreset(HapticPatterns.PresetType.Selection);
     }
 
     public void PlayWarningImpactVibration()
     {
+        if (IdleUIManager.Instance.isVibrationOn == false)
+            return;
         HapticPatterns.PlayPreset(HapticPatterns.PresetType.Warning);
     }
 
     public void PlaySuccessVibration()
     {
+        if (IdleUIManager.Instance.isVibrationOn == false)
+            return;
         HapticPatterns.PlayPreset(HapticPatterns.PresetType.Success);
     }
 
     public void PlayFailureImpactVibration()
     {
+        if (IdleUIManager.Instance.isVibrationOn == false)
+            return;
         HapticPatterns.PlayPreset(HapticPatterns.PresetType.Failure);
     }
 
     public void PlayRigidImpactVibration()
     {
+        if (IdleUIManager.Instance.isVibrationOn == false)
+            return;
         HapticPatterns.PlayPreset(HapticPatterns.PresetType.RigidImpact);
     }
 
     public void PlaySoftImpactVibration()
     {
+        if (IdleUIManager.Instance.isVibrationOn == false)
+            return;
         HapticPatterns.PlayPreset(HapticPatterns.PresetType.SoftImpact);
     }
 
     public void PlayLightImpactVibration()
     {
+        if (IdleUIManager.Instance.isVibrationOn == false)
+            return;
         HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
     }
 
     public void PlayMediumImpactVibration()
     {
+        if (IdleUIManager.Instance.isVibrationOn == false)
+            return;
         HapticPatterns.PlayPreset(HapticPatterns.PresetType.MediumImpact);
     }
 
     public void PlayHeavyImpactVibration()
     {
+        if (IdleUIManager.Instance.isVibrationOn == false)
+            return;
         HapticPatterns.PlayPreset(HapticPatterns.PresetType.HeavyImpact);
     }
 }

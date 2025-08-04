@@ -11,7 +11,7 @@ public class IdleUIManager : MonoBehaviour
     public static IdleUIManager Instance;
 
     [Header("Start Level Panel")]
-    [SerializeField] private GameObject startLevelPanel;
+    [SerializeField] public GameObject startLevelPanel;
     [SerializeField] private CanvasGroup startLevelCG;
     [SerializeField] private Transform header;
     [SerializeField] private Transform levelImage;
@@ -78,10 +78,11 @@ public class IdleUIManager : MonoBehaviour
     [Header("Tutorial")]
     [SerializeField] private GameObject tutorialPanel;
     [SerializeField] private CanvasGroup tutorialCG;
-    [SerializeField] private Transform tutorialHighlightCircle;
+    [SerializeField] private RectTransform tutorialHighlightCircle;
     [SerializeField] private float tutorialDelayBeforeAutoClose = 1.5f;
     [SerializeField] private Vector3 tutorialCircleOffset = new Vector3(0, 50, 0);
     [SerializeField] private Image fingerImage;
+    [SerializeField] private float tutorialVerticalOffset = -5f;
 
     private Tween tutorialPulseTween;
     private bool tutorialActive = false;
@@ -90,7 +91,7 @@ public class IdleUIManager : MonoBehaviour
     private Tween loopTween;
     private int selectedLevelIndex;
     private bool isSoundOn;
-    private bool isVibrationOn;
+    public bool isVibrationOn;
 
     private void Awake()
     {
@@ -160,11 +161,8 @@ public class IdleUIManager : MonoBehaviour
 
     public void OpenStartLevelPanel()
     {
-        if (tutorialActive)
-        {
-            HideTutorialPanel();
-        }
-
+        SetTutorialAsSeen();
+        HideTutorialPanel();
         HideAllPanels();
 
         if (AudioManager.Instance != null)
@@ -184,10 +182,6 @@ public class IdleUIManager : MonoBehaviour
         UIAnimator.ScaleIn(levelImage, 0.4f, 0.1f);
         UIAnimator.MoveFromX(selectedLevelText.transform, -800f, 0.4f, Ease.OutExpo, 0.2f);
         UIAnimator.ScaleIn(playButtonTransform, 0.4f, 0.35f);
-        if (!PlayerPrefs.HasKey("HasSeenIdleTutorial"))
-        {
-            PlayerPrefs.SetInt("HasSeenIdleTutorial", 1);
-        }
     }
     private void OnPlayButtonClicked()
     {
@@ -596,6 +590,13 @@ public class IdleUIManager : MonoBehaviour
     #region === Tutorial ===
     public void ShowTutorial()
     {
+        CameraDragController cam = Camera.main.GetComponent<CameraDragController>();
+        if (cam != null)
+        {
+            cam.SetTutorialStartPosition(Camera.main.transform.position);
+        }
+
+
         tutorialActive = true;
 
         tutorialPanel.SetActive(true);
@@ -605,8 +606,22 @@ public class IdleUIManager : MonoBehaviour
 
         tutorialCG.DOFade(1f, 2.5f);
 
-        Vector3 targetPos = playButton.transform.position + tutorialCircleOffset;
-        tutorialHighlightCircle.position = targetPos;
+        Vector3 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, playButton.transform.position);
+        RectTransform canvasRect = tutorialHighlightCircle.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
+
+        Vector2 localPos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            canvasRect,
+            screenPos + tutorialCircleOffset,
+            Camera.main,
+            out localPos
+        );
+
+        float verticalUIOffset = tutorialVerticalOffset * 100f; 
+        localPos.y += verticalUIOffset;
+
+        tutorialHighlightCircle.anchoredPosition = localPos;
+
         tutorialHighlightCircle.localScale = Vector3.one;
         tutorialHighlightCircle.GetComponent<Image>().color = new Color(1, 1, 1, 0.6f);
 
@@ -618,6 +633,7 @@ public class IdleUIManager : MonoBehaviour
             .SetLoops(-1)
             .SetUpdate(true);
 
+        fingerImage.gameObject.SetActive(true);
         DOTween.Sequence()
             .Append(fingerImage.transform.DOScale(0.9f, 0.55f)
                 .SetLoops(-1, LoopType.Yoyo)
@@ -644,6 +660,12 @@ public class IdleUIManager : MonoBehaviour
         fingerImage.transform.DOKill();
         fingerImage.gameObject.SetActive(false);
 
+    }
+
+    public void SetTutorialAsSeen()
+    {
+        PlayerPrefs.SetInt("HasSeenIdleTutorial", 1);
+        PlayerPrefs.Save();
     }
 
     #endregion

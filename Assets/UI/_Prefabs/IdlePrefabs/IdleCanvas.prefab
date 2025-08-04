@@ -6606,7 +6606,7 @@ MonoBehaviour:
   regionNames:
   - Forest
   - Desert
-  - Desert
+  - Cave
   - Snow
   - Waterfall
   centerRegionCG: {fileID: 6777954539692098468}
@@ -6629,6 +6629,8 @@ MonoBehaviour:
   tutorialDelayBeforeAutoClose: 1.5
   tutorialCircleOffset: {x: 0, y: -330, z: 0}
   fingerImage: {fileID: 1261484201051580777}
+  tutorialVerticalOffset: -5
+  isVibrationOn: 0
 --- !u!1 &6511871843107882106
 GameObject:
   m_ObjectHideFlags: 0
@@ -8442,7 +8444,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d06f1774a9aa14373a82e0f4c7e57eb5, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

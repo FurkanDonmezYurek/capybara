@@ -39,6 +39,9 @@ public class SeatGroup : MonoBehaviour
             seat.currentCapybara?.Lock();
 
         AudioManager.Instance.PlaySFX("Match");
+        if(HapticsManager.Instance != null)
+            HapticsManager.Instance.PlayLightImpactVibration();
+
         HapticsManager.Instance.PlayHeavyImpactVibration();
 
         ParticleManager.Instance.Play(ParticleType.Explosion, seatsInGroup[1].transform.position+new Vector3(0,1.5f,0));
@@ -65,7 +68,8 @@ public class SeatGroup : MonoBehaviour
                     {
                         capy.Unfreeze();
                         AudioManager.Instance.PlaySFX("Unfreeze");
-                        HapticsManager.Instance.PlaySoftImpactVibration();
+                        if (HapticsManager.Instance != null)
+                            HapticsManager.Instance.PlaySoftImpactVibration();
                     }
                 }
             }
