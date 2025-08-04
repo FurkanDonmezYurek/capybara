@@ -218,6 +218,21 @@ PrefabInstance:
       propertyPath: m_RenderShadows
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -634575796623509403, guid: 7f38fbdc17b6a874db9a832de1cdad8d,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 113.23
+      objectReference: {fileID: 0}
+    - target: {fileID: -634575796623509403, guid: 7f38fbdc17b6a874db9a832de1cdad8d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.00000095367
+      objectReference: {fileID: 0}
+    - target: {fileID: -634575796623509403, guid: 7f38fbdc17b6a874db9a832de1cdad8d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.76
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7f38fbdc17b6a874db9a832de1cdad8d,
         type: 3}
       propertyPath: m_Name
@@ -231,7 +246,7 @@ PrefabInstance:
     - target: {fileID: 2637246752486036126, guid: 7f38fbdc17b6a874db9a832de1cdad8d,
         type: 3}
       propertyPath: orthographic size
-      value: 7
+      value: 8.5
       objectReference: {fileID: 0}
     - target: {fileID: 2637246752486036126, guid: 7f38fbdc17b6a874db9a832de1cdad8d,
         type: 3}

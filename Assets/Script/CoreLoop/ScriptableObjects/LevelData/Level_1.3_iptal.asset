@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c6aee26f58974152871384824b50d21, type: 3}
-  m_Name: Level_1.2
+  m_Name: Level_1.3_iptal
   m_EditorClassIdentifier: 
   levelName: New Level
   levelEnvironment: {fileID: 6103207182234554739, guid: 52c4bdbe59f934e4da9c5e0f6f7e0251,
     type: 3}
   difficulty: 0
-  levelTime: 51
+  levelTime: 61
   isLocked: 0
   rows: 2
   columns: 6
@@ -25,14 +25,18 @@ MonoBehaviour:
   horizontalSpacing: 1.2
   verticalSpacing: 4
   capybaras:
-  - gridPosition: {x: 0, y: 1}
-    type: 0
-    isFrozen: 0
-    color: {r: 0.9031561, g: 0.972549, b: 0.07058822, a: 0}
-  - gridPosition: {x: 1, y: 1}
+  - gridPosition: {x: 5, y: 1}
     type: 0
     isFrozen: 0
     color: {r: 0, g: 1, b: 0.79420686, a: 0}
+  - gridPosition: {x: 0, y: 1}
+    type: 0
+    isFrozen: 0
+    color: {r: 0, g: 1, b: 0.79420686, a: 0}
+  - gridPosition: {x: 1, y: 1}
+    type: 0
+    isFrozen: 0
+    color: {r: 0.9031561, g: 0.972549, b: 0.07058822, a: 0}
   - gridPosition: {x: 2, y: 1}
     type: 0
     isFrozen: 0
@@ -40,7 +44,7 @@ MonoBehaviour:
   - gridPosition: {x: 3, y: 0}
     type: 0
     isFrozen: 0
-    color: {r: 0, g: 1, b: 0.79420686, a: 0}
+    color: {r: 0, g: 0.0004093647, b: 1, a: 0}
   - gridPosition: {x: 4, y: 0}
     type: 0
     isFrozen: 1
@@ -52,12 +56,8 @@ MonoBehaviour:
   - gridPosition: {x: 0, y: 0}
     type: 0
     isFrozen: 0
-    color: {r: 0, g: 1, b: 0.79420686, a: 0}
-  - gridPosition: {x: 1, y: 0}
-    type: 0
-    isFrozen: 0
-    color: {r: 0, g: 0.0004093647, b: 1, a: 0}
+    color: {r: 0.9031561, g: 0.972549, b: 0.07058822, a: 0}
   - gridPosition: {x: 2, y: 0}
     type: 0
     isFrozen: 0
-    color: {r: 0.9031561, g: 0.972549, b: 0.07058822, a: 0}
+    color: {r: 0, g: 1, b: 0.79420686, a: 0}
