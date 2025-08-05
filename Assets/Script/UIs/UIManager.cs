@@ -143,8 +143,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Sprite[] iconVibrations;
     [SerializeField] private Sprite[] bgSettingsButtons;
 
-    //[SerializeField] private GameObject shopPanel;  
-
+    private bool isSoundOn = false;
+    private bool isVibrationOn = false;
     #endregion
 
     #region Cloud Transition
@@ -181,43 +181,46 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region === Internal States ===
-
-    private bool isSoundOn = false;
-    private bool isVibrationOn = false;
-    #endregion
-
     #region === Unity Events ===
-
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
     }
-
     private void Start()
     {
-        isSoundOn = PlayerPrefs.GetInt("Sound", 1) == 1;
-        isVibrationOn = PlayerPrefs.GetInt("Vibration", 1) == 1;
-        UpdateSoundToggleVisual();
-        UpdateVibrationToggleVisual();
+        InitializeSettings();
         PlayCloudOpenTransition();
-
-        CurrencyManager.Instance.OnCoinChanged += UpdateCoin;
+        SetupListeners();
         UpdateCoin(CurrencyManager.Instance.Coin);
+        TryStartSeatTutorial();
+    }
+    #endregion
 
-        GameTimerManager.Instance.OnTimeChanged += UpdateTimer;
-        GameTimerManager.Instance.OnTimeOver += ShowLevelFail;
+    #region === Initialization ===
+    private void InitializeSettings()
+    {
+        LoadSettingsPreferences();
+
+        UpdateToggleVisual(soundToggleIcon, soundToggleBackground, isSoundOn, iconSounds, bgSettingsButtons);
+        UpdateToggleVisual(vibrationToggleIcon, vibrationToggleBackground, isVibrationOn, iconVibrations, bgSettingsButtons);
 
         boosterButtonTweens = new Tween[boosterButton.Length];
-
+    }
+    private void SetupListeners()
+    {
+        CurrencyManager.Instance.OnCoinChanged += UpdateCoin;
+        GameTimerManager.Instance.OnTimeChanged += UpdateTimer;
+        GameTimerManager.Instance.OnTimeOver += ShowLevelFail;
+    }
+    private void TryStartSeatTutorial()
+    {
         if (!PlayerPrefs.HasKey("HasSeenSeatTutorial"))
         {
             StartCoroutine(StartSeatTutorialDelayed());
             PlayerPrefs.SetInt("HasSeenSeatTutorial", 1);
         }
     }
-
     #endregion
 
     #region === Top Bar Updates ===
@@ -291,12 +294,9 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region === Panel Management ===
-
     public void HideAllPanels()
     {
-        AudioManager.Instance.PlaySFX("UI_Click");
-        if (HapticsManager.Instance != null)
-            HapticsManager.Instance.PlayMediumImpactVibration();
+        HapticsManager.Instance.PlayUIFeedback("UI_Click", HapticsManager.Instance.PlayMediumImpactVibration);
 
         if (levelCompletePanel.activeSelf)
             HidePanelWithAnimation(levelCompleteCG, levelCompleteHeader, levelCompletePanel);
@@ -318,35 +318,47 @@ public class UIManager : MonoBehaviour
         if (settingsPanel.activeSelf)
             HidePanelWithAnimation(settingsCG, settingsContent, settingsPanel);
     }
-
-    private void HidePanelWithAnimation(CanvasGroup cg, Transform scaleTarget, GameObject panelGO)
+    private void HidePanelWithAnimation(CanvasGroup cg, Transform scaleTarget, GameObject panelGO, float duration = 0.3f, float scale = 0.8f)
     {
         Sequence seq = DOTween.Sequence();
-        seq.Append(cg.DOFade(0f, 0.3f));
-        seq.Join(scaleTarget.DOScale(0.8f, 0.3f).SetEase(Ease.InBack));
+        seq.Append(cg.DOFade(0f, duration));
+        if (scaleTarget != null)
+            seq.Join(scaleTarget.DOScale(scale, duration).SetEase(Ease.InBack));
         seq.OnComplete(() => panelGO.SetActive(false));
     }
-
     #endregion
 
     #region === Panel Display Functions ===
 
+    #region Level Complate
     public void ShowLevelComplete()
     {
+        HandleRewardsAndVibrations();
+        HandleTimerState();
+        PreparePanelUI();
+
+        int currentLevel = GameManager.Instance.levelManager.GetCurrentLevelIndex();
+        PlayLevelCompleteSequence(currentLevel + 1);
+    }
+    private void HandleRewardsAndVibrations()
+    {
         BuyCoins(100);
+
         if (HapticsManager.Instance != null)
             HapticsManager.Instance.PlaySuccessVibration();
-
+    }
+    private void HandleTimerState()
+    {
         if (GameTimerManager.Instance.isFrozen)
             GameTimerManager.Instance.CancelFreeze();
 
         UpdateTimer(GameTimerManager.Instance.RemainingTime / GameTimerManager.Instance.totalTime);
         GameTimerManager.Instance.isRunning = false;
-
+    }
+    private void PreparePanelUI()
+    {
         HideAllPanels();
         levelCompletePanel.SetActive(true);
-
-        int currentLevel = GameManager.Instance.levelManager.GetCurrentLevelIndex();
 
         vehicleProgressRoot.SetActive(false);
         vehicleProgressCG.alpha = 0f;
@@ -357,7 +369,9 @@ public class UIManager : MonoBehaviour
         UIAnimator.FadeIn(levelCompleteCG);
         UIAnimator.ScaleIn(levelCompleteHeader);
         UIAnimator.RotateLoop(levelCompleteShine.transform);
-
+    }
+    private void PlayLevelCompleteSequence(int nextLevel)
+    {
         DOTween.Sequence()
             .Append(levelCompleteCoinIcon.DOScale(1f, 0.4f).From(0f).SetEase(Ease.OutBack))
             .AppendInterval(0.5f)
@@ -365,66 +379,77 @@ public class UIManager : MonoBehaviour
             .AppendCallback(() =>
             {
                 vehicleProgressRoot.SetActive(true);
-                UpdateVehicleProgress(currentLevel + 1);
+                UpdateVehicleProgress(nextLevel);
             })
             .Append(vehicleProgressCG.DOFade(1f, 0.4f))
             .Join(vehicleProgressScaleTarget.DOScale(1f, 0.4f).SetEase(Ease.OutBack))
             .AppendInterval(0.3f)
             .Append(levelCompleteNextButton.DOScale(1f, 0.4f).SetEase(Ease.OutBack));
     }
+    #endregion
 
+    #region Level Fail
     public void ShowLevelFail()
     {
-        AudioManager.Instance.PlaySFX("GameOver");
-        if (HapticsManager.Instance != null)
-            HapticsManager.Instance.PlayFailureImpactVibration();
+        HapticsManager.Instance.PlayUIFeedback("GameOver", HapticsManager.Instance.PlayFailureImpactVibration);
+        ResetFlashingTimerText();
 
+        HideAllPanels();
+        levelFailPanel.SetActive(true);
+
+        SetupLevelFailButtons();
+        AnimateLevelFailUI();
+    }
+    private void ResetFlashingTimerText()
+    {
         if (flashTweenTimerText != null)
         {
             flashTweenTimerText.Kill();
             flashTweenTimerText = null;
             timerText.transform.localScale = Vector3.one;
         }
-
-        HideAllPanels();
-        levelFailPanel.SetActive(true);
-
-        //bool isAdReady = AdManager.Instance.IsRewardedAdReady(); //TODO: Ad ready check!!
+    }
+    private void SetupLevelFailButtons()
+    {
+        //bool isAdReady = AdManager.Instance.IsRewardedAdReady(); //TODO: Replace with actual ad check
         bool hasInternet = Application.internetReachability != NetworkReachability.NotReachable;
 
-        if (hasInternet) //TODO: Replace with actual ad check isAdReady
-        {
-            levelFailPlayOnButton.gameObject.SetActive(true);
-            levelFailNoConnectionButton.gameObject.SetActive(false);
-        }
-        else
-        {
-            levelFailPlayOnButton.gameObject.SetActive(false);
-            levelFailNoConnectionButton.gameObject.SetActive(true);
-        }
-
+        levelFailPlayOnButton.gameObject.SetActive(hasInternet);
+        levelFailNoConnectionButton.gameObject.SetActive(!hasInternet);
+    }
+    private void AnimateLevelFailUI()
+    {
         UIAnimator.FadeIn(levelFailCG);
         UIAnimator.ScaleIn(levelFailHeader);
         UIAnimator.ScaleIn(levelFailPlusTimeImage, 0.3f, 0.3f);
         UIAnimator.MoveFromX(levelFailText, -1000, 0.3f, Ease.OutExpo, 0.6f);
         UIAnimator.ScaleIn(levelFailButtons, 0.3f, 0.6f);
     }
+    #endregion
 
+    #region Coin Buy Panel
     public void ShowCoinBuyPanel()
     {
         HideAllPanels();
         AudioManager.Instance.PlaySFX("OpeningImportantPanel");
         coinBuyPanel.SetActive(true);
 
-        //bool isAdReady = AdManager.Instance.IsRewardedAdReady(); //TODO: Ad ready check!!
-        bool hasInternet = Application.internetReachability != NetworkReachability.NotReachable;
-
+        AnimateCoinBuyUI();
+        SetupCoinBuyButtons();
+    }
+    private void AnimateCoinBuyUI()
+    {
         UIAnimator.FadeIn(coinBuyCG);
         UIAnimator.ScaleIn(coinBuyHeader);
         UIAnimator.ScaleIn(coinBuyImage, 0.3f, 0.3f);
         UIAnimator.MoveFromX(coinBuyText, -1000, 0.3f, Ease.OutExpo, 0.6f);
+    }
+    private void SetupCoinBuyButtons()
+    {
+        //bool isAdReady = AdManager.Instance.IsRewardedAdReady(); //TODO
+        bool hasInternet = Application.internetReachability != NetworkReachability.NotReachable;
 
-        if (hasInternet) //TODO: isAdReady check
+        if (hasInternet)
         {
             coinBuyButton.gameObject.SetActive(true);
             coinBuyButtonNoConnection.gameObject.SetActive(false);
@@ -437,21 +462,30 @@ public class UIManager : MonoBehaviour
             UIAnimator.ScaleIn(coinBuyButtonNoConnection.transform, 0.3f, 0.9f);
         }
     }
+    #endregion
 
-    public void ShowBoosterPanel(bool isFreezeBoster)
+    #region Booster Process
+
+    #region Booster Panel
+    public void ShowBoosterPanel(bool isFreezeBooster)
     {
         MoveToCurrentSeatStep();
         HideAllPanels();
         AudioManager.Instance.PlaySFX("OpeningImportantPanel");
+
         boosterPanel.SetActive(true);
 
+        SetupBoosterButtons();
+        AnimateBoosterPanel(isFreezeBooster);
+    }
+    private void SetupBoosterButtons()
+    {
         bool hasEnoughCoin = CurrencyManager.Instance.Coin >= 100;
-        //bool isAdReady = AdManager.Instance.IsRewardedAdReady(); //TODO: Ad ready check!!
         bool hasInternet = Application.internetReachability != NetworkReachability.NotReachable;
 
         unlockBoosterWithCoinButton.gameObject.SetActive(hasEnoughCoin);
 
-        if (hasInternet) //TODO: Replace with actual ad check
+        if (hasInternet)
         {
             unlockBoosterWithAdsButton.gameObject.SetActive(true);
             unlockBoosterNoAdAvailableButton.gameObject.SetActive(false);
@@ -469,39 +503,31 @@ public class UIManager : MonoBehaviour
                 ? new Vector3(190, unlockBoosterNoAdAvailableButton.transform.localPosition.y, 0)
                 : new Vector3(0, unlockBoosterNoAdAvailableButton.transform.localPosition.y, 0);
         }
-
+    }
+    private void AnimateBoosterPanel(bool isFreezeBooster)
+    {
         UIAnimator.FadeIn(boosterCG);
-        if (isFreezeBoster)
-        {
-            boosterHeader[0].gameObject.SetActive(true);
-            boosterIcon[0].gameObject.SetActive(true);
-            boosterText[0].gameObject.SetActive(true);
 
-            boosterHeader[1].gameObject.SetActive(false);
-            boosterIcon[1].gameObject.SetActive(false);
-            boosterText[1].gameObject.SetActive(false);
+        int activeIndex = isFreezeBooster ? 0 : 1;
+        int inactiveIndex = isFreezeBooster ? 1 : 0;
 
-            UIAnimator.ScaleIn(boosterHeader[0]);
-            UIAnimator.ScaleIn(boosterIcon[0], 0.3f, 0.2f);
-            UIAnimator.MoveFromX(boosterText[0], -1000, 0.3f, Ease.OutExpo, 0.4f);
-        }
-        else
-        {
-            boosterHeader[0].gameObject.SetActive(false);
-            boosterIcon[0].gameObject.SetActive(false);
-            boosterText[0].gameObject.SetActive(false);
+        boosterHeader[activeIndex].gameObject.SetActive(true);
+        boosterIcon[activeIndex].gameObject.SetActive(true);
+        boosterText[activeIndex].gameObject.SetActive(true);
 
-            boosterHeader[1].gameObject.SetActive(true);
-            boosterIcon[1].gameObject.SetActive(true);
-            boosterText[1].gameObject.SetActive(true);
+        boosterHeader[inactiveIndex].gameObject.SetActive(false);
+        boosterIcon[inactiveIndex].gameObject.SetActive(false);
+        boosterText[inactiveIndex].gameObject.SetActive(false);
 
-            UIAnimator.ScaleIn(boosterHeader[1]);
-            UIAnimator.ScaleIn(boosterIcon[1], 0.3f, 0.2f);
-            UIAnimator.MoveFromX(boosterText[1], -1000, 0.3f, Ease.OutExpo, 0.4f);
-        }
+        UIAnimator.ScaleIn(boosterHeader[activeIndex]);
+        UIAnimator.ScaleIn(boosterIcon[activeIndex], 0.3f, 0.2f);
+        UIAnimator.MoveFromX(boosterText[activeIndex], -1000, 0.3f, Ease.OutExpo, 0.4f);
+
         UIAnimator.ScaleIn(boosterButtons, 0.3f, 0.6f);
     }
+    #endregion
 
+    #region Unlocked Booster Panel
     public void ShowBoosterUnlockedPanel(bool isFreezeBooster)
     {
         HideAllPanels();
@@ -576,21 +602,30 @@ public class UIManager : MonoBehaviour
         }
 
     }
+    #endregion
 
+    #region Unlocked Play On Panel
     public void ShowPlayOnPanel()
     {
         HideAllPanels();
-        AudioManager.Instance.PlaySFX("OpeningImportantPanel");
-        if (HapticsManager.Instance != null)
-            HapticsManager.Instance.PlayRigidImpactVibration();
+        HapticsManager.Instance.PlayUIFeedback("OpeningImportantPanel", HapticsManager.Instance.PlayRigidImpactVibration);
 
+        playOnPanel.SetActive(true);
+
+        PreparePlayOnPanel();
+        PlayPlayOnPanelAnimation();
+    }
+    private void PreparePlayOnPanel()
+    {
         playOnPanel.SetActive(true);
 
         playOnCG.alpha = 0;
         playOnCG.transform.localScale = Vector3.zero;
         playOnIcon.localScale = Vector3.zero;
         playOnTextImage.alpha = 0;
-
+    }
+    private void PlayPlayOnPanelAnimation()
+    {
         Vector3 originalTextPos = playOnTextImage.transform.localPosition;
         playOnTextImage.transform.localPosition = new Vector3(originalTextPos.x, 50, originalTextPos.z);
 
@@ -607,13 +642,14 @@ public class UIManager : MonoBehaviour
         seq.Join(playOnCG.transform.DOScale(0.8f, 0.3f));
         seq.OnComplete(() => playOnPanel.SetActive(false));
     }
+    #endregion
+    #endregion
 
-    #region === Cloud Transition ===
+    #region Cloud Transition
     public void PlayCloudOpenTransition()
     {
-        AudioManager.Instance.PlaySFX("CloudEffect");
-        if(HapticsManager.Instance != null)
-            HapticsManager.Instance.PlaySoftImpactVibration();
+        HapticsManager.Instance.PlayUIFeedback("CloudEffect", HapticsManager.Instance.PlaySoftImpactVibration);
+
         cloudTransitionPanel.SetActive(true);
 
         Vector2 leftStartPos = leftCloud.anchoredPosition;
@@ -629,13 +665,9 @@ public class UIManager : MonoBehaviour
             cloudTransitionPanel.SetActive(false);
         });
     }
-
     public void PlayCloudCloseTransition(int sceneIndex)
     {
-        AudioManager.Instance.PlaySFX("CloudEffect");
-
-        if (HapticsManager.Instance != null)
-            HapticsManager.Instance.PlaySoftImpactVibration();
+        HapticsManager.Instance.PlayUIFeedback("CloudEffect", HapticsManager.Instance.PlaySoftImpactVibration);
 
         cloudTransitionPanel.SetActive(true);
 
@@ -682,7 +714,6 @@ public class UIManager : MonoBehaviour
             ShowCoinBuyPanel();
         }
     }
-
     public void UnlockBoosterWithAd()
     {
         //TODO: Rewarded Ad Integration
@@ -702,7 +733,6 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-
     public void SetFrozenState(bool frozen)
     {
         if (frozen)
@@ -717,7 +747,6 @@ public class UIManager : MonoBehaviour
             ShowBoosterButton();
         }
     }
-
     private void HideBoosterButton()
     {
         for (int i = 0; i < boosterButton.Length; i++)
@@ -732,7 +761,6 @@ public class UIManager : MonoBehaviour
                 });
         }
     }
-
     private void ShowBoosterButton()
     {
         for (int i = 0; i < boosterButton.Length; i++)
@@ -746,7 +774,6 @@ public class UIManager : MonoBehaviour
             boosterButtonTweens[i] = boosterButton[i].transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack);
         }
     }
-
     public void ShowBoosterFrame()
     {
         boosterFrameTween?.Kill(true);
@@ -759,7 +786,6 @@ public class UIManager : MonoBehaviour
             .Append(boosterFrameCG.DOFade(1f, 1f))
             .Join(boosterFrameCG.transform.DOScale(1f, 1f).SetEase(Ease.OutBack));
     }
-
     public void HideBoosterFrame()
     {
         boosterFrameTween?.Kill(true);
@@ -769,7 +795,6 @@ public class UIManager : MonoBehaviour
             .Join(boosterFrameCG.transform.DOScale(1.2f, 1.5f).SetEase(Ease.InBack))
             .OnComplete(() => boosterFrameCG.gameObject.SetActive(false));
     }
-
     private void UpdateSeatBoosterUI()
     {
         seatBoosterCountText.text = seatBoosterCount.ToString();
@@ -785,7 +810,6 @@ public class UIManager : MonoBehaviour
                 });
         }
     }
-
     #endregion
 
     #region === Vehicle Progress ===
@@ -818,7 +842,6 @@ public class UIManager : MonoBehaviour
         }
 
     }
-
     #endregion
 
     #region === Play On Actions ===
@@ -826,7 +849,7 @@ public class UIManager : MonoBehaviour
     {
         //TODO: Rewarded Ad Integration
 
-        AnimateTimeAddition(30f, 1f); //TODO: Crate this method in a Function because we will add more different things to add more time
+        AnimateTimeAddition(30f);
         ShowPlayOnPanel();
     }
 
@@ -886,7 +909,9 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
-    #region === Buy Coin Actions ===
+    #region == Coin Process ===
+
+    #region Buy Coin Actions
     public void BuyCoins(int coinAmount)
     {
         //TODO: Rewarded Ad Integration
@@ -917,7 +942,7 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
-    #region === Coin Fly Effect Process ===
+    #region Coin Fly Effect Process
     public void PlayCoinFlyEffect(Vector3 worldStartPos)
     {
         StartCoroutine(SpawnCoinFlyRoutine(worldStartPos));
@@ -977,8 +1002,9 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region === Settings and Toggles ===
+    #endregion
 
+    #region === Settings and Toggles ===
     public void ShowSettingsPanel()
     {
         HideAllPanels();
@@ -989,11 +1015,7 @@ public class UIManager : MonoBehaviour
 
         UIAnimator.FadeIn(settingsCG);
         UIAnimator.ScaleIn(settingsContent);
-
-        UpdateSoundToggleVisual();
-        UpdateVibrationToggleVisual();
     }
-
     public void ToggleSound()
     {
         AudioManager.Instance.PlaySFX("UI_Click");
@@ -1014,9 +1036,8 @@ public class UIManager : MonoBehaviour
 
         PlayerPrefs.SetInt("Sound", isSoundOn ? 1 : 0);
         // TODO: AudioManager.Instance.SetSound(isSoundOn);
-        UpdateSoundToggleVisual();
+        UpdateToggleVisual(soundToggleIcon, soundToggleBackground, isSoundOn, iconSounds, bgSettingsButtons);
     }
-
     public void ToggleVibration()
     {
         AudioManager.Instance.PlaySFX("UI_Click");
@@ -1025,21 +1046,18 @@ public class UIManager : MonoBehaviour
         isVibrationOn = !isVibrationOn;
         PlayerPrefs.SetInt("Vibration", isVibrationOn ? 1 : 0);
         // TODO: VibrationManager.Instance.SetVibration(isVibrationOn);
-        UpdateVibrationToggleVisual();
+        UpdateToggleVisual(vibrationToggleIcon, vibrationToggleBackground, isVibrationOn, iconVibrations, bgSettingsButtons);
     }
-
-    private void UpdateSoundToggleVisual()
+    private void LoadSettingsPreferences()
     {
-        soundToggleIcon.sprite = isSoundOn ? iconSounds[1] : iconSounds[0];
-        soundToggleBackground.sprite = isSoundOn ? bgSettingsButtons[1] : bgSettingsButtons[0];
+        isSoundOn = PlayerPrefs.GetInt("Sound", 1) == 1;
+        isVibrationOn = PlayerPrefs.GetInt("Vibration", 1) == 1;
     }
-
-    private void UpdateVibrationToggleVisual()
+    private void UpdateToggleVisual(Image icon, Image background, bool state, Sprite[] icons, Sprite[] backgrounds)
     {
-        vibrationToggleIcon.sprite = isVibrationOn ? iconVibrations[1] : iconVibrations[0];
-        vibrationToggleBackground.sprite = isVibrationOn ? bgSettingsButtons[1] : bgSettingsButtons[0];
+        icon.sprite = state ? icons[1] : icons[0];
+        background.sprite = state ? backgrounds[1] : backgrounds[0];
     }
-
     #endregion
 
     #region === Gameplay Tutorial ===
@@ -1081,12 +1099,10 @@ public class UIManager : MonoBehaviour
         }
 
         SeatTutorialStep step = seatTutorialSteps[currentSeatTutorialIndex++];
-        Debug.Log($"Moving to step {currentSeatTutorialIndex} at grid position {step.targetGridPos}");
         Seat seat = FindSeatByGridPosition(step.targetGridPos);
 
         if (seat == null)
         {
-            Debug.LogWarning($"Seat not found at {step.targetGridPos}");
             return;
         }
 
@@ -1111,7 +1127,6 @@ public class UIManager : MonoBehaviour
             .Append(seatTutorialCircle.transform.DOScale(1f, 0.6f).SetEase(Ease.InQuad))
             .SetLoops(-1);
     }
-
     private void EndSeatTutorial()
     {
         GameTimerManager.Instance.isRunning = true;
@@ -1132,12 +1147,10 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region === Utilities ===
-
     public void RestartLevel()
     {
         PlayCloudCloseTransition(SceneManager.GetActiveScene().buildIndex);
     }
-
     public void NextLevel()
     {
         int LevelIndex = PlayerPrefs.GetInt("Level", 0);
@@ -1168,15 +1181,6 @@ public class UIManager : MonoBehaviour
     //    // Ya da, mağaza sayfasına sahne geçişi yapılabilir:
     //    // SceneManager.LoadScene("ShopScene"); // Eğer mağaza sahnesi varsa
     //}
-
-    #endregion
-
-    #region === Debug Methods ===
-    //TODO: Remove or comment out these methods in production
-    void StartLevel()
-    {
-        GameTimerManager.Instance.StartTimer(60f);
-    }
 
     #endregion
 }

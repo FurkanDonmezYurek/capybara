@@ -79,4 +79,10 @@ public class HapticsManager : MonoBehaviour
             return;
         HapticPatterns.PlayPreset(HapticPatterns.PresetType.HeavyImpact);
     }
+
+    public void PlayUIFeedback(string sfxKey = "UI_Click", System.Action hapticAction = null)
+    {
+        AudioManager.Instance?.PlaySFX(sfxKey);
+        hapticAction?.Invoke();
+    }
 }
