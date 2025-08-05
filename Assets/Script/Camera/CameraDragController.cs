@@ -38,7 +38,7 @@ public class CameraDragController : MonoBehaviour
                         .SetEase(Ease.InOutQuad)
                         .OnComplete(() =>
                         {
-                            if(!IdleUIManager.Instance.startLevelPanel.activeSelf && !PlayerPrefs.HasKey("HasSeenIdleTutorial"))
+                            if (!IdleUIManager.Instance.IsStartLevelPanelActive() && !PlayerPrefs.HasKey("HasSeenIdleTutorial"))
                                 IdleUIManager.Instance.ShowTutorial();
                         });
                 }
@@ -49,7 +49,7 @@ public class CameraDragController : MonoBehaviour
             {
                 Vector3 delta = Input.mousePosition - lastMousePosition;
 
-                Vector3 move = new Vector3(-delta.x, 0, -delta.y) * dragSpeed * Time.deltaTime;
+                Vector3 move = dragSpeed * Time.deltaTime * new Vector3(-delta.x, 0, -delta.y);
 
                 Vector3 newPosition = transform.position + move;
 
@@ -63,7 +63,7 @@ public class CameraDragController : MonoBehaviour
         }
         else
         {
-            if (IdleUIManager.Instance.PanelActived())
+            if (IdleUIManager.Instance.IsStartLevelPanelActive())
             {
                 isDragging = false;
                 return;
@@ -83,7 +83,7 @@ public class CameraDragController : MonoBehaviour
             {
                 Vector3 delta = Input.mousePosition - lastMousePosition;
 
-                Vector3 move = new Vector3(-delta.x, 0, -delta.y) * dragSpeed * Time.deltaTime;
+                Vector3 move = dragSpeed * Time.deltaTime * new Vector3(-delta.x, 0, -delta.y);
 
                 Vector3 newPosition = transform.position + move;
 
