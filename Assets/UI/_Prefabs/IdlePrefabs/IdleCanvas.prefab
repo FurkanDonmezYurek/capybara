@@ -6556,6 +6556,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22ee45e623a04a44cb1f573f969fc749, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiPanelsData:
+  - panelGO: {fileID: 3951801287356402059}
+    canvasGroup: {fileID: 9084990466371435129}
+    scaleTarget: {fileID: 4764064845470553251}
+  - panelGO: {fileID: 6735669967711816797}
+    canvasGroup: {fileID: 4970289333860786739}
+    scaleTarget: {fileID: 4648587209286960553}
+  - panelGO: {fileID: 8956807090675479755}
+    canvasGroup: {fileID: 2158740300000544579}
+    scaleTarget: {fileID: 7870324296509071492}
+  - panelGO: {fileID: 3171632240833282811}
+    canvasGroup: {fileID: 6476175887088531890}
+    scaleTarget: {fileID: 1495544245400967058}
   startLevelPanel: {fileID: 3951801287356402059}
   startLevelCG: {fileID: 9084990466371435129}
   header: {fileID: 5426440113570067886}

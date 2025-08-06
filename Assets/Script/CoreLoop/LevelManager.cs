@@ -9,7 +9,6 @@ public class LevelManager : MonoBehaviour
     public LevelDatabase levelDatabase;
     public GridSystem gridSystem;
     private int currentLevelIndex = 0;
-    public TimerManager timerManager; // Drag from Inspector or GetComponent
 
     public int GetCurrentLevelIndex() => currentLevelIndex;
 

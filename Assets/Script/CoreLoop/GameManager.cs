@@ -5,19 +5,15 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public ProgressManager progressManager;
     private Capybara selectedCapybara;
     List<SeatGroup> cachedSeatGroups = new List<SeatGroup>();
     public List<Capybara> cachedCapybaraGroups;
     public LevelManager levelManager;
-    public GameTimerManager timerManager;
     public GridSystem gridSystem;
     public UIManager UIManager;
     public GameTimerManager gameTimerManager;
 
-    // [SerializeField]
-    // private int startLevelIndex = 0; // For testing, change later
-    private int LevelIndex = 0; // For testing, change later
+    private int LevelIndex = 0;
 
     private void Awake()
     {
@@ -49,33 +45,11 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Loaded level {LevelIndex}");
     }
 
-    public void OnTimeExpired()
-    {
-        CheckGameCondition();
-    }
-
-    private void UpdateTimerUI(float timeRemaining)
-    {
-        // UI güncellemesi için kullanılır
-        // Örnek: timerText.text = Mathf.CeilToInt(timeRemaining).ToString();
-    }
-
     public void ShowWinScreen()
     {
-        // Burada kazandığınızda gösterilecek ekranı açabilirsiniz
         Debug.Log("You won! Show win screen here.");
-        progressManager.SetMaxReachedLevel(levelManager.GetCurrentLevelIndex());
         UIManager.ShowLevelComplete();
-        ParticleManager.Instance.Play(ParticleType.Confetti,new Vector3(0,5,0));
-        // progressManager.AddSoftCurrency(100); // Örnek olarak 100 soft currency ekle
-    }
-
-    public void ShowLoseScreen()
-    {
-        Debug.Log("You lost! Show lose screen here.");
-        UIManager.ShowLevelFail();
-        AudioManager.Instance.PlaySFX("GameOver");
-        // Burada kaybettiğinizde gösterilecek ekranı açabilirsiniz
+        ParticleManager.Instance.Play(ParticleType.Confetti, new Vector3(0, 5, 0));
     }
 
     public void CheckGameCondition()
@@ -90,24 +64,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void RestartCurrentLevel()
-    {
-        levelManager.RestartCurrentLevel();
-    }
-
-    public void LoadLevelByIndex(int index)
-    {
-        levelManager.LoadLevelByIndex(index);
-    }
-
-    public void LoadNextLevel()
-    {
-        levelManager.LoadNextLevel();
-    }
-
     #region On Clicked Functions
 
-    // TODO: Make these so that there is no material change, instead a little visual effect plays (particle or animation)
     public void OnCapybaraClicked(Capybara capybara)
     {
         if (!capybara.IsMovable())
@@ -115,15 +73,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("Clicked capybara is not movable!");
             return;
         }
-        /* TODO: COMMENTED OUT- REPLACE WITH VISUAL EFFECT
-
-        if (selectedCapybara != null)
-        {
-            selectedCapybara.SetColor(selectedCapybara.color); // Reset previous selection color
-        }
-        selectedCapybara = capybara;
-        selectedCapybara.SetColor(Color.yellow); // Highlight selected capybara
-        */
 
         if (selectedCapybara != null && selectedCapybara != capybara)
         {
@@ -135,7 +84,7 @@ public class GameManager : MonoBehaviour
         selectedCapybara.JumpAnimation();
         selectedCapybara.capybaraColorMaterialObject.layer = LayerMask.NameToLayer("Outline");
         AudioManager.Instance.PlaySFX("CapybaraClick");
-        if(HapticsManager.Instance != null)
+        if (HapticsManager.Instance != null)
             HapticsManager.Instance.PlaySelectionImpactVibration();
 
         if (UIManager.Instance != null && !UIManager.Instance.seatClickedTutorial)
@@ -516,20 +465,6 @@ public class GameManager : MonoBehaviour
 
         if (index > 0)
             return groupSeats[index - 1];
-        return null;
-    }
-
-    public Seat GetRightNeighborSlot(Seat seat)
-    {
-        foreach (var group in cachedSeatGroups)
-        {
-            var index = group.seatsInGroup.IndexOf(seat);
-            if (index >= 0 && index < group.seatsInGroup.Count - 1)
-            {
-                return group.seatsInGroup[index + 1];
-            }
-        }
-
         return null;
     }
     #endregion

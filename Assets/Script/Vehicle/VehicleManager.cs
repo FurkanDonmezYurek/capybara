@@ -28,7 +28,7 @@ public class VehicleManager : MonoBehaviour
             {
                 if (hit.transform == transform)
                 {
-                    if (!IdleUIManager.Instance.PanelActived())
+                    if (!IdleUIManager.Instance.IsStartLevelPanelActive())
                     {
                         IdleUIManager.Instance.OpenStartLevelPanel();
                     }
