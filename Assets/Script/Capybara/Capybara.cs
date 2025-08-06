@@ -30,7 +30,6 @@ public class Capybara : MonoBehaviour
         CapybaraStateMachine = GetComponent<CapybaraStateMachine>();
         if (CapybaraStateMachine == null)
         {
-            Debug.LogError("CapybaraStateMachine component is missing on " + gameObject.name);
             return;
         }
 
@@ -50,7 +49,6 @@ public class Capybara : MonoBehaviour
     {
         if (CapybaraStateMachine == null)
         {
-            Debug.Log("CapybaraStateMachine is not set for " + gameObject.name);
             return;
         }
 
@@ -77,7 +75,6 @@ public class Capybara : MonoBehaviour
     {
         if (CapybaraStateMachine == null)
         {
-            Debug.LogError("CapybaraStateMachine is not set for " + gameObject.name);
             return;
         }
 
@@ -88,7 +85,6 @@ public class Capybara : MonoBehaviour
     {
         if (CapybaraStateMachine == null)
         {
-            Debug.LogError("CapybaraStateMachine is not set for " + gameObject.name);
             return;
         }
 
@@ -99,7 +95,6 @@ public class Capybara : MonoBehaviour
     {
         if (CapybaraStateMachine == null)
         {
-            Debug.LogError("CapybaraStateMachine is not set for " + gameObject.name);
             return;
         }
 
@@ -110,7 +105,6 @@ public class Capybara : MonoBehaviour
     {
         if (CapybaraStateMachine == null)
         {
-            Debug.LogError("CapybaraStateMachine is not set for " + gameObject.name);
             return;
         }
 
@@ -242,7 +236,6 @@ public class Capybara : MonoBehaviour
         GridSystem gridSystem = FindObjectOfType<GridSystem>();
         if (gridSystem == null)
         {
-            Debug.LogError("GridSystem not found!");
             return;
         }
 
@@ -359,7 +352,6 @@ public class Capybara : MonoBehaviour
 
     public virtual void Lock()
     {
-        Debug.Log("Locked seat: " + name);
         isLocked = true;
     }
 

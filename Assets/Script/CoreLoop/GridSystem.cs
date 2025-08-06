@@ -107,15 +107,12 @@ public class GridSystem : MonoBehaviour
     {
         if (inactiveGroups.Count == 0)
         {
-            Debug.LogWarning("No inactive groups left to activate!");
             return;
         }
 
         GameObject groupToActivate = inactiveGroups[0];
         groupToActivate.SetActive(true);
         inactiveGroups.RemoveAt(0);
-
-        Debug.Log($"✅ Activated {groupToActivate.name}");
 
         if (Application.isPlaying)
         {
@@ -191,7 +188,6 @@ public class GridSystem : MonoBehaviour
 
                 if (x + 1 >= groupPositions.GetLength(1) || y >= groupPositions.GetLength(0))
                 {
-                    Debug.LogWarning($"❌ Out of bounds at x={x}, y={y}");
                     continue;
                 }
 
@@ -200,7 +196,6 @@ public class GridSystem : MonoBehaviour
                 float zPos = groupPositions[y, x].z;
 
                 Vector3 pointPosition = new Vector3(xPos, yPos, zPos);
-                Debug.Log(pointPosition);
                 pathPointsGrid[xKey][yKey] = pointPosition;
             }
         }
@@ -210,7 +205,6 @@ public class GridSystem : MonoBehaviour
         {
             item.SetActive(false);
         }
-        Debug.Log("Path grid initialized.");
     }
 
     public GridBounds GetReferenceArea()
@@ -222,7 +216,6 @@ public class GridSystem : MonoBehaviour
 
         if (topLeft == null || topRight == null || bottomLeft == null || bottomRight == null)
         {
-            Debug.LogError("One or more grid corner points are missing in LevelEnvironment.");
             return default;
         }
 
@@ -253,16 +246,11 @@ public class GridSystem : MonoBehaviour
 
     public void FitGridToReferenceArea()
     {
-        Debug.Log("⏳ FitGridToReferenceArea started");
-
         GridBounds refArea = GetReferenceArea();
         // Önce scale'i sıfırla (1,1,1)
         groupsParent.position = Vector3.one;
         groupsParent.transform.localScale = Vector3.one;
         GridBounds gridArea = GetCurrentGridArea();
-
-        Debug.Log($"🎯 RefArea center: {refArea.center}, size: {refArea.size}");
-        Debug.Log($"🧱 GridArea center: {gridArea.center}, size: {gridArea.size}");
 
         if (
             refArea.size.x == 0
@@ -271,7 +259,6 @@ public class GridSystem : MonoBehaviour
             || gridArea.size.z == 0
         )
         {
-            Debug.LogWarning("Reference or Grid area invalid.");
             return;
         }
 
@@ -290,18 +277,12 @@ public class GridSystem : MonoBehaviour
         if (yRef != null)
         {
             Vector3 pos = groupsParent.position;
-            Debug.Log($"🔧 Setting Y from {pos.y} to {yRef.transform.position.y}");
             pos.y = yRef.transform.position.y;
             groupsParent.position = pos;
-        }
-        else
-        {
-            Debug.LogWarning("❌ GridYReference not found!");
         }
 
         RecalculateGroupPositions();
         InitPathGrid();
-        Debug.Log("✅ FitGridToReferenceArea finished");
     }
 
     public void RecalculateGroupPositions()
@@ -320,8 +301,6 @@ public class GridSystem : MonoBehaviour
         {
             groupPositions[group.groupY, group.groupX] = GetSeatGroupCenter(group);
         }
-
-        Debug.Log("✅ groupPositions updated after fitting.");
     }
 
     Vector3 GetSeatGroupCenter(SeatGroup group)

@@ -32,7 +32,6 @@ public class CapybaraStateTester : MonoBehaviour
 
     private void SetState(CapybaraBaseState newState)
     {
-        Debug.Log($"State changed to: {newState.GetType().Name}");
         stateMachine.SetState(newState);
     }
 }

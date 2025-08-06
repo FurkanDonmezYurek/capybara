@@ -46,12 +46,10 @@ namespace TMPro.Examples
 
         IEnumerator Start()
         {
-
-            // Force and update of the mesh to get valid information.
             m_textMeshPro.ForceMeshUpdate();
 
 
-            int totalVisibleCharacters = m_textMeshPro.textInfo.characterCount; // Get # of Visible Character in text object
+            int totalVisibleCharacters = m_textMeshPro.textInfo.characterCount; 
             int counter = 0;
             int visibleCount = 0;
 
@@ -59,9 +57,8 @@ namespace TMPro.Examples
             {
                 visibleCount = counter % (totalVisibleCharacters + 1);
 
-                m_textMeshPro.maxVisibleCharacters = visibleCount; // How many characters should TextMeshPro display?
+                m_textMeshPro.maxVisibleCharacters = visibleCount;
 
-                // Once the last character has been revealed, wait 1.0 second and start over.
                 if (visibleCount >= totalVisibleCharacters)
                 {
                     yield return new WaitForSeconds(1.0f);
@@ -75,9 +72,6 @@ namespace TMPro.Examples
 
                 yield return new WaitForSeconds(0.05f);
             }
-
-            //Debug.Log("Done revealing the text.");
         }
-
     }
 }

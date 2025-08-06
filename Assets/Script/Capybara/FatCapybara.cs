@@ -12,11 +12,9 @@ public class FatCapybara : Capybara
     // Oyun başlangıcında direkt seat'e yerleştirmek için
     public override void SetSeat(Seat targetSlot)
     {
-        Debug.Log("Setting fat capybara to seat directly...");
 
         if (targetSlot == null)
         {
-            Debug.Log("Target slot is null!");
             return;
         }
 
@@ -26,7 +24,6 @@ public class FatCapybara : Capybara
 
         if (targetIndex == -1)
         {
-            Debug.Log("Target slot not found in its group!");
             return;
         }
 
@@ -40,7 +37,6 @@ public class FatCapybara : Capybara
             Seat rightSeat = groupSeats[targetIndex + 1];
             if (targetSlot.IsEmpty && rightSeat.IsEmpty)
             {
-                Debug.Log("Direct set - Pair found: TARGET + RIGHT");
                 primary = targetSlot;
                 secondary = rightSeat;
             }
@@ -52,7 +48,6 @@ public class FatCapybara : Capybara
             Seat leftSeat = groupSeats[targetIndex - 1];
             if (leftSeat.IsEmpty && targetSlot.IsEmpty)
             {
-                Debug.Log("Direct set - Pair found: LEFT + TARGET");
                 primary = leftSeat;
                 secondary = targetSlot;
             }
@@ -60,7 +55,6 @@ public class FatCapybara : Capybara
 
         if (primary == null || secondary == null)
         {
-            Debug.LogWarning("FatCapybara: No valid adjacent seat pair found for direct setting.");
             return;
         }
 
@@ -76,27 +70,19 @@ public class FatCapybara : Capybara
         transform.position = center;
         // transform.localScale = new Vector3(2f, 1f, 1f);
 
-        Debug.Log(
-            $"Fat capybara directly set to seats: Primary={primary.name}, Secondary={secondary.name}"
-        );
-
         SitAnimation();
     }
 
     public override void SitSeat(Seat targetSlot)
     {
-        Debug.Log("Attempting to sit fat capybara...");
-
         if (targetSlot == null)
         {
-            Debug.Log("Target slot is null!");
             return;
         }
 
         // Eğer current seat yoksa direkt set et
         if (currentSlot == null)
         {
-            Debug.Log("No current seat, using direct set...");
             SetSeat(targetSlot);
             return;
         }
@@ -113,16 +99,13 @@ public class FatCapybara : Capybara
         var groupSeats = group.seatsInGroup;
         int targetIndex = groupSeats.IndexOf(targetSlot);
 
-        Debug.Log($"Target slot index in group: {targetIndex}");
 
         if (targetIndex == -1)
         {
-            Debug.Log("Target slot not found in its group!");
             return;
         }
 
         // Mevcut slotları temizle ÖNCE
-        Debug.Log("Clearing previous slots if any...");
         if (currentSlot != null)
         {
             currentSlot.ClearCapybara();
@@ -176,7 +159,6 @@ public class FatCapybara : Capybara
 
         if (primary == null || secondary == null)
         {
-            Debug.LogWarning("FatCapybara: No valid adjacent seat pair found in the group.");
             return;
         }
 
@@ -188,14 +170,9 @@ public class FatCapybara : Capybara
 
             currentSlot = primary;
             secondSlot = secondary;
-
-            Debug.Log(
-                $"Successfully assigned seats: Primary={primary.gridPosition}, Secondary={secondary.gridPosition}"
-            );
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Error setting capybara to seats: {e.Message}");
             // Hata durumunda temizle
             primary?.ClearCapybara();
             secondary?.ClearCapybara();
@@ -212,13 +189,11 @@ public class FatCapybara : Capybara
 #if UNITY_EDITOR
         if (!Application.isPlaying)
         {
-            Debug.Log("Editor mode: setting position instantly.");
             transform.position = center;
             return;
         }
 #endif
 
-        Debug.Log($"Moving capybara to center position: {center}");
         transform
             .DOMove(center, duration)
             .OnComplete(() =>
@@ -358,9 +333,6 @@ public class FatCapybara : Capybara
             }
             catch (System.Exception e)
             {
-                Debug.LogError(
-                    "FatCapybara: Seat assignment failed after corridor move: " + e.Message
-                );
                 primary?.ClearCapybara();
                 secondary?.ClearCapybara();
                 currentSlot = null;
@@ -420,7 +392,6 @@ public class FatCapybara : Capybara
 
         if (primary == null || secondary == null)
         {
-            Debug.LogWarning("FatCapybara: AnimateDirectMove - no valid seat pair found.");
             return;
         }
 

@@ -10,8 +10,12 @@ public class IdleUIManager : MonoBehaviour
 {
     public static IdleUIManager Instance;
 
+    #region === Serialized Fields ===
+    [SerializeField] private List<UIPanelData> uiPanelsData;
+
+    #region Start Level Panel
     [Header("Start Level Panel")]
-    [SerializeField] public GameObject startLevelPanel;
+    [SerializeField] private GameObject startLevelPanel;
     [SerializeField] private CanvasGroup startLevelCG;
     [SerializeField] private Transform header;
     [SerializeField] private Transform levelImage;
@@ -22,6 +26,11 @@ public class IdleUIManager : MonoBehaviour
     [SerializeField] private Image regionLoopIconImage;
     [SerializeField] private RectTransform regionLoopIconTransform;
 
+    private Tween loopTween;
+    private int selectedLevelIndex;
+    #endregion
+
+    #region Coin Processing
     [Header("Coin Buy Panel")]
     [SerializeField] private RectTransform currencyPanel;
     [SerializeField] private TextMeshProUGUI coinText;
@@ -41,7 +50,12 @@ public class IdleUIManager : MonoBehaviour
     [SerializeField] private int coinFlyCount = 5;
     [SerializeField] private float coinFlyInterval = 0.075f;
     [SerializeField] private float coinFlyDuration = 1f;
+    [SerializeField] private float coinFlyOffset = 30f;
 
+    private Tween coinTween;
+    #endregion
+
+    #region Settings Panel
     [Header("Settings Panel")]
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] private CanvasGroup settingsCG;
@@ -56,186 +70,191 @@ public class IdleUIManager : MonoBehaviour
     [SerializeField] private Sprite[] iconVibrations;
     [SerializeField] private Sprite[] bgSettingsButtons;
 
+    private bool isSoundOn;
+    public bool isVibrationOn;
+    #endregion
+
+    #region Region Elements
     [Header("Region Progress Bar")]
     [SerializeField] private Image regionProgressFill;
     [SerializeField] private TextMeshProUGUI regionProgressText;
+
+    [Header("Region Header Progress")]
     [SerializeField] private TextMeshProUGUI regionNameText;
-    [SerializeField] private string[] regionNames; //"Desert", "Forest", "Snow"...
+    [SerializeField] private string[] regionNames;
     [SerializeField] private CanvasGroup centerRegionCG;
     [SerializeField] private Image regionIconImage;
     [SerializeField] private List<Sprite> regionSprites;
+    [SerializeField] private float centerRegionNameY = -1250f;
+    [SerializeField] private float regionIconMoveX = -200f;
+    [SerializeField] private float regionFadeDuration = 2f;
+    [SerializeField] private float regionDelayBeforeFade = 0.75f;
+    private const float REGION_NAME_FONT_SCALE = 2f;
+    #endregion
 
+    #region Shop Panel
     [Header("Shop Panel")]
     [SerializeField] private GameObject shopPanel;
     [SerializeField] private CanvasGroup shopCG;
     [SerializeField] private Transform shopContent;
+    #endregion
 
+    #region Cloud Transition
     [Header("Cloud Transition")]
     [SerializeField] private GameObject cloudTransitionPanel;
     [SerializeField] private RectTransform leftCloud;
     [SerializeField] private RectTransform rightCloud;
+    #endregion
 
+    #region Tutorial
     [Header("Tutorial")]
     [SerializeField] private GameObject tutorialPanel;
     [SerializeField] private CanvasGroup tutorialCG;
     [SerializeField] private RectTransform tutorialHighlightCircle;
     [SerializeField] private float tutorialDelayBeforeAutoClose = 1.5f;
-    [SerializeField] private Vector3 tutorialCircleOffset = new Vector3(0, 50, 0);
+    [SerializeField] private Vector3 tutorialCircleOffset = new(0, 50, 0);
     [SerializeField] private Image fingerImage;
     [SerializeField] private float tutorialVerticalOffset = -5f;
+    private const float tutorialFadeDuration = 2.5f;
+    private const float tutorialPulseScaleUp = 1.2f;
+    private const float tutorialPulseScaleDown = 1.0f;
+    private const float tutorialPulseFadeIn = 0.9f;
+    private const float tutorialPulseFadeOut = 0.6f;
 
     private Tween tutorialPulseTween;
     private bool tutorialActive = false;
+    #endregion
 
-    private Tween coinTween;
-    private Tween loopTween;
-    private int selectedLevelIndex;
-    private bool isSoundOn;
-    public bool isVibrationOn;
+    #endregion
 
+    #region === Unity Lifecycle ===
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
     }
-
     private void Start()
+    {
+        SetupButtonListeners();
+        LoadSettingsPreferences();
+        BindEvents();
+        InitializeUI();
+        HandleTransitions();
+    }
+    #endregion
+
+    #region === Initialization ===
+    private void SetupButtonListeners()
     {
         playButton.onClick.AddListener(OnPlayButtonClicked);
         closeButton.onClick.AddListener(HideAllPanels);
 
         soundToggleButton.onClick.AddListener(ToggleSound);
         vibrationToggleButton.onClick.AddListener(ToggleVibration);
-
-        isSoundOn = PlayerPrefs.GetInt("Sound", 1) == 1;
-        isVibrationOn = PlayerPrefs.GetInt("Vibration", 1) == 1;
-
-        CurrencyManager.Instance.OnCoinChanged += UpdateCoin;
-        UpdateCoin(CurrencyManager.Instance.Coin);
-
-        UpdateRegionProgressBar(VehicleManager.Instance.GetCurrentLevelIndex());
-        UpdateSoundToggleVisual();
-        UpdateVibrationToggleVisual();
-        PlayCloudOpenTransition();
-        if (!PlayerPrefs.HasKey("HasSeenIdleTutorial"))
-        {
-            ShowTutorial();
-        }
     }
+    private void BindEvents()
+    {
+        CurrencyManager.Instance.OnCoinChanged += AnimateCoinChange;
+    }
+    private void InitializeUI()
+    {
+        AnimateCoinChange(CurrencyManager.Instance.Coin);
+        UpdateRegionProgressBar(VehicleManager.Instance.GetCurrentLevelIndex());
+
+        UpdateToggleVisual(soundToggleIcon, soundToggleBackground, isSoundOn, iconSounds, bgSettingsButtons);
+        UpdateToggleVisual(vibrationToggleIcon, vibrationToggleBackground, isVibrationOn, iconVibrations, bgSettingsButtons);
+    }
+    private void HandleTransitions()
+    {
+        PlayCloudTransition(CloudTransitionType.Open);
+
+        if (!PlayerPrefs.HasKey("HasSeenIdleTutorial"))
+            ShowTutorial();
+    }
+    #endregion
 
     #region === Panel On/Off ===
-
     public void HideAllPanels()
     {
-        if(AudioManager.Instance != null)
+        HapticsManager.Instance.PlayUIFeedback("UI_Click", HapticsManager.Instance.PlayMediumImpactVibration);
+
+        foreach (var panelData in uiPanelsData)
         {
-            AudioManager.Instance.PlaySFX("UI_Click");
-            HapticsManager.Instance.PlayMediumImpactVibration();
+            if (panelData.panelGO.activeSelf)
+                HidePanelWithAnimation(panelData.canvasGroup, panelData.scaleTarget, panelData.panelGO);
         }
-
-
-        if (startLevelPanel.activeSelf)
-            HidePanelWithAnimation(startLevelCG, playButtonTransform, startLevelPanel);
-
-        if (coinBuyPanel.activeSelf)
-            HidePanelWithAnimation(coinBuyCG, coinBuyHeader, coinBuyPanel);
-
-        if (settingsPanel.activeSelf)
-            HidePanelWithAnimation(settingsCG, settingsContent, settingsPanel);
-
-        if (shopPanel.activeSelf)
-            HidePanelWithAnimation(shopCG, shopContent, shopPanel);
     }
-
-    private void HidePanelWithAnimation(CanvasGroup cg, Transform scaleTarget, GameObject panelGO)
+    private void HidePanelWithAnimation(CanvasGroup cg, Transform scaleTarget, GameObject panelGO, float duration = 0.3f, float scale = 0.8f)
     {
         Sequence seq = DOTween.Sequence();
-        seq.Append(cg.DOFade(0f, 0.3f));
-        seq.Join(scaleTarget.DOScale(0.8f, 0.3f).SetEase(Ease.InBack));
+        seq.Append(cg.DOFade(0f, duration));
+        if (scaleTarget != null)
+            seq.Join(scaleTarget.DOScale(scale, duration).SetEase(Ease.InBack));
         seq.OnComplete(() => panelGO.SetActive(false));
     }
-
     #endregion
 
     #region === Start Level ===
-
     public void OpenStartLevelPanel()
+    {
+        PrepareTutorialAndUI();
+        SetupStartLevelPanel();
+        AnimateStartLevelPanel();
+    }
+
+    private void PrepareTutorialAndUI()
     {
         SetTutorialAsSeen();
         HideTutorialPanel();
         HideAllPanels();
-
-        if (AudioManager.Instance != null)
-            AudioManager.Instance.PlaySFX("OpeningImportantPanel");
-
+        AudioManager.Instance?.PlaySFX("OpeningImportantPanel");
+    }
+    private void SetupStartLevelPanel()
+    {
         selectedLevelIndex = VehicleManager.Instance.GetCurrentLevelIndex();
-
-        selectedLevelText.text = "LEVEL " + (selectedLevelIndex + 1);
-
+        selectedLevelText.text = $"LEVEL {selectedLevelIndex + 1}";
         startLevelPanel.SetActive(true);
         startLevelCG.alpha = 0f;
-
         StartLoopVehicleIconAnimation(selectedLevelIndex / 5);
-
+    }
+    private void AnimateStartLevelPanel()
+    {
         UIAnimator.FadeIn(startLevelCG);
         UIAnimator.MoveFromY(header, 200f, 0.4f, Ease.OutBack, 0f);
         UIAnimator.ScaleIn(levelImage, 0.4f, 0.1f);
         UIAnimator.MoveFromX(selectedLevelText.transform, -800f, 0.4f, Ease.OutExpo, 0.2f);
         UIAnimator.ScaleIn(playButtonTransform, 0.4f, 0.35f);
     }
+
     private void OnPlayButtonClicked()
     {
-        //HideAllPanels();
-        //int LevelIndex = PlayerPrefs.GetInt("Level", 0);
-        //LevelIndex++;
-        //PlayerPrefs.SetInt("Level", LevelIndex);
-        ////GameManager.Instance.LevelStart();
-
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-
-        // TODO: Optional restart animation
-        PlayCloudCloseTransition();
+        PlayCloudTransition(CloudTransitionType.Close);
     }
-    public bool PanelActived()
-    {
-        return startLevelPanel.activeSelf;
-    }
+    public bool IsStartLevelPanelActive() => startLevelPanel.activeSelf;
     public void StartLoopVehicleIconAnimation(int regionIndex)
     {
-        if (regionIndex < regionSprites.Count)
-            regionLoopIconImage.sprite = regionSprites[regionIndex];
-        else
-            regionLoopIconImage.sprite = null;
-
+        regionLoopIconImage.sprite = regionIndex < regionSprites.Count ? regionSprites[regionIndex] : null;
         regionLoopIconImage.DOFade(1f, 0.5f);
 
-        if (loopTween != null && loopTween.IsActive())
-            loopTween.Kill();
+        loopTween?.Kill();
 
-        float distance = 150f; 
+        float distance = 150f;
         float duration = 5f;
 
         RectTransform rt = regionLoopIconTransform;
 
         rt.anchoredPosition = new Vector2(-distance, rt.anchoredPosition.y);
-        rt.localRotation = Quaternion.Euler(0, 180f, 0); 
 
         loopTween = DOTween.Sequence()
-            .AppendCallback(() => rt.localRotation = Quaternion.Euler(0, 180f, 0)) 
-            .Append(
-                rt.DOAnchorPosX(distance, duration).SetEase(Ease.InOutSine)
-            )
-            .AppendCallback(() => rt.localRotation = Quaternion.Euler(0, 0f, 0)) 
-            .Append(
-                rt.DOAnchorPosX(-distance, duration).SetEase(Ease.InOutSine)
-            )
+            .AppendCallback(() => rt.localRotation = Quaternion.Euler(0, 180f, 0))
+            .Append(rt.DOAnchorPosX(distance, duration).SetEase(Ease.InOutSine))
+            .AppendCallback(() => rt.localRotation = Quaternion.Euler(0, 0f, 0))
+            .Append(rt.DOAnchorPosX(-distance, duration).SetEase(Ease.InOutSine))
             .SetLoops(-1);
     }
-
     #endregion
 
     #region === Settings ===
-
     public void ShowSettingsPanel()
     {
         HideAllPanels();
@@ -245,24 +264,16 @@ public class IdleUIManager : MonoBehaviour
 
         UIAnimator.FadeIn(settingsCG);
         UIAnimator.ScaleIn(settingsContent);
-
-        UpdateSoundToggleVisual();
-        UpdateVibrationToggleVisual();
     }
-
     public void ToggleSound()
     {
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.PlaySFX("UI_Click");
-            HapticsManager.Instance.PlaySelectionImpactVibration();
-        }
+        HapticsManager.Instance.PlayUIFeedback("UI_Click", HapticsManager.Instance.PlaySelectionImpactVibration);
 
         isSoundOn = !isSoundOn;
         if (isSoundOn)
         {
             AudioManager.Instance.MuteMusic(false);
-            AudioManager.Instance.MuteMusic(false);
+            AudioManager.Instance.MuteSFX(false);
         }
         else
         {
@@ -270,37 +281,29 @@ public class IdleUIManager : MonoBehaviour
             AudioManager.Instance.MuteSFX(true);
         }
         PlayerPrefs.SetInt("Sound", isSoundOn ? 1 : 0);
-        UpdateSoundToggleVisual();
+        UpdateToggleVisual(soundToggleIcon, soundToggleBackground, isSoundOn, iconSounds, bgSettingsButtons);
     }
-
     public void ToggleVibration()
     {
-        if (AudioManager.Instance != null)
-        {
-            HapticsManager.Instance.PlaySelectionImpactVibration();
-            AudioManager.Instance.PlaySFX("UI_Click");
-        }
+        HapticsManager.Instance.PlayUIFeedback("UI_Click", HapticsManager.Instance.PlaySelectionImpactVibration);
+
         isVibrationOn = !isVibrationOn;
         PlayerPrefs.SetInt("Vibration", isVibrationOn ? 1 : 0);
-        UpdateVibrationToggleVisual();
+        UpdateToggleVisual(vibrationToggleIcon, vibrationToggleBackground, isVibrationOn, iconVibrations, bgSettingsButtons);
     }
-
-    private void UpdateSoundToggleVisual()
+    private void LoadSettingsPreferences()
     {
-        soundToggleIcon.sprite = isSoundOn ? iconSounds[1] : iconSounds[0];
-        soundToggleBackground.sprite = isSoundOn ? bgSettingsButtons[1] : bgSettingsButtons[0];
+        isSoundOn = PlayerPrefs.GetInt("Sound", 1) == 1;
+        isVibrationOn = PlayerPrefs.GetInt("Vibration", 1) == 1;
     }
-
-    private void UpdateVibrationToggleVisual()
+    private void UpdateToggleVisual(Image icon, Image background, bool state, Sprite[] icons, Sprite[] backgrounds)
     {
-        vibrationToggleIcon.sprite = isVibrationOn ? iconVibrations[1] : iconVibrations[0];
-        vibrationToggleBackground.sprite = isVibrationOn ? bgSettingsButtons[1] : bgSettingsButtons[0];
+        icon.sprite = state ? icons[1] : icons[0];
+        background.sprite = state ? backgrounds[1] : backgrounds[0];
     }
-
     #endregion
 
     #region === Coin Buy ===
-
     public void ShowCoinBuyPanel()
     {
         HideAllPanels();
@@ -317,25 +320,12 @@ public class IdleUIManager : MonoBehaviour
         UIAnimator.ScaleIn(coinBuyImage, 0.3f, 0.3f);
         UIAnimator.MoveFromX(coinBuyText, -1000, 0.3f, Ease.OutExpo, 0.6f);
 
-        if (hasInternet)
-        {
-            coinBuyButton.gameObject.SetActive(true);
-            coinBuyButtonNoConnection.gameObject.SetActive(false);
-            UIAnimator.ScaleIn(coinBuyButton, 0.3f, 0.9f);
-        }
-        else
-        {
-            coinBuyButton.gameObject.SetActive(false);
-            coinBuyButtonNoConnection.gameObject.SetActive(true);
-            UIAnimator.ScaleIn(coinBuyButtonNoConnection.transform, 0.3f, 0.9f);
-        }
-    }
+        coinBuyButton.gameObject.SetActive(hasInternet);
+        coinBuyButtonNoConnection.gameObject.SetActive(!hasInternet);
 
-    public void UpdateCoin(int amount)
-    {
-        AnimateCoinChange(amount);
+        Transform buttonToAnimate = hasInternet ? coinBuyButton.transform : coinBuyButtonNoConnection.transform;
+        UIAnimator.ScaleIn(buttonToAnimate, 0.3f, 0.9f);
     }
-
     public void BuyCoins(int coinAmount)
     {
         //TODO: Rewarded Ad Integration
@@ -349,7 +339,6 @@ public class IdleUIManager : MonoBehaviour
 
         HideAllPanels();
     }
-
     public void AnimateCoinChange(int newCoinAmount)
     {
         if (coinTween != null && coinTween.IsActive()) coinTween.Kill();
@@ -365,12 +354,12 @@ public class IdleUIManager : MonoBehaviour
             coinText.text = current.ToString();
         }, newCoinAmount, 0.5f).SetEase(Ease.OutQuad);
     }
+
     #region === Coin Fly Effect Process ===
     public void PlayCoinFlyEffect(Vector3 worldStartPos)
     {
         StartCoroutine(SpawnCoinFlyRoutine(worldStartPos));
     }
-
     private IEnumerator SpawnCoinFlyRoutine(Vector3 worldStartPos)
     {
         Vector3 screenStartPos = Camera.main.WorldToScreenPoint(worldStartPos);
@@ -391,7 +380,7 @@ public class IdleUIManager : MonoBehaviour
             coinRT.anchoredPosition = uiStartPos;
             coinRT.localScale = Vector3.one;
 
-            Vector2 randomOffset = Random.insideUnitCircle * 30f;
+            Vector2 randomOffset = Random.insideUnitCircle * coinFlyOffset;
 
             Sequence seq = DOTween.Sequence();
             seq.Append(coinRT.DOAnchorPos(((Vector2)coinFlyTarget.localPosition) + randomOffset, coinFlyDuration * 0.5f)
@@ -421,9 +410,7 @@ public class IdleUIManager : MonoBehaviour
                 currencyPanel.DOScale(0.8f, 0.2f).SetEase(Ease.InQuad);
             });
     }
-
     #endregion
-
     #endregion
 
     #region === Region Progress Bar ===
@@ -438,8 +425,6 @@ public class IdleUIManager : MonoBehaviour
         regionProgressFill.fillAmount = fillAmount;
         regionProgressText.text = $"{progressInRegion} / {levelsPerRegion}";
 
-        regionNameText.text = regionIndex < regionNames.Length ? regionNames[regionIndex] : "Unknown";
-
         if (progressInRegion == 0 && currentLevel != 0)
         {
             ShowCenterRegionName(regionIndex);
@@ -449,26 +434,24 @@ public class IdleUIManager : MonoBehaviour
             ShowSideRegionName(regionIndex);
         }
     }
-
     private void ShowCenterRegionName(int regionIndex)
     {
         RectTransform rt = regionNameText.GetComponent<RectTransform>();
         RectTransform iconRT = regionIconImage.GetComponent<RectTransform>();
 
-        rt.anchoredPosition = new Vector2(0f, -1250f);
+        rt.anchoredPosition = new Vector2(0f, centerRegionNameY);
 
-        regionNameText.text = regionIndex < regionNames.Length ? regionNames[regionIndex] : "Unknown";
-        regionIconImage.sprite = regionIndex < regionSprites.Count ? regionSprites[regionIndex] : null;
+        SetRegionVisuals(regionIndex);
 
         float originalFontSize = regionNameText.fontSize;
-        regionNameText.fontSize = originalFontSize * 2f;
+        regionNameText.fontSize = originalFontSize * REGION_NAME_FONT_SCALE;
 
-        iconRT.anchoredPosition = new Vector2(-200f, iconRT.anchoredPosition.y);
+        iconRT.anchoredPosition = new Vector2(regionIconMoveX, iconRT.anchoredPosition.y);
         regionNameText.DOFade(0f, 0f);
         regionIconImage.DOFade(0f, 0f);
 
         Sequence seq = DOTween.Sequence();
-        seq.AppendInterval(0.75f);
+        seq.AppendInterval(regionDelayBeforeFade);
 
         seq.AppendCallback(() =>
         {
@@ -479,26 +462,24 @@ public class IdleUIManager : MonoBehaviour
             }
         });
 
-        seq.Append(regionNameText.DOFade(1f, 2f));
-        seq.Join(regionIconImage.DOFade(1f, 2f));
+        seq.Append(regionNameText.DOFade(1f, regionFadeDuration));
+        seq.Join(regionIconImage.DOFade(1f, regionFadeDuration));
 
-        seq.Join(iconRT.DOAnchorPosX(200f, 2f).SetEase(Ease.Linear));
+        seq.Join(iconRT.DOAnchorPosX(200f, regionFadeDuration).SetEase(Ease.Linear));
 
         seq.AppendInterval(0.5f);
 
-        seq.Append(regionNameText.DOFade(0f, 2f));
-        seq.Join(regionIconImage.DOFade(0f, 2f));
+        seq.Append(regionNameText.DOFade(0f, regionFadeDuration));
+        seq.Join(regionIconImage.DOFade(0f, regionFadeDuration));
 
         seq.OnComplete(() =>
         {
             regionNameText.fontSize = originalFontSize;
         });
     }
-
     private void ShowSideRegionName(int regionIndex)
     {
-        regionNameText.text = regionIndex < regionNames.Length ? regionNames[regionIndex] : "Unknown";
-        regionIconImage.sprite = regionIndex < regionSprites.Count ? regionSprites[regionIndex] : null;
+        SetRegionVisuals(regionIndex);
 
         regionNameText.DOFade(0f, 0f);
         regionIconImage.DOFade(0f, 0f);
@@ -521,7 +502,11 @@ public class IdleUIManager : MonoBehaviour
         seq.Append(regionNameText.DOFade(0f, 2f));
         seq.Join(regionIconImage.DOFade(0f, 2f));
     }
-
+    private void SetRegionVisuals(int regionIndex)
+    {
+        regionNameText.text = regionIndex < regionNames.Length ? regionNames[regionIndex] : "Unknown";
+        regionIconImage.sprite = regionIndex < regionSprites.Count ? regionSprites[regionIndex] : null;
+    }
     #endregion
 
     #region === Shop Panel ===
@@ -535,67 +520,68 @@ public class IdleUIManager : MonoBehaviour
         UIAnimator.FadeIn(shopCG);
         UIAnimator.ScaleIn(shopContent);
     }
-
     #endregion
 
     #region === Cloud Transition ===
-    public void PlayCloudOpenTransition()
+    public enum CloudTransitionType
     {
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.PlaySFX("CloudEffect");
-            HapticsManager.Instance.PlaySoftImpactVibration();
-        }
-
-        cloudTransitionPanel.SetActive(true);
-
-        Vector2 leftStartPos = leftCloud.anchoredPosition;
-        Vector2 rightStartPos = rightCloud.anchoredPosition;
-        leftCloud.anchoredPosition = Vector2.zero;
-        rightCloud.anchoredPosition = Vector2.zero;
-
-        Sequence seq = DOTween.Sequence();
-        seq.Append(leftCloud.DOAnchorPos(leftStartPos, 0.8f).SetEase(Ease.OutQuad));
-        seq.Join(rightCloud.DOAnchorPos(rightStartPos, 0.8f).SetEase(Ease.OutQuad));
-        seq.AppendCallback(() =>
-        {
-            cloudTransitionPanel.SetActive(false);
-        });
+        Open,
+        Close
     }
 
-    public void PlayCloudCloseTransition()
+    public void PlayCloudTransition(CloudTransitionType type)
     {
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.PlaySFX("CloudEffect");
-            HapticsManager.Instance.PlaySoftImpactVibration();
-        }
+        AudioManager.Instance?.PlaySFX("CloudEffect");
+        HapticsManager.Instance?.PlaySoftImpactVibration();
 
         cloudTransitionPanel.SetActive(true);
 
-        Vector2 leftStartPos = leftCloud.anchoredPosition;
-        Vector2 rightStartPos = rightCloud.anchoredPosition;
-        Vector2 closedPos = Vector2.zero;
+        Vector2 leftTarget, rightTarget;
+
+        Vector2 leftInitial = leftCloud.anchoredPosition;
+        Vector2 rightInitial = rightCloud.anchoredPosition;
+
+        if (type == CloudTransitionType.Open)
+        {
+            leftCloud.anchoredPosition = Vector2.zero;
+            rightCloud.anchoredPosition = Vector2.zero;
+            leftTarget = leftInitial;
+            rightTarget = rightInitial;
+        }
+        else
+        {
+            leftTarget = Vector2.zero;
+            rightTarget = Vector2.zero;
+        }
 
         Sequence seq = DOTween.Sequence();
-        seq.Append(leftCloud.DOAnchorPos(closedPos, 0.8f).SetEase(Ease.InOutQuad));
-        seq.Join(rightCloud.DOAnchorPos(closedPos, 0.8f).SetEase(Ease.InOutQuad));
-        seq.AppendCallback(() =>
+        seq.Append(leftCloud.DOAnchorPos(leftTarget, 0.8f).SetEase(type == CloudTransitionType.Open ? Ease.OutQuad : Ease.InOutQuad));
+        seq.Join(rightCloud.DOAnchorPos(rightTarget, 0.8f).SetEase(type == CloudTransitionType.Open ? Ease.OutQuad : Ease.InOutQuad));
+
+        if (type == CloudTransitionType.Open)
         {
-            SceneManager.LoadScene(1);
-        });
+            seq.AppendCallback(() => cloudTransitionPanel.SetActive(false));
+        }
+        else
+        {
+            seq.AppendCallback(() => SceneManager.LoadScene(1));
+        }
     }
     #endregion
 
     #region === Tutorial ===
     public void ShowTutorial()
     {
-        CameraDragController cam = Camera.main.GetComponent<CameraDragController>();
-        if (cam != null)
+        PrepareTutorialPanel();
+        PositionTutorialHighlight();
+        PlayTutorialAnimations();
+    }
+    private void PrepareTutorialPanel()
+    {
+        if (Camera.main.TryGetComponent<CameraDragController>(out var cam))
         {
             cam.SetTutorialStartPosition(Camera.main.transform.position);
         }
-
 
         tutorialActive = true;
 
@@ -604,43 +590,45 @@ public class IdleUIManager : MonoBehaviour
         tutorialCG.blocksRaycasts = true;
         tutorialCG.interactable = false;
 
-        tutorialCG.DOFade(1f, 2.5f);
-
+        tutorialCG.DOFade(1f, tutorialFadeDuration);
+    }
+    private void PositionTutorialHighlight()
+    {
         Vector3 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, playButton.transform.position);
         RectTransform canvasRect = tutorialHighlightCircle.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
 
-        Vector2 localPos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             canvasRect,
             screenPos + tutorialCircleOffset,
             Camera.main,
-            out localPos
+            out Vector2 localPos
         );
 
-        float verticalUIOffset = tutorialVerticalOffset * 100f; 
+        float verticalUIOffset = tutorialVerticalOffset * 100f;
         localPos.y += verticalUIOffset;
 
         tutorialHighlightCircle.anchoredPosition = localPos;
 
         tutorialHighlightCircle.localScale = Vector3.one;
         tutorialHighlightCircle.GetComponent<Image>().color = new Color(1, 1, 1, 0.6f);
-
+    }
+    private void PlayTutorialAnimations()
+    {
         tutorialPulseTween = DOTween.Sequence()
-            .Append(tutorialHighlightCircle.DOScale(1.2f, 0.6f).SetEase(Ease.OutQuad))
-            .Join(tutorialHighlightCircle.GetComponent<Image>().DOFade(0.9f, 0.6f))
-            .Append(tutorialHighlightCircle.DOScale(1.0f, 0.6f).SetEase(Ease.InQuad))
-            .Join(tutorialHighlightCircle.GetComponent<Image>().DOFade(0.6f, 0.6f))
+            .Append(tutorialHighlightCircle.DOScale(tutorialPulseScaleUp, 0.6f).SetEase(Ease.OutQuad))
+            .Join(tutorialHighlightCircle.GetComponent<Image>().DOFade(tutorialPulseFadeIn, 0.6f))
+            .Append(tutorialHighlightCircle.DOScale(tutorialPulseScaleDown, 0.6f).SetEase(Ease.InQuad))
+            .Join(tutorialHighlightCircle.GetComponent<Image>().DOFade(tutorialPulseFadeOut, 0.6f))
             .SetLoops(-1)
             .SetUpdate(true);
 
         fingerImage.gameObject.SetActive(true);
         DOTween.Sequence()
-            .Append(fingerImage.transform.DOScale(0.9f, 0.55f)
+            .Append(fingerImage.transform.DOScale(tutorialPulseFadeIn, 0.55f)
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetEase(Ease.InOutSine)
                 .SetUpdate(true));
     }
-
     public void HideTutorialPanel()
     {
         tutorialActive = false;
@@ -650,7 +638,7 @@ public class IdleUIManager : MonoBehaviour
         if (tutorialPulseTween != null && tutorialPulseTween.IsActive())
             tutorialPulseTween.Kill();
 
-        tutorialHighlightCircle.DOScale(0.6f, 0.3f).SetEase(Ease.InBack);
+        tutorialHighlightCircle.DOScale(tutorialPulseFadeOut, 0.3f).SetEase(Ease.InBack);
 
         tutorialCG.DOFade(0f, 0.5f).OnComplete(() =>
         {
@@ -661,13 +649,10 @@ public class IdleUIManager : MonoBehaviour
         fingerImage.gameObject.SetActive(false);
 
     }
-
     public void SetTutorialAsSeen()
     {
         PlayerPrefs.SetInt("HasSeenIdleTutorial", 1);
         PlayerPrefs.Save();
     }
-
     #endregion
-
 }

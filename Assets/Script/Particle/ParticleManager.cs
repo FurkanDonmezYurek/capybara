@@ -11,17 +11,15 @@ public class ParticleManager : MonoBehaviour
 
     void Awake()
     {
-        // Singleton
         if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
 
-        // Sözlüðe dönüþtür
         particleDict = new Dictionary<ParticleType, ParticleSystem>();
         foreach (var data in particles)
         {
-            var ps = Instantiate(data.prefab, transform); // sahnede tutulsun
+            var ps = Instantiate(data.prefab, transform);
             ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             particleDict[data.type] = ps;
         }
@@ -33,10 +31,6 @@ public class ParticleManager : MonoBehaviour
         {
             particle.transform.position = _position;
             particle.Play();
-        }
-        else
-        {
-            Debug.LogWarning($"Particle type not found: {type}");
         }
     }
 }

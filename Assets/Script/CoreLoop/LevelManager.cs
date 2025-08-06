@@ -21,7 +21,6 @@ public class LevelManager : MonoBehaviour
     {
         if (currentLevelIndex + 1 >= levelDatabase.levels.Length)
         {
-            Debug.Log("Next level couldnt found!");
             return;
         }
         LoadLevelByIndex(currentLevelIndex + 1);
@@ -31,7 +30,6 @@ public class LevelManager : MonoBehaviour
     {
         if (index < 0 || index >= levelDatabase.levels.Length)
         {
-            Debug.Log("Invalid level index or all levels completed!");
             return;
         }
 
@@ -71,7 +69,6 @@ public class LevelManager : MonoBehaviour
 
             if (prefab == null)
             {
-                Debug.LogWarning($"Prefab not found for capybara type {capyInfo.type}");
                 continue;
             }
 
@@ -79,7 +76,6 @@ public class LevelManager : MonoBehaviour
 
             if (seat == null || !seat.IsEmpty)
             {
-                Debug.LogWarning($"Seat not valid at {capyInfo.gridPosition}");
                 continue;
             }
 

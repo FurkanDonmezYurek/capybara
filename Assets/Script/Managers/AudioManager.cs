@@ -50,7 +50,6 @@ public class AudioManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("Scene Loaded: " + scene.name);
         LoadMuteSettings(); // Load saved mute settings
 
         switch (scene.name)
@@ -91,7 +90,6 @@ public class AudioManager : MonoBehaviour
     {
         if (!musicLibrary.ContainsKey(name))
         {
-            Debug.LogWarning("Music clip not found: " + name);
             return;
         }
 
@@ -111,7 +109,6 @@ public class AudioManager : MonoBehaviour
     {
         if (!sfxLibrary.ContainsKey(name))
         {
-            Debug.LogWarning("SFX clip not found: " + name);
             return;
         }
 
