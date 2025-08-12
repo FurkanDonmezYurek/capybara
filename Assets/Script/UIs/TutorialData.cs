@@ -1,8 +1,9 @@
+using UnityEditor.Animations;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "TutorialData", menuName = "Game/Tutorial Data")]
+[CreateAssetMenu(fileName = "TutorialData", menuName = "CapybaraSort/Tutorial Data")]
 public class TutorialData : ScriptableObject
 {
     public TutorialType tutorialType;
-    public AnimatorOverrideController animatorController; 
+    public AnimatorController animatorController; 
 }

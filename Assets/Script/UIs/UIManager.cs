@@ -184,6 +184,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private CanvasGroup learnTutorialCG;
     [SerializeField] private Animator tutorialImageAnimator;
 
+    [SerializeField] private RectTransform learnTutorialHeader;
+    [SerializeField] private RectTransform learnTutorialContentImage;
+    [SerializeField] private RectTransform learnTutorialSkipButton;
+
     public List<TutorialData> tutorials;
     Dictionary<TutorialType, TutorialData> tutorialDict;
     #endregion
@@ -234,9 +238,8 @@ public class UIManager : MonoBehaviour
             StartTutorial(TutorialType.LearnStartTutorial);
             PlayerPrefs.SetInt("HasSeenSeatTutorial", 1);
         }
-        else if (GameManager.Instance.levelManager.GetCurrentLevelIndex() == 5)
+        else if (VehicleManager.Instance.GetCurrentLevelIndex()==3)
         {
-            Debug.Log(GameManager.Instance.levelManager.GetCurrentLevelIndex());
             StartTutorial(TutorialType.LearnFreezeCapybara);
         }
         //TODO: LOOK OTHER TUTORIALS
@@ -316,7 +319,9 @@ public class UIManager : MonoBehaviour
     #region === Panel Management ===
     public void HideAllPanels()
     {
-        HapticsManager.Instance.PlayUIFeedback("UI_Click", HapticsManager.Instance.PlayMediumImpactVibration);
+        if(HapticsManager.Instance != null)
+            HapticsManager.Instance.PlayUIFeedback("UI_Click", HapticsManager.Instance.PlayMediumImpactVibration);
+
 
         if (levelCompletePanel.activeSelf)
             HidePanelWithAnimation(levelCompleteCG, levelCompleteHeader, levelCompletePanel);
@@ -668,7 +673,8 @@ public class UIManager : MonoBehaviour
     #region Cloud Transition
     public void PlayCloudOpenTransition()
     {
-        HapticsManager.Instance.PlayUIFeedback("CloudEffect", HapticsManager.Instance.PlaySoftImpactVibration);
+        if(HapticsManager.Instance!=null)
+            HapticsManager.Instance.PlayUIFeedback("CloudEffect", HapticsManager.Instance.PlaySoftImpactVibration);
 
         cloudTransitionPanel.SetActive(true);
 
@@ -687,7 +693,8 @@ public class UIManager : MonoBehaviour
     }
     public void PlayCloudCloseTransition(int sceneIndex)
     {
-        HapticsManager.Instance.PlayUIFeedback("CloudEffect", HapticsManager.Instance.PlaySoftImpactVibration);
+        if (HapticsManager.Instance != null)
+            HapticsManager.Instance.PlayUIFeedback("CloudEffect", HapticsManager.Instance.PlaySoftImpactVibration);
 
         cloudTransitionPanel.SetActive(true);
 
@@ -1083,6 +1090,7 @@ public class UIManager : MonoBehaviour
     #region === Gameplay Tutorial ===
     public void StartTutorial(TutorialType type)
     {
+        Debug.Log(type.ToString());
         if (!tutorialDict.ContainsKey(type))
         {
             Debug.LogError($"Tutorial not found: {type}");
@@ -1116,30 +1124,56 @@ public class UIManager : MonoBehaviour
         }
         else if (type == TutorialType.LearnFreezeCapybara)
         {
-            StartLearnTutorial();
+            StartLearnTutorial(type);
         }
     }
-    private void StartLearnTutorial()
+    private void StartLearnTutorial(TutorialType type)
     {
         GameTimerManager.Instance.isRunning = false;
         learnTutorialPanel.SetActive(true);
+
+        // Başlangıç değerleri
         learnTutorialCG.alpha = 0f;
+        learnTutorialPanel.transform.localScale = Vector3.one * 0.8f;
+
+        learnTutorialHeader.localScale = Vector3.one * 0.8f;
+
+        learnTutorialContentImage.localScale = Vector3.one * 0.8f;
+
+        learnTutorialSkipButton.localScale = Vector3.one * 0.8f;
+
+        Sequence seq = DOTween.Sequence();
+        seq.AppendInterval(0.5f);
+        seq.Append(learnTutorialCG.DOFade(1f, 0.5f));
+        seq.Join(learnTutorialPanel.transform.DOScale(1f, 0.5f).SetEase(Ease.OutBack));
+
+        seq.Join(learnTutorialHeader.DOScale(1f, 0.5f).SetEase(Ease.OutBack));
+
+        seq.Join(learnTutorialContentImage.DOScale(1f, 0.5f).SetEase(Ease.OutBack));
+
+        seq.Join(learnTutorialSkipButton.DOScale(1f, 0.5f).SetEase(Ease.OutBack));
 
         tutorialImageAnimator.runtimeAnimatorController = tutorialDict[type].animatorController;
         tutorialImageAnimator.Play("TutorialAnim", 0, 0);
-
-        learnTutorialCG.DOFade(1f, 1.5f).SetEase(Ease.OutQuad);
     }
-    private void EndLearnTutorial()
+
+    public void EndLearnTutorial()
     {
         GameTimerManager.Instance.isRunning = true;
-        learnTutorialCG.DOFade(0f, 0.75f).OnComplete(() =>
-        {
-            learnTutorialPanel.SetActive(false);
-        });
+
+        Sequence seq = DOTween.Sequence();
+
+        seq.Append(learnTutorialCG.DOFade(0f, 0.3f));
+        seq.Join(learnTutorialPanel.transform.DOScale(0.8f, 0.3f).SetEase(Ease.InBack));
+
+        seq.Join(learnTutorialHeader.DOScale(0.8f, 0.3f).SetEase(Ease.InBack));
+
+        seq.Join(learnTutorialContentImage.DOScale(0.8f, 0.3f).SetEase(Ease.InBack));
+
+        seq.Join(learnTutorialSkipButton.DOScale(0.8f, 0.3f).SetEase(Ease.InBack));
+
+        seq.OnComplete(() => learnTutorialPanel.SetActive(false));
     }
-
-
 
     public void StartSeatTutorial()
     {

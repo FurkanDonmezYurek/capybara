@@ -351,6 +351,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3a93bdf666f6c2419f68b68cad58170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &661093837 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 927923435115111859, guid: 6210837283c601d4fa5238c62e9aee41,
+    type: 3}
+  m_PrefabInstance: {fileID: 2042082382}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &661093839 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 2354805304776903681, guid: 6210837283c601d4fa5238c62e9aee41,
+    type: 3}
+  m_PrefabInstance: {fileID: 2042082382}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &951081931 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2731234422536496050, guid: 6210837283c601d4fa5238c62e9aee41,
+    type: 3}
+  m_PrefabInstance: {fileID: 2042082382}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1262152069
 GameObject:
   m_ObjectHideFlags: 0
@@ -917,9 +935,60 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4522565093444818364, guid: 6210837283c601d4fa5238c62e9aee41,
         type: 3}
+      propertyPath: learnTutorialCG
+      value: 
+      objectReference: {fileID: 661093839}
+    - target: {fileID: 4522565093444818364, guid: 6210837283c601d4fa5238c62e9aee41,
+        type: 3}
+      propertyPath: learnTutorialPanel
+      value: 
+      objectReference: {fileID: 661093837}
+    - target: {fileID: 4522565093444818364, guid: 6210837283c601d4fa5238c62e9aee41,
+        type: 3}
       propertyPath: tutorials.Array.size
-      value: 1
+      value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 4522565093444818364, guid: 6210837283c601d4fa5238c62e9aee41,
+        type: 3}
+      propertyPath: tutorialImageAnimator
+      value: 
+      objectReference: {fileID: 951081931}
+    - target: {fileID: 4522565093444818364, guid: 6210837283c601d4fa5238c62e9aee41,
+        type: 3}
+      propertyPath: tutorials.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 397317cbcdc267e4f80b99fc38108ed7,
+        type: 2}
+    - target: {fileID: 4522565093444818364, guid: 6210837283c601d4fa5238c62e9aee41,
+        type: 3}
+      propertyPath: tutorials.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9a3ced878eabc894ba0c9fb15395e636,
+        type: 2}
+    - target: {fileID: 4522565093444818364, guid: 6210837283c601d4fa5238c62e9aee41,
+        type: 3}
+      propertyPath: tutorials.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 397317cbcdc267e4f80b99fc38108ed7,
+        type: 2}
+    - target: {fileID: 4522565093444818364, guid: 6210837283c601d4fa5238c62e9aee41,
+        type: 3}
+      propertyPath: tutorials.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 397317cbcdc267e4f80b99fc38108ed7,
+        type: 2}
+    - target: {fileID: 4522565093444818364, guid: 6210837283c601d4fa5238c62e9aee41,
+        type: 3}
+      propertyPath: tutorials.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 397317cbcdc267e4f80b99fc38108ed7,
+        type: 2}
+    - target: {fileID: 4522565093444818364, guid: 6210837283c601d4fa5238c62e9aee41,
+        type: 3}
+      propertyPath: tutorials.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 397317cbcdc267e4f80b99fc38108ed7,
+        type: 2}
     - target: {fileID: 5971098443409502473, guid: 6210837283c601d4fa5238c62e9aee41,
         type: 3}
       propertyPath: m_Pivot.x
