@@ -188,9 +188,18 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RectTransform learnTutorialContentImage;
     [SerializeField] private RectTransform learnTutorialSkipButton;
 
-    public List<TutorialData> tutorials;
+    [SerializeField] private List<TutorialData> tutorials;
+    [SerializeField] private TMP_Text learnTutorialDescriptionText;
     Dictionary<TutorialType, TutorialData> tutorialDict;
+    [SerializeField] private Dictionary<TutorialType, string> tutorialDescriptions = new Dictionary<TutorialType, string>()
+        {
+            { TutorialType.LearnFreezeCapybara, "Match other Capybaras in front of or behind the frozen Capybara to unfreeze it!" },
+            { TutorialType.LearnChildCapybara, "Child Capybaras are mischievous and can move around beyond your control." },
+            { TutorialType.LearnFatCapybara, "Fat Capybaras take up seat space for two and are quite slow to walk." }
+        };
+
     #endregion
+
     #endregion
 
     #endregion
@@ -242,7 +251,14 @@ public class UIManager : MonoBehaviour
         {
             StartTutorial(TutorialType.LearnFreezeCapybara);
         }
-        //TODO: LOOK OTHER TUTORIALS
+        else if (VehicleManager.Instance.GetCurrentLevelIndex() == 9)
+        {
+            StartTutorial(TutorialType.LearnChildCapybara);
+        }
+        else if (VehicleManager.Instance.GetCurrentLevelIndex() == 11)
+        {
+            StartTutorial(TutorialType.LearnFatCapybara);
+        }
     }
     #endregion
 
@@ -1090,7 +1106,6 @@ public class UIManager : MonoBehaviour
     #region === Gameplay Tutorial ===
     public void StartTutorial(TutorialType type)
     {
-        Debug.Log(type.ToString());
         if (!tutorialDict.ContainsKey(type))
         {
             Debug.LogError($"Tutorial not found: {type}");
@@ -1109,7 +1124,7 @@ public class UIManager : MonoBehaviour
         {
             EndSeatTutorial();
         }
-        else if (type == TutorialType.LearnFreezeCapybara)
+        else
         {
             EndLearnTutorial();
         }
@@ -1122,7 +1137,7 @@ public class UIManager : MonoBehaviour
         {
             StartSeatTutorial();
         }
-        else if (type == TutorialType.LearnFreezeCapybara)
+        else
         {
             StartLearnTutorial(type);
         }
@@ -1132,7 +1147,6 @@ public class UIManager : MonoBehaviour
         GameTimerManager.Instance.isRunning = false;
         learnTutorialPanel.SetActive(true);
 
-        // Başlangıç değerleri
         learnTutorialCG.alpha = 0f;
         learnTutorialPanel.transform.localScale = Vector3.one * 0.8f;
 
@@ -1141,6 +1155,11 @@ public class UIManager : MonoBehaviour
         learnTutorialContentImage.localScale = Vector3.one * 0.8f;
 
         learnTutorialSkipButton.localScale = Vector3.one * 0.8f;
+
+        if (tutorialDescriptions.ContainsKey(type))
+            learnTutorialDescriptionText.text = tutorialDescriptions[type];
+        else
+            learnTutorialDescriptionText.text = "";
 
         Sequence seq = DOTween.Sequence();
         seq.AppendInterval(0.5f);

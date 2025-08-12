@@ -46,7 +46,6 @@ public class GameManager : MonoBehaviour
         LevelData level = levelManager.levelDatabase.levels[LevelIndex];
 
         gameTimerManager.StartTimer(level.levelTime);
-        Debug.Log($"Loaded level {LevelIndex}");
     }
 
     public void OnTimeExpired()

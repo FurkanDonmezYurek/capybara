@@ -12175,14 +12175,18 @@ MonoBehaviour:
   pulseScale: 1.2
   seatTutorialActive: 0
   seatClickedTutorial: 0
-  learnTutorialPanel: {fileID: 0}
-  learnTutorialCG: {fileID: 0}
-  tutorialImageAnimator: {fileID: 0}
+  learnTutorialPanel: {fileID: 927923435115111859}
+  learnTutorialCG: {fileID: 2354805304776903681}
+  tutorialImageAnimator: {fileID: 2731234422536496050}
   learnTutorialHeader: {fileID: 3208486925992423807}
   learnTutorialContentImage: {fileID: 3537885946454770992}
   learnTutorialSkipButton: {fileID: 5000424051116162067}
   tutorials:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 397317cbcdc267e4f80b99fc38108ed7, type: 2}
+  - {fileID: 11400000, guid: 9a3ced878eabc894ba0c9fb15395e636, type: 2}
+  - {fileID: 11400000, guid: 0d3e4bf8f1c27c1429a1d6c9d1b107c1, type: 2}
+  - {fileID: 11400000, guid: 89005b2167b8a814097bf91805644000, type: 2}
+  learnTutorialDescriptionText: {fileID: 904108386607285829}
 --- !u!114 &8070597128442698059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14747,7 +14751,7 @@ Animator:
   m_GameObject: {fileID: 8740834431863827488}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7e1c85e8a1da39142ba937d500d826c9, type: 2}
+  m_Controller: {fileID: 9100000, guid: f350036347000254e8093a0aabd798a7, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
