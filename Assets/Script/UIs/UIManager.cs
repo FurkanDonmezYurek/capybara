@@ -177,6 +177,16 @@ public class UIManager : MonoBehaviour
     private Tween seatTutorialTween;
     public bool seatTutorialActive = false;
     public bool seatClickedTutorial = false;
+    #region Learn Tutorial
+
+    [Header("Learn Tutorial")]
+    [SerializeField] private GameObject learnTutorialPanel;
+    [SerializeField] private CanvasGroup learnTutorialCG;
+    [SerializeField] private Animator tutorialImageAnimator;
+
+    public List<TutorialData> tutorials;
+    Dictionary<TutorialType, TutorialData> tutorialDict;
+    #endregion
     #endregion
 
     #endregion
@@ -186,6 +196,10 @@ public class UIManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+
+        tutorialDict = new Dictionary<TutorialType, TutorialData>();
+        foreach (var t in tutorials)
+            tutorialDict[t.tutorialType] = t;
     }
     private void Start()
     {
@@ -193,7 +207,7 @@ public class UIManager : MonoBehaviour
         PlayCloudOpenTransition();
         SetupListeners();
         UpdateCoin(CurrencyManager.Instance.Coin);
-        TryStartSeatTutorial();
+        TryStartTutorial();
     }
     #endregion
 
@@ -213,13 +227,19 @@ public class UIManager : MonoBehaviour
         GameTimerManager.Instance.OnTimeChanged += UpdateTimer;
         GameTimerManager.Instance.OnTimeOver += ShowLevelFail;
     }
-    private void TryStartSeatTutorial()
+    private void TryStartTutorial()
     {
         if (!PlayerPrefs.HasKey("HasSeenSeatTutorial"))
         {
-            StartCoroutine(StartSeatTutorialDelayed());
+            StartTutorial(TutorialType.LearnStartTutorial);
             PlayerPrefs.SetInt("HasSeenSeatTutorial", 1);
         }
+        else if (GameManager.Instance.levelManager.GetCurrentLevelIndex() == 5)
+        {
+            Debug.Log(GameManager.Instance.levelManager.GetCurrentLevelIndex());
+            StartTutorial(TutorialType.LearnFreezeCapybara);
+        }
+        //TODO: LOOK OTHER TUTORIALS
     }
     #endregion
 
@@ -1061,11 +1081,66 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region === Gameplay Tutorial ===
-    private IEnumerator StartSeatTutorialDelayed()
+    public void StartTutorial(TutorialType type)
+    {
+        if (!tutorialDict.ContainsKey(type))
+        {
+            Debug.LogError($"Tutorial not found: {type}");
+            return;
+        }
+        else
+        {
+            StartCoroutine(StartTutorialDelayed(type));
+        }
+    }
+
+    public void EndTutorial(TutorialType type)
+    {
+        GameTimerManager.Instance.isRunning = true;
+        if (type == TutorialType.LearnStartTutorial)
+        {
+            EndSeatTutorial();
+        }
+        else if (type == TutorialType.LearnFreezeCapybara)
+        {
+            EndLearnTutorial();
+        }
+    }
+    private IEnumerator StartTutorialDelayed(TutorialType type)
     {
         yield return null; 
-        StartSeatTutorial();
+
+        if (type == TutorialType.LearnStartTutorial)
+        {
+            StartSeatTutorial();
+        }
+        else if (type == TutorialType.LearnFreezeCapybara)
+        {
+            StartLearnTutorial();
+        }
     }
+    private void StartLearnTutorial()
+    {
+        GameTimerManager.Instance.isRunning = false;
+        learnTutorialPanel.SetActive(true);
+        learnTutorialCG.alpha = 0f;
+
+        tutorialImageAnimator.runtimeAnimatorController = tutorialDict[type].animatorController;
+        tutorialImageAnimator.Play("TutorialAnim", 0, 0);
+
+        learnTutorialCG.DOFade(1f, 1.5f).SetEase(Ease.OutQuad);
+    }
+    private void EndLearnTutorial()
+    {
+        GameTimerManager.Instance.isRunning = true;
+        learnTutorialCG.DOFade(0f, 0.75f).OnComplete(() =>
+        {
+            learnTutorialPanel.SetActive(false);
+        });
+    }
+
+
+
     public void StartSeatTutorial()
     {
         if (seatTutorialSteps == null || seatTutorialSteps.Count == 0) return;
@@ -1094,7 +1169,7 @@ public class UIManager : MonoBehaviour
     {
         if (currentSeatTutorialIndex >= seatTutorialSteps.Count)
         {
-            EndSeatTutorial();
+            EndTutorial(TutorialType.LearnStartTutorial);
             return;
         }
 
@@ -1190,6 +1265,15 @@ public class SeatTutorialStep
 {
     public Vector2Int targetGridPos;
     public Vector3 offset;
+}
+public enum TutorialType
+{
+    LearnStartTutorial,
+    LearnFreezeBooster,
+    LearnSeatBooster,
+    LearnFreezeCapybara,
+    LearnChildCapybara,
+    LearnFatCapybara
 }
 
 
