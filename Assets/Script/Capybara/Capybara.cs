@@ -23,7 +23,29 @@ public class Capybara : MonoBehaviour
     public GameObject iceCubeVisual; // Assigned in prefab or instantiated
     public GameObject capybaraColorMaterialObject;
     public CapybaraStateMachine CapybaraStateMachine { get; private set; }
-    public bool isMoving = false;
+    private bool _isMoving;
+    public bool IsMoving
+    {
+        get => _isMoving;
+        set
+        {
+            if (_isMoving == value)
+                return; // Değer değişmemişse işlem yapma
+            _isMoving = value;
+
+            if (_isMoving)
+            {
+                if (!GameManager.Instance.movingCapybaras.Contains(this))
+                {
+                    GameManager.Instance.movingCapybaras.Add(this);
+                }
+            }
+            else
+            {
+                GameManager.Instance.movingCapybaras.Remove(this);
+            }
+        }
+    }
 
     public virtual void Start()
     {
@@ -200,7 +222,7 @@ public class Capybara : MonoBehaviour
 
     protected virtual void AnimateDirectMove(Seat targetSlot)
     {
-        isMoving = true;
+        IsMoving = true;
 
         WalkAnimation();
 
@@ -222,7 +244,7 @@ public class Capybara : MonoBehaviour
                 currentSlot = targetSlot;
                 CheckTargetSeatMatch(targetSlot);
                 SitAnimation();
-                isMoving = false;
+                IsMoving = false;
             });
     }
 
@@ -275,7 +297,7 @@ public class Capybara : MonoBehaviour
         pathPoints.Add(toEntry); // C - Hedef grubun corridor giriş noktası
         pathPoints.Add(end); // D - Hedef koltuk
 
-        isMoving = true;
+        IsMoving = true;
 
         // Animasyon
         Sequence seq = DOTween.Sequence();
@@ -296,7 +318,7 @@ public class Capybara : MonoBehaviour
             currentSlot = targetSlot;
             CheckTargetSeatMatch(targetSlot);
             SitAnimation();
-            isMoving = false;
+            IsMoving = false;
         });
     }
 
@@ -357,7 +379,7 @@ public class Capybara : MonoBehaviour
 
     public void ClickedCapybara()
     {
-        if (isLocked || isFrozen || isMoving)
+        if (isLocked || isFrozen || IsMoving)
             return;
 
         GameManager.Instance.OnCapybaraClicked(this);

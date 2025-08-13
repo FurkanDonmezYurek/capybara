@@ -41,6 +41,8 @@ public class ChildCapybara : Capybara
                 continue;
             }
 
+            yield return new WaitUntil(() => GameManager.Instance.movingCapybaras.Count == 0);
+
             Seat target = GameManager.Instance.GetRandomAvailableSeat();
 
             if (target == null || target == currentSlot)

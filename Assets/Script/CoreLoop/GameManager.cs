@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public GridSystem gridSystem;
     public UIManager UIManager;
     public GameTimerManager gameTimerManager;
+    public List<Capybara> movingCapybaras = new List<Capybara>();
 
     private int LevelIndex = 0;
 
@@ -30,6 +31,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        if (movingCapybaras.Count != 0)
+        {
+            movingCapybaras.Clear();
+        }
         LevelStart();
     }
 
