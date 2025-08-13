@@ -32,22 +32,21 @@ public class ChildCapybara : Capybara
 
     IEnumerator AutoMoveCoroutine()
     {
-        Debug.Log("Started auto move coroutine for: " + name);
         while (!isLocked)
         {
             yield return new WaitForSeconds(Random.Range(minMoveInterval, maxMoveInterval));
 
             if (!IsMovable())
             {
-                Debug.Log(name + " is not movable!");
                 continue;
             }
+
+            yield return new WaitUntil(() => GameManager.Instance.movingCapybaras.Count == 0);
 
             Seat target = GameManager.Instance.GetRandomAvailableSeat();
 
             if (target == null || target == currentSlot)
             {
-                Debug.Log("Auto move skipped!. Target slot is: " + target.name);
                 continue;
             }
             if (GameManager.Instance.IsCorrectMove(target, currentSlot))

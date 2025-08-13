@@ -40,7 +40,6 @@ public class CapybaraSpawner : MonoBehaviour
     {
         if (moveTargets.Length < 2)
         {
-            Debug.LogWarning("En az 2 target point gerekli (biri spawn için, biri hedef için)");
             return;
         }
 
@@ -64,7 +63,5 @@ public class CapybaraSpawner : MonoBehaviour
             idleScript.SetTarget(targetPosition);
             idleScript.SetTargetPoints(moveTargets); // sürekli hareket için tüm noktalarý ver
         }
-
-        Debug.Log($"Capybara üretildi. Spawn: {spawnIndex}, Target: {targetIndex}");
     }
 }

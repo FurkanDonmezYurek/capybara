@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public GridSystem gridSystem;
     public UIManager UIManager;
     public GameTimerManager gameTimerManager;
+    public List<Capybara> movingCapybaras = new List<Capybara>();
 
     private int LevelIndex = 0;
 
@@ -30,6 +31,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        if (movingCapybaras.Count != 0)
+        {
+            movingCapybaras.Clear();
+        }
         LevelStart();
     }
 
@@ -42,19 +47,16 @@ public class GameManager : MonoBehaviour
         LevelData level = levelManager.levelDatabase.levels[LevelIndex];
 
         gameTimerManager.StartTimer(level.levelTime);
-        Debug.Log($"Loaded level {LevelIndex}");
     }
 
     public void ShowWinScreen()
     {
-        Debug.Log("You won! Show win screen here.");
         UIManager.ShowLevelComplete();
         ParticleManager.Instance.Play(ParticleType.Confetti, new Vector3(0, 5, 0));
     }
 
     public void CheckGameCondition()
     {
-        Debug.Log("Checking game condition...");
         if (IsAllGroupsMatched())
         {
             // Game Won
@@ -70,7 +72,6 @@ public class GameManager : MonoBehaviour
     {
         if (!capybara.IsMovable())
         {
-            Debug.Log("Clicked capybara is not movable!");
             return;
         }
 
@@ -230,7 +231,6 @@ public class GameManager : MonoBehaviour
 
         if (corridorSeat == null)
         {
-            Debug.LogWarning("Corridor seat not found in current seat's group.");
             return false;
         }
 
@@ -351,7 +351,6 @@ public class GameManager : MonoBehaviour
         {
             cachedSeatGroups.Add(group);
             groupMap[(group.groupX, group.groupY)] = group;
-            Debug.Log("Cached group: " + group.name);
         }
 
         // Check target's neighborhood
