@@ -12186,6 +12186,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9a3ced878eabc894ba0c9fb15395e636, type: 2}
   - {fileID: 11400000, guid: 0d3e4bf8f1c27c1429a1d6c9d1b107c1, type: 2}
   - {fileID: 11400000, guid: 89005b2167b8a814097bf91805644000, type: 2}
+  - {fileID: 11400000, guid: 77a5f7a447dc49d4383cb832328ae9e8, type: 2}
+  - {fileID: 11400000, guid: 57d7d47557dc31747bab3039c792763d, type: 2}
   learnTutorialDescriptionText: {fileID: 904108386607285829}
 --- !u!114 &8070597128442698059
 MonoBehaviour:
@@ -14511,7 +14513,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7716113695538149262
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14751,7 +14753,7 @@ Animator:
   m_GameObject: {fileID: 8740834431863827488}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f350036347000254e8093a0aabd798a7, type: 2}
+  m_Controller: {fileID: 9100000, guid: ef04d6a63974faf45920cc6a62c55123, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

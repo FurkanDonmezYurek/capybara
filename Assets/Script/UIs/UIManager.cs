@@ -193,9 +193,11 @@ public class UIManager : MonoBehaviour
     Dictionary<TutorialType, TutorialData> tutorialDict;
     [SerializeField] private Dictionary<TutorialType, string> tutorialDescriptions = new Dictionary<TutorialType, string>()
         {
-            { TutorialType.LearnFreezeCapybara, "Match other Capybaras in front of or behind the frozen Capybara to unfreeze it!" },
-            { TutorialType.LearnChildCapybara, "Child Capybaras are mischievous and can move around beyond your control." },
-            { TutorialType.LearnFatCapybara, "Fat Capybaras take up seat space for two and are quite slow to walk." }
+            { TutorialType.LearnFreezeCapybara, "Unfreeze a chilly Capybara by matching friends in front or behind it!" },
+            { TutorialType.LearnChildCapybara, "Child Capybaras are playful troublemakers—moving wherever they please!" },
+            { TutorialType.LearnFatCapybara, "Fat Capybaras hog two seats and waddle around slowly." },
+            { TutorialType.LearnFreezeBooster, "Stop the clock for a while and keep the fun going!" },
+            { TutorialType.LearnSeatBooster, "Pop open extra seats to fit more Capybaras with ease!" }
         };
 
     #endregion
@@ -258,6 +260,38 @@ public class UIManager : MonoBehaviour
         else if (VehicleManager.Instance.GetCurrentLevelIndex() == 11)
         {
             StartTutorial(TutorialType.LearnFatCapybara);
+        }
+
+
+        if (VehicleManager.Instance.GetCurrentLevelIndex() == 5 && !PlayerPrefs.HasKey("HasSeenFreezeTimeTutorial"))
+        {
+            StartTutorial(TutorialType.LearnFreezeBooster);
+            PlayerPrefs.SetInt("HasSeenFreezeTimeTutorial", 1);
+            ShowBoosterButton();
+        }
+        else if (PlayerPrefs.HasKey("HasSeenFreezeTimeTutorial"))
+        {
+            ShowBoosterButton();
+        }
+        else
+        {
+            HideBoosterButton(true);
+        }
+
+
+        if (VehicleManager.Instance.GetCurrentLevelIndex() == 7 && !PlayerPrefs.HasKey("HasSeenSeatBoosterTutorial"))
+        {
+            StartTutorial(TutorialType.LearnSeatBooster);
+            PlayerPrefs.SetInt("HasSeenSeatBoosterTutorial", 1);
+            ShowBoosterButton();
+        }
+        else if (PlayerPrefs.HasKey("HasSeenSeatBoosterTutorial"))
+        {
+            ShowBoosterButton();
+        }
+        else
+        {
+            HideBoosterButton(true);
         }
     }
     #endregion
@@ -782,7 +816,7 @@ public class UIManager : MonoBehaviour
         {
             timerFill.color = Color.cyan;
             clockIcon.sprite = frozenClockIcon;
-            HideBoosterButton();
+            HideBoosterButton(false);
         }
         else
         {
@@ -790,31 +824,88 @@ public class UIManager : MonoBehaviour
             ShowBoosterButton();
         }
     }
-    private void HideBoosterButton()
+    private void HideBoosterButton(bool isQuickClose=false)
     {
-        for (int i = 0; i < boosterButton.Length; i++)
+        if (isQuickClose)
         {
-            boosterButtonTweens[i]?.Kill();
+            if (PlayerPrefs.HasKey("HasSeenFreezeTimeTutorial") && !PlayerPrefs.HasKey("HasSeenSeatBoosterTutorial"))
+            {
+                boosterButtonTweens[1]?.Kill();
 
-            boosterButtonTweens[i] = boosterButton[i].transform.DOScale(0f, 0.3f).SetEase(Ease.InBack)
-                .OnComplete(() =>
+                boosterButton[1].interactable = false;
+                boosterButton[1].gameObject.SetActive(false);
+            }
+            else if (!PlayerPrefs.HasKey("HasSeenFreezeTimeTutorial") && PlayerPrefs.HasKey("HasSeenSeatBoosterTutorial"))
+            {
+                boosterButtonTweens[0]?.Kill();
+
+                boosterButton[0].interactable = false;
+                boosterButton[0].gameObject.SetActive(false);
+            }
+            else
+            {
+                for (int i = 0; i < boosterButton.Length; i++)
                 {
+                    boosterButtonTweens[i]?.Kill();
+
                     boosterButton[i].interactable = false;
                     boosterButton[i].gameObject.SetActive(false);
-                });
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < boosterButton.Length; i++)
+            {
+                boosterButtonTweens[i]?.Kill();
+
+                boosterButtonTweens[i] = boosterButton[i].transform.DOScale(0f, 0.3f).SetEase(Ease.InBack)
+                    .OnComplete(() =>
+                    {
+                        boosterButton[i].interactable = false;
+                        boosterButton[i].gameObject.SetActive(false);
+                    });
+            }
         }
     }
     private void ShowBoosterButton()
     {
-        for (int i = 0; i < boosterButton.Length; i++)
+        if (PlayerPrefs.HasKey("HasSeenFreezeTimeTutorial") && PlayerPrefs.HasKey("HasSeenSeatBoosterTutorial"))
         {
-            boosterButton[i].gameObject.SetActive(true);
-            boosterButton[i].interactable = true;
-            boosterButton[i].transform.localScale = Vector3.zero;
+            for (int i = 0; i < boosterButton.Length; i++)
+            {
+                boosterButton[i].gameObject.SetActive(true);
+                boosterButton[i].interactable = true;
+                boosterButton[i].transform.localScale = Vector3.zero;
 
-            boosterButtonTweens[i]?.Kill();
+                boosterButtonTweens[i]?.Kill();
 
-            boosterButtonTweens[i] = boosterButton[i].transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack);
+                boosterButtonTweens[i] = boosterButton[i].transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack);
+            }
+        }
+        else if(PlayerPrefs.HasKey("HasSeenFreezeTimeTutorial") && !PlayerPrefs.HasKey("HasSeenSeatBoosterTutorial"))
+        {
+            boosterButton[0].gameObject.SetActive(true);
+            boosterButton[0].interactable = true;
+            boosterButton[0].transform.localScale = Vector3.zero;
+
+            boosterButtonTweens[0]?.Kill();
+
+            boosterButtonTweens[0] = boosterButton[0].transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack);
+        }
+        else if (!PlayerPrefs.HasKey("HasSeenFreezeTimeTutorial") && PlayerPrefs.HasKey("HasSeenSeatBoosterTutorial"))
+        {
+            boosterButton[1].gameObject.SetActive(true);
+            boosterButton[1].interactable = true;
+            boosterButton[1].transform.localScale = Vector3.zero;
+
+            boosterButtonTweens[1]?.Kill();
+
+            boosterButtonTweens[1] = boosterButton[1].transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack);
+        }
+        else
+        {
+            HideBoosterButton(true);
         }
     }
     public void ShowBoosterFrame()
