@@ -37,7 +37,11 @@ public class Seat : MonoBehaviour
         }
         else
         {
-            if(UIManager.Instance.levelCompletePanel.activeSelf || GameTimerManager.Instance.currentTime <= 0) return;
+            if (
+                UIManager.Instance.levelCompletePanel.activeSelf
+                || GameTimerManager.Instance.currentTime <= 0
+            )
+                return;
             currentCapybara.ClickedCapybara();
         }
     }
@@ -59,19 +63,12 @@ public class Seat : MonoBehaviour
     IEnumerator ResetLayer(bool rightNow, float time)
     {
         if (rightNow)
-        {
             yield return new WaitForSeconds(time);
-            Debug.Log("şimdi");
-        }
         else
-        {
             yield return new WaitUntil(() =>
                 currentCapybara != null && currentCapybara.IsMoving == false
             );
-            Debug.Log("sonra");
-        }
 
-        Debug.Log("ulaştı");
         seatMeshObj.layer = LayerMask.NameToLayer("Default");
     }
 }
