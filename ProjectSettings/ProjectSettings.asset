@@ -165,7 +165,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.DefaultCompany.CapybaraSort
     Standalone: com.Unity-Technologies.com.unity.template.urp-blank
-    iPhone: com.Unity-Technologies.com.unity.template.urp-blank
+    iPhone: com.DefaultCompany.Capybara-Sort
   buildNumber:
     Standalone: 0
     VisionOS: 0

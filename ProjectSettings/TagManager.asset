@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GridSpawn
   - LevelEnvironment
+  - Vehicle
   layers:
   - Default
   - TransparentFX
@@ -14,8 +15,8 @@ TagManager:
   - Water
   - UI
   - Outline
-  - 
-  - 
+  - GreenGlow
+  - RedGlow
   - 
   - 
   - 
