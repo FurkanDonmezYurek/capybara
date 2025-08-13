@@ -501,10 +501,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ff799b87908042918ae71815f1caa3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progressManager: {fileID: 1365210085}
   cachedCapybaraGroups: []
   levelManager: {fileID: 1365210083}
-  timerManager: {fileID: 589664596}
   gridSystem: {fileID: 1365210084}
   UIManager: {fileID: 589664598}
   gameTimerManager: {fileID: 589664596}
@@ -546,7 +544,6 @@ MonoBehaviour:
   - {r: 0.23358655, g: 1, b: 0, a: 0}
   levelDatabase: {fileID: 11400000, guid: 7c63a7b9db7ac447aac2824de9d6faab, type: 2}
   gridSystem: {fileID: 1365210084}
-  timerManager: {fileID: 0}
 --- !u!114 &1365210084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -915,41 +912,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2336737172383926469, guid: 6210837283c601d4fa5238c62e9aee41,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2336737172383926469, guid: 6210837283c601d4fa5238c62e9aee41,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2336737172383926469, guid: 6210837283c601d4fa5238c62e9aee41,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 589664598}
-    - target: {fileID: 2336737172383926469, guid: 6210837283c601d4fa5238c62e9aee41,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2336737172383926469, guid: 6210837283c601d4fa5238c62e9aee41,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: NextLevel
-      objectReference: {fileID: 0}
-    - target: {fileID: 2336737172383926469, guid: 6210837283c601d4fa5238c62e9aee41,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: UIManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 2336737172383926469, guid: 6210837283c601d4fa5238c62e9aee41,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 5971098443409502473, guid: 6210837283c601d4fa5238c62e9aee41,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1054,26 +1016,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: InGameCanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 7154185816701061767, guid: 6210837283c601d4fa5238c62e9aee41,
-        type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 97573857}
-    - target: {fileID: 7154185816701061767, guid: 6210837283c601d4fa5238c62e9aee41,
-        type: 3}
-      propertyPath: m_RenderMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7154185816701061767, guid: 6210837283c601d4fa5238c62e9aee41,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8633193085967651780, guid: 6210837283c601d4fa5238c62e9aee41,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

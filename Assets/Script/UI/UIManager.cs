@@ -177,6 +177,31 @@ public class UIManager : MonoBehaviour
     private Tween seatTutorialTween;
     public bool seatTutorialActive = false;
     public bool seatClickedTutorial = false;
+    #region Learn Tutorial
+
+    [Header("Learn Tutorial")]
+    [SerializeField] private GameObject learnTutorialPanel;
+    [SerializeField] private CanvasGroup learnTutorialCG;
+    [SerializeField] private Animator tutorialImageAnimator;
+
+    [SerializeField] private RectTransform learnTutorialHeader;
+    [SerializeField] private RectTransform learnTutorialContentImage;
+    [SerializeField] private RectTransform learnTutorialSkipButton;
+
+    [SerializeField] private List<TutorialData> tutorials;
+    [SerializeField] private TMP_Text learnTutorialDescriptionText;
+    Dictionary<TutorialType, TutorialData> tutorialDict;
+    [SerializeField] private Dictionary<TutorialType, string> tutorialDescriptions = new Dictionary<TutorialType, string>()
+        {
+            { TutorialType.LearnFreezeCapybara, "Unfreeze a chilly Capybara by matching friends in front or behind it!" },
+            { TutorialType.LearnChildCapybara, "Child Capybaras are playful troublemakers moving wherever they please!" },
+            { TutorialType.LearnFatCapybara, "Fat Capybaras hog two seats and waddle around slowly." },
+            { TutorialType.LearnFreezeBooster, "Stop the clock for a while and keep the fun going!" },
+            { TutorialType.LearnSeatBooster, "Pop open extra seats to fit more Capybaras with ease!" }
+        };
+
+    #endregion
+
     #endregion
 
     #endregion
@@ -186,6 +211,10 @@ public class UIManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+
+        tutorialDict = new Dictionary<TutorialType, TutorialData>();
+        foreach (var t in tutorials)
+            tutorialDict[t.tutorialType] = t;
     }
     private void Start()
     {
@@ -193,7 +222,7 @@ public class UIManager : MonoBehaviour
         PlayCloudOpenTransition();
         SetupListeners();
         UpdateCoin(CurrencyManager.Instance.Coin);
-        TryStartSeatTutorial();
+        TryStartTutorial();
     }
     #endregion
 
@@ -213,12 +242,56 @@ public class UIManager : MonoBehaviour
         GameTimerManager.Instance.OnTimeChanged += UpdateTimer;
         GameTimerManager.Instance.OnTimeOver += ShowLevelFail;
     }
-    private void TryStartSeatTutorial()
+    private void TryStartTutorial()
     {
         if (!PlayerPrefs.HasKey("HasSeenSeatTutorial"))
         {
-            StartCoroutine(StartSeatTutorialDelayed());
+            StartTutorial(TutorialType.LearnStartTutorial);
             PlayerPrefs.SetInt("HasSeenSeatTutorial", 1);
+        }
+        else if (VehicleManager.Instance.GetCurrentLevelIndex()==3)
+        {
+            StartTutorial(TutorialType.LearnFreezeCapybara);
+        }
+        else if (VehicleManager.Instance.GetCurrentLevelIndex() == 9)
+        {
+            StartTutorial(TutorialType.LearnChildCapybara);
+        }
+        else if (VehicleManager.Instance.GetCurrentLevelIndex() == 12)
+        {
+            StartTutorial(TutorialType.LearnFatCapybara);
+        }
+
+
+        if (VehicleManager.Instance.GetCurrentLevelIndex() == 5 && !PlayerPrefs.HasKey("HasSeenFreezeTimeTutorial"))
+        {
+            StartTutorial(TutorialType.LearnFreezeBooster);
+            PlayerPrefs.SetInt("HasSeenFreezeTimeTutorial", 1);
+            ShowBoosterButton();
+        }
+        else if (PlayerPrefs.HasKey("HasSeenFreezeTimeTutorial"))
+        {
+            ShowBoosterButton();
+        }
+        else
+        {
+            HideBoosterButton(true);
+        }
+
+
+        if (VehicleManager.Instance.GetCurrentLevelIndex() == 7 && !PlayerPrefs.HasKey("HasSeenSeatBoosterTutorial"))
+        {
+            StartTutorial(TutorialType.LearnSeatBooster);
+            PlayerPrefs.SetInt("HasSeenSeatBoosterTutorial", 1);
+            ShowBoosterButton();
+        }
+        else if (PlayerPrefs.HasKey("HasSeenSeatBoosterTutorial"))
+        {
+            ShowBoosterButton();
+        }
+        else
+        {
+            HideBoosterButton(true);
         }
     }
     #endregion
@@ -296,7 +369,9 @@ public class UIManager : MonoBehaviour
     #region === Panel Management ===
     public void HideAllPanels()
     {
-        HapticsManager.Instance.PlayUIFeedback("UI_Click", HapticsManager.Instance.PlayMediumImpactVibration);
+        if(HapticsManager.Instance != null)
+            HapticsManager.Instance.PlayUIFeedback("UI_Click", HapticsManager.Instance.PlayMediumImpactVibration);
+
 
         if (levelCompletePanel.activeSelf)
             HidePanelWithAnimation(levelCompleteCG, levelCompleteHeader, levelCompletePanel);
@@ -648,7 +723,8 @@ public class UIManager : MonoBehaviour
     #region Cloud Transition
     public void PlayCloudOpenTransition()
     {
-        HapticsManager.Instance.PlayUIFeedback("CloudEffect", HapticsManager.Instance.PlaySoftImpactVibration);
+        if(HapticsManager.Instance!=null)
+            HapticsManager.Instance.PlayUIFeedback("CloudEffect", HapticsManager.Instance.PlaySoftImpactVibration);
 
         cloudTransitionPanel.SetActive(true);
 
@@ -667,7 +743,8 @@ public class UIManager : MonoBehaviour
     }
     public void PlayCloudCloseTransition(int sceneIndex)
     {
-        HapticsManager.Instance.PlayUIFeedback("CloudEffect", HapticsManager.Instance.PlaySoftImpactVibration);
+        if (HapticsManager.Instance != null)
+            HapticsManager.Instance.PlayUIFeedback("CloudEffect", HapticsManager.Instance.PlaySoftImpactVibration);
 
         cloudTransitionPanel.SetActive(true);
 
@@ -739,7 +816,7 @@ public class UIManager : MonoBehaviour
         {
             timerFill.color = Color.cyan;
             clockIcon.sprite = frozenClockIcon;
-            HideBoosterButton();
+            HideBoosterButton(false);
         }
         else
         {
@@ -747,31 +824,88 @@ public class UIManager : MonoBehaviour
             ShowBoosterButton();
         }
     }
-    private void HideBoosterButton()
+    private void HideBoosterButton(bool isQuickClose=false)
     {
-        for (int i = 0; i < boosterButton.Length; i++)
+        if (isQuickClose)
         {
-            boosterButtonTweens[i]?.Kill();
+            if (PlayerPrefs.HasKey("HasSeenFreezeTimeTutorial") && !PlayerPrefs.HasKey("HasSeenSeatBoosterTutorial"))
+            {
+                boosterButtonTweens[1]?.Kill();
 
-            boosterButtonTweens[i] = boosterButton[i].transform.DOScale(0f, 0.3f).SetEase(Ease.InBack)
-                .OnComplete(() =>
+                boosterButton[1].interactable = false;
+                boosterButton[1].gameObject.SetActive(false);
+            }
+            else if (!PlayerPrefs.HasKey("HasSeenFreezeTimeTutorial") && PlayerPrefs.HasKey("HasSeenSeatBoosterTutorial"))
+            {
+                boosterButtonTweens[0]?.Kill();
+
+                boosterButton[0].interactable = false;
+                boosterButton[0].gameObject.SetActive(false);
+            }
+            else
+            {
+                for (int i = 0; i < boosterButton.Length; i++)
                 {
+                    boosterButtonTweens[i]?.Kill();
+
                     boosterButton[i].interactable = false;
                     boosterButton[i].gameObject.SetActive(false);
-                });
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < boosterButton.Length; i++)
+            {
+                boosterButtonTweens[i]?.Kill();
+
+                boosterButtonTweens[i] = boosterButton[i].transform.DOScale(0f, 0.3f).SetEase(Ease.InBack)
+                    .OnComplete(() =>
+                    {
+                        boosterButton[i].interactable = false;
+                        boosterButton[i].gameObject.SetActive(false);
+                    });
+            }
         }
     }
     private void ShowBoosterButton()
     {
-        for (int i = 0; i < boosterButton.Length; i++)
+        if (PlayerPrefs.HasKey("HasSeenFreezeTimeTutorial") && PlayerPrefs.HasKey("HasSeenSeatBoosterTutorial"))
         {
-            boosterButton[i].gameObject.SetActive(true);
-            boosterButton[i].interactable = true;
-            boosterButton[i].transform.localScale = Vector3.zero;
+            for (int i = 0; i < boosterButton.Length; i++)
+            {
+                boosterButton[i].gameObject.SetActive(true);
+                boosterButton[i].interactable = true;
+                boosterButton[i].transform.localScale = Vector3.zero;
 
-            boosterButtonTweens[i]?.Kill();
+                boosterButtonTweens[i]?.Kill();
 
-            boosterButtonTweens[i] = boosterButton[i].transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack);
+                boosterButtonTweens[i] = boosterButton[i].transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack);
+            }
+        }
+        else if(PlayerPrefs.HasKey("HasSeenFreezeTimeTutorial") && !PlayerPrefs.HasKey("HasSeenSeatBoosterTutorial"))
+        {
+            boosterButton[0].gameObject.SetActive(true);
+            boosterButton[0].interactable = true;
+            boosterButton[0].transform.localScale = Vector3.zero;
+
+            boosterButtonTweens[0]?.Kill();
+
+            boosterButtonTweens[0] = boosterButton[0].transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack);
+        }
+        else if (!PlayerPrefs.HasKey("HasSeenFreezeTimeTutorial") && PlayerPrefs.HasKey("HasSeenSeatBoosterTutorial"))
+        {
+            boosterButton[1].gameObject.SetActive(true);
+            boosterButton[1].interactable = true;
+            boosterButton[1].transform.localScale = Vector3.zero;
+
+            boosterButtonTweens[1]?.Kill();
+
+            boosterButtonTweens[1] = boosterButton[1].transform.DOScale(1f, 0.4f).SetEase(Ease.OutBack);
+        }
+        else
+        {
+            HideBoosterButton(true);
         }
     }
     public void ShowBoosterFrame()
@@ -1061,11 +1195,96 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region === Gameplay Tutorial ===
-    private IEnumerator StartSeatTutorialDelayed()
+    public void StartTutorial(TutorialType type)
+    {
+        if (!tutorialDict.ContainsKey(type))
+        {
+            Debug.LogError($"Tutorial not found: {type}");
+            return;
+        }
+        else
+        {
+            StartCoroutine(StartTutorialDelayed(type));
+        }
+    }
+
+    public void EndTutorial(TutorialType type)
+    {
+        GameTimerManager.Instance.isRunning = true;
+        if (type == TutorialType.LearnStartTutorial)
+        {
+            EndSeatTutorial();
+        }
+        else
+        {
+            EndLearnTutorial();
+        }
+    }
+    private IEnumerator StartTutorialDelayed(TutorialType type)
     {
         yield return null; 
-        StartSeatTutorial();
+
+        if (type == TutorialType.LearnStartTutorial)
+        {
+            StartSeatTutorial();
+        }
+        else
+        {
+            StartLearnTutorial(type);
+        }
     }
+    private void StartLearnTutorial(TutorialType type)
+    {
+        GameTimerManager.Instance.isRunning = false;
+        learnTutorialPanel.SetActive(true);
+
+        learnTutorialCG.alpha = 0f;
+        learnTutorialPanel.transform.localScale = Vector3.one * 0.8f;
+
+        learnTutorialHeader.localScale = Vector3.one * 0.8f;
+
+        learnTutorialContentImage.localScale = Vector3.one * 0.8f;
+
+        learnTutorialSkipButton.localScale = Vector3.one * 0.8f;
+
+        if (tutorialDescriptions.ContainsKey(type))
+            learnTutorialDescriptionText.text = tutorialDescriptions[type];
+        else
+            learnTutorialDescriptionText.text = "";
+
+        Sequence seq = DOTween.Sequence();
+        seq.AppendInterval(0.5f);
+        seq.Append(learnTutorialCG.DOFade(1f, 0.5f));
+        seq.Join(learnTutorialPanel.transform.DOScale(1f, 0.5f).SetEase(Ease.OutBack));
+
+        seq.Join(learnTutorialHeader.DOScale(1f, 0.5f).SetEase(Ease.OutBack));
+
+        seq.Join(learnTutorialContentImage.DOScale(1f, 0.5f).SetEase(Ease.OutBack));
+
+        seq.Join(learnTutorialSkipButton.DOScale(1f, 0.5f).SetEase(Ease.OutBack));
+
+        tutorialImageAnimator.runtimeAnimatorController = tutorialDict[type].animatorController;
+        tutorialImageAnimator.Play("TutorialAnim", 0, 0);
+    }
+
+    public void EndLearnTutorial()
+    {
+        GameTimerManager.Instance.isRunning = true;
+
+        Sequence seq = DOTween.Sequence();
+
+        seq.Append(learnTutorialCG.DOFade(0f, 0.3f));
+        seq.Join(learnTutorialPanel.transform.DOScale(0.8f, 0.3f).SetEase(Ease.InBack));
+
+        seq.Join(learnTutorialHeader.DOScale(0.8f, 0.3f).SetEase(Ease.InBack));
+
+        seq.Join(learnTutorialContentImage.DOScale(0.8f, 0.3f).SetEase(Ease.InBack));
+
+        seq.Join(learnTutorialSkipButton.DOScale(0.8f, 0.3f).SetEase(Ease.InBack));
+
+        seq.OnComplete(() => learnTutorialPanel.SetActive(false));
+    }
+
     public void StartSeatTutorial()
     {
         if (seatTutorialSteps == null || seatTutorialSteps.Count == 0) return;
@@ -1094,7 +1313,7 @@ public class UIManager : MonoBehaviour
     {
         if (currentSeatTutorialIndex >= seatTutorialSteps.Count)
         {
-            EndSeatTutorial();
+            EndTutorial(TutorialType.LearnStartTutorial);
             return;
         }
 
@@ -1190,6 +1409,15 @@ public class SeatTutorialStep
 {
     public Vector2Int targetGridPos;
     public Vector3 offset;
+}
+public enum TutorialType
+{
+    LearnStartTutorial,
+    LearnFreezeBooster,
+    LearnSeatBooster,
+    LearnFreezeCapybara,
+    LearnChildCapybara,
+    LearnFatCapybara
 }
 
 
