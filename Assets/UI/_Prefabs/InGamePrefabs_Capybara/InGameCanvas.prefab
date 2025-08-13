@@ -3519,7 +3519,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -450}
-  m_SizeDelta: {x: 200, y: 200}
+  m_SizeDelta: {x: 250, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &856417155759098786
 CanvasRenderer:
@@ -7436,7 +7436,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 39.565}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 118, y: -118}
+  m_AnchoredPosition: {x: 138.8, y: -143.3}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8287221414629384894
@@ -12164,13 +12164,13 @@ MonoBehaviour:
   seatTutorialCircle: {fileID: 8550617147563302563}
   seatTutorialSteps:
   - targetGridPos: {x: 1, y: 0}
-    offset: {x: 2.35, y: -5.5, z: 0}
+    offset: {x: 2, y: -8.5, z: 0}
   - targetGridPos: {x: 2, y: 1}
-    offset: {x: 2.6, y: -5.2, z: 0}
+    offset: {x: 3, y: -7.1, z: 0}
   - targetGridPos: {x: 0, y: 0}
-    offset: {x: 2.225, y: -5.5, z: 0}
+    offset: {x: 1.35, y: -8.6, z: 0}
   - targetGridPos: {x: 2, y: 0}
-    offset: {x: 2.6, y: -5.5, z: 0}
+    offset: {x: 3, y: -8.6, z: 0}
   seatTutorialMoveDuration: 0.3
   pulseScale: 1.2
   seatTutorialActive: 0
@@ -12214,6 +12214,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   totalTime: 60
+  currentTime: 0
   isRunning: 0
   isFrozen: 0
 --- !u!1 &6851698225004309232
