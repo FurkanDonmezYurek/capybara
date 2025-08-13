@@ -100,20 +100,15 @@ public class GameManager : MonoBehaviour
         if (selectedCapybara == null)
             return;
 
-        if (selectedCapybara is FatCapybara fat)
-        {
-            if (IsCorrectMoveFat(seat, fat.currentSlot, fat.secondSlot))
-            {
-                fat.SitSeat(seat);
-            }
-        }
-        else
-        {
-            if (IsCorrectMove(seat, selectedCapybara.currentSlot))
-            {
-                selectedCapybara.SitSeat(seat);
-            }
-        }
+        bool correctMove = selectedCapybara is FatCapybara fat
+            ? IsCorrectMoveFat(seat, fat.currentSlot, fat.secondSlot)
+            : IsCorrectMove(seat, selectedCapybara.currentSlot);
+
+        seat.GlowSeat(correctMove);
+
+        if (correctMove)
+            selectedCapybara.SitSeat(seat);
+
         //selectedCapybara.SetColor(selectedCapybara.color); // Reset color after move
         selectedCapybara.capybaraColorMaterialObject.layer = LayerMask.NameToLayer("Default");
         selectedCapybara = null;

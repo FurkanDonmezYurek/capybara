@@ -71,6 +71,7 @@ MonoBehaviour:
   currentCapybara: {fileID: 0}
   isCorridorSide: 0
   groupOfSeat: {fileID: 0}
+  seatMeshObj: {fileID: 4481157213068833624}
 --- !u!1 &4481157213068833624
 GameObject:
   m_ObjectHideFlags: 0

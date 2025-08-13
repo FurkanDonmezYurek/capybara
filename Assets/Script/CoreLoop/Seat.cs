@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Seat : MonoBehaviour
@@ -7,6 +8,9 @@ public class Seat : MonoBehaviour
     public bool IsEmpty => currentCapybara == null;
     public bool isCorridorSide;
     public SeatGroup groupOfSeat;
+
+    [SerializeField]
+    private GameObject seatMeshObj;
 
     // Sets current capybara
     public void SetCapybara(Capybara capy)
@@ -33,7 +37,41 @@ public class Seat : MonoBehaviour
         }
         else
         {
+            if(UIManager.Instance.levelCompletePanel.activeSelf || UIManager.Instance.levelFailPanel.activeSelf) return;
             currentCapybara.ClickedCapybara();
         }
+    }
+
+    public void GlowSeat(bool isGreen)
+    {
+        if (isGreen)
+        {
+            seatMeshObj.layer = LayerMask.NameToLayer("GreenGlow");
+        }
+        else
+        {
+            seatMeshObj.layer = LayerMask.NameToLayer("RedGlow");
+        }
+
+        StartCoroutine(ResetLayer(!isGreen, 0.3f));
+    }
+
+    IEnumerator ResetLayer(bool rightNow, float time)
+    {
+        if (rightNow)
+        {
+            yield return new WaitForSeconds(time);
+            Debug.Log("şimdi");
+        }
+        else
+        {
+            yield return new WaitUntil(() =>
+                currentCapybara != null && currentCapybara.IsMoving == false
+            );
+            Debug.Log("sonra");
+        }
+
+        Debug.Log("ulaştı");
+        seatMeshObj.layer = LayerMask.NameToLayer("Default");
     }
 }
