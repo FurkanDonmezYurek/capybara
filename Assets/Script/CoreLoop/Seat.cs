@@ -37,7 +37,7 @@ public class Seat : MonoBehaviour
         }
         else
         {
-            if(UIManager.Instance.levelCompletePanel.activeSelf || UIManager.Instance.levelFailPanel.activeSelf) return;
+            if(UIManager.Instance.levelCompletePanel.activeSelf || GameTimerManager.Instance.currentTime <= 0) return;
             currentCapybara.ClickedCapybara();
         }
     }

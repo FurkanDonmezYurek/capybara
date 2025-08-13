@@ -21,7 +21,7 @@ public class GameTimerManager : MonoBehaviour
     [Header("Timer Settings")]
     public float totalTime = 60f;
 
-    private float currentTime;
+    public float currentTime;
     public bool isRunning = false;
     public bool isFrozen = false;
     private Coroutine freezeCoroutine;

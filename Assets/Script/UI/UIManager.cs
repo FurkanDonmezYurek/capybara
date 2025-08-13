@@ -35,7 +35,7 @@ public class UIManager : MonoBehaviour
 
     [Header("UI Panels")]
     public GameObject levelCompletePanel;
-    [SerializeField] public GameObject levelFailPanel;
+    [SerializeField] private GameObject levelFailPanel;
     [SerializeField] private GameObject boosterPanel;
     [SerializeField] private GameObject coinBuyPanel;
     [SerializeField] private GameObject boosterUnlockedPanel;
