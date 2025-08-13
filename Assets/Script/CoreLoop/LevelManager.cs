@@ -9,6 +9,7 @@ public class LevelManager : MonoBehaviour
     public LevelDatabase levelDatabase;
     public GridSystem gridSystem;
     private int currentLevelIndex = 0;
+    public Transform parent;
 
     public int GetCurrentLevelIndex() => currentLevelIndex;
 
@@ -28,6 +29,8 @@ public class LevelManager : MonoBehaviour
 
     public void LoadLevelByIndex(int index)
     {
+        if (parent == null)
+            parent = GameObject.Find("Grid").GetComponent<Transform>();
         if (index < 0 || index >= levelDatabase.levels.Length)
         {
             return;
@@ -45,7 +48,11 @@ public class LevelManager : MonoBehaviour
         {
             Destroy(env);
         }
-        Instantiate(level.levelEnvironment, Vector3.zero, Quaternion.Euler(0, 180, 0)); // Rotate to face the camera
+        GameObject currentEnv = Instantiate(
+            level.levelEnvironment,
+            Vector3.zero,
+            Quaternion.Euler(0, 180, 0)
+        ); // Rotate to face the camera
 
         gridSystem.ClearGrid();
         gridSystem.SetGridParameters(
@@ -59,6 +66,8 @@ public class LevelManager : MonoBehaviour
         gridSystem.GenerateGrid(); // This also sets grid position to environment grid spawn point (this is a game object with "GridSpawn" tag)
         gridSystem.FitGridToReferenceArea();
         gridSystem.InitPathGrid();
+
+        parent.SetParent(currentEnv.transform.GetChild(0)); // set child to env
         foreach (var capyInfo in level.capybaras)
         {
             GameObject prefab = capybaraPrefabs.FirstOrDefault(p =>
@@ -81,7 +90,7 @@ public class LevelManager : MonoBehaviour
 
             Capybara capy = Instantiate(prefab, seat.transform.position, Quaternion.identity)
                 .GetComponent<Capybara>();
-
+            capy.transform.SetParent(parent);
             capy.SetColor(capyInfo.color);
             if (capyInfo.isFrozen)
                 capy.Freeze();
