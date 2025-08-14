@@ -457,6 +457,7 @@ MonoBehaviour:
   - {r: 0.23358655, g: 1, b: 0, a: 0}
   levelDatabase: {fileID: 11400000, guid: 7c63a7b9db7ac447aac2824de9d6faab, type: 2}
   gridSystem: {fileID: 1365210084}
+  parent: {fileID: 0}
 --- !u!114 &1365210084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -479,6 +480,8 @@ MonoBehaviour:
   groupHeight: 1
   groupSpacingX: 1
   groupsParent: {fileID: 2052055689}
+  addSeatObj: {fileID: 340975106295020946, guid: e9e9b0d31c8834c6897f2312daeb9966,
+    type: 3}
 --- !u!114 &1365210085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -929,6 +932,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: InGameCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8633193085967651780, guid: 6210837283c601d4fa5238c62e9aee41,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

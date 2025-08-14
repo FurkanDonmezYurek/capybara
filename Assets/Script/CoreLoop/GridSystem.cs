@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -31,6 +32,9 @@ public class GridSystem : MonoBehaviour
     //for AddSeat
     private List<GameObject> inactiveGroups = new(); // boş grupları tutmak için
     private int extraGroupCount = 2; // fazladan oluşturulacak grup sayısı
+
+    [SerializeField]
+    private GameObject addSeatObj;
 
     // ...
 
@@ -96,6 +100,7 @@ public class GridSystem : MonoBehaviour
             // Fazladan olanlar için SetActive(false) yap
             if (i >= baseGroupCountX * baseGroupCountY)
             {
+                gObj.tag = "AddSeat";
                 inactiveGroups.Add(gObj);
             }
         }
@@ -111,7 +116,8 @@ public class GridSystem : MonoBehaviour
         }
 
         GameObject groupToActivate = inactiveGroups[0];
-        groupToActivate.SetActive(true);
+        groupToActivate.tag = "Untagged";
+        CloseSeats(groupToActivate);
         inactiveGroups.RemoveAt(0);
 
         if (Application.isPlaying)
@@ -119,7 +125,44 @@ public class GridSystem : MonoBehaviour
             GameManager.Instance.ClearSeatGroupCache();
             GameManager.Instance.InitializeSeatGroupsCache();
             RecalculateGroupPositions();
-            InitPathGrid();
+        }
+    }
+
+    void AddSeatInit(GameObject SeatGroup)
+    {
+        // Önce orijinal child'ları sakla
+        List<Transform> originalSeats = new List<Transform>();
+
+        for (int i = 0; i < SeatGroup.transform.childCount; i++)
+        {
+            originalSeats.Add(SeatGroup.transform.GetChild(i));
+        }
+
+        // Her orijinal seat için işlem yap
+        foreach (Transform seat in originalSeats)
+        {
+            seat.gameObject.SetActive(false);
+
+            GameObject addSeat = Instantiate(addSeatObj, SeatGroup.transform);
+            addSeat.transform.position = seat.position;
+            addSeat.transform.localScale = seat.localScale; // ölçeği korumak için
+
+            int randomMeshCount = Random.Range(1, addSeat.transform.childCount);
+
+            addSeat.transform.GetChild(randomMeshCount).gameObject.SetActive(true);
+        }
+    }
+
+    void CloseSeats(GameObject seatGroupObj)
+    {
+        for (int i = 0; i < seatGroupObj.transform.childCount; i++)
+        {
+            seatGroupObj.transform.GetChild(i).gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < seatGroupObj.GetComponent<SeatGroup>().seatsInGroup.Count; i++)
+        {
+            seatGroupObj.transform.GetChild(i).gameObject.SetActive(true);
         }
     }
 
@@ -203,7 +246,7 @@ public class GridSystem : MonoBehaviour
         GameManager.Instance.InitializeSeatGroupsCache();
         foreach (var item in inactiveGroups)
         {
-            item.SetActive(false);
+            AddSeatInit(item);
         }
     }
 

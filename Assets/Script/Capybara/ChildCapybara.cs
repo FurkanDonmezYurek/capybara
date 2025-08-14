@@ -49,7 +49,11 @@ public class ChildCapybara : Capybara
             {
                 continue;
             }
-            if (GameManager.Instance.IsCorrectMove(target, currentSlot))
+            Debug.Log("anan");
+            if (
+                GameManager.Instance.IsCorrectMove(target, currentSlot)
+                && !target.transform.parent.CompareTag("AddSeat")
+            )
                 SitSeat(target);
         }
     }

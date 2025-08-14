@@ -28,19 +28,22 @@ public class SeatGroup : MonoBehaviour
         }
     }
 
-    void LockGroup()
+    public void LockGroup()
     {
         IsGroupLocked = true;
         foreach (var seat in seatsInGroup)
             seat.currentCapybara?.Lock();
 
         AudioManager.Instance.PlaySFX("Match");
-        if(HapticsManager.Instance != null)
+        if (HapticsManager.Instance != null)
             HapticsManager.Instance.PlayLightImpactVibration();
 
         HapticsManager.Instance.PlayHeavyImpactVibration();
 
-        ParticleManager.Instance.Play(ParticleType.Explosion, seatsInGroup[1].transform.position+new Vector3(0,1.5f,0));
+        ParticleManager.Instance.Play(
+            ParticleType.Explosion,
+            seatsInGroup[1].transform.position + new Vector3(0, 1.5f, 0)
+        );
     }
 
     private void TryUnfreezeVerticalNeighbors()

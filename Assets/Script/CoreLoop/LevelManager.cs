@@ -65,7 +65,6 @@ public class LevelManager : MonoBehaviour
         );
         gridSystem.GenerateGrid(); // This also sets grid position to environment grid spawn point (this is a game object with "GridSpawn" tag)
         gridSystem.FitGridToReferenceArea();
-        gridSystem.InitPathGrid();
 
         parent.SetParent(currentEnv.transform.GetChild(0)); // set child to env
         foreach (var capyInfo in level.capybaras)
