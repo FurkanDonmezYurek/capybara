@@ -12078,14 +12078,14 @@ MonoBehaviour:
   vehicleBGImage: {fileID: 5968339506216107843}
   vehicleFillImage: {fileID: 5178676018452715868}
   vehicleBGs:
-  - {fileID: 21300000, guid: 6779db9af0752354e89ca011d7f27ca7, type: 3}
   - {fileID: 21300000, guid: 3c6bc57039e7f844783e34b0513d03e9, type: 3}
+  - {fileID: 21300000, guid: 6779db9af0752354e89ca011d7f27ca7, type: 3}
   - {fileID: 21300000, guid: ded32819147571e4aaf483a343e6f0f3, type: 3}
   - {fileID: 21300000, guid: f5ff70db2abbd4343a89e5cbe65189a4, type: 3}
   - {fileID: 21300000, guid: f5ff70db2abbd4343a89e5cbe65189a4, type: 3}
   vehicleFillSprites:
-  - {fileID: 21300000, guid: 2553a4bd2674c0f4eaf9948e557babe7, type: 3}
   - {fileID: 21300000, guid: b99b1bb8007157f418ae8669ded01e6c, type: 3}
+  - {fileID: 21300000, guid: 2553a4bd2674c0f4eaf9948e557babe7, type: 3}
   - {fileID: 21300000, guid: ff4a413a16b0cad4d9705b53e6b5efc3, type: 3}
   - {fileID: 21300000, guid: 40ad689eeab932d4f924f3c5bc126e26, type: 3}
   - {fileID: 21300000, guid: 40ad689eeab932d4f924f3c5bc126e26, type: 3}
