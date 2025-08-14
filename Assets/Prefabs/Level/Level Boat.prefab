@@ -899,6 +899,7 @@ GameObject:
   - component: {fileID: 3728262211690845812}
   - component: {fileID: 2358442690290038939}
   - component: {fileID: 4695602639779804191}
+  - component: {fileID: 4981428946450167822}
   m_Layer: 0
   m_Name: Orto_Camera
   m_TagString: MainCamera
@@ -1016,6 +1017,14 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!81 &4981428946450167822
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6895363762044862999}
+  m_Enabled: 1
 --- !u!1 &7380775812124835172
 GameObject:
   m_ObjectHideFlags: 0
