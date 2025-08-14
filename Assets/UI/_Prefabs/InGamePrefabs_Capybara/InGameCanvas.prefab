@@ -3200,6 +3200,7 @@ RectTransform:
   m_Children:
   - {fileID: 3669818101998313572}
   - {fileID: 8245073554968698939}
+  - {fileID: 3656071138380399197}
   - {fileID: 6998239600702435856}
   - {fileID: 7208129437279612788}
   - {fileID: 2876728435318102992}
@@ -9177,7 +9178,6 @@ RectTransform:
   - {fileID: 6250072258050696270}
   - {fileID: 847383250131228233}
   - {fileID: 9032587755401955564}
-  - {fileID: 3656071138380399197}
   m_Father: {fileID: 2604453461575390749}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
@@ -10644,11 +10644,11 @@ RectTransform:
   m_LocalScale: {x: 0.79999995, y: 0.79999995, z: 0.79999995}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2626320837680787361}
+  m_Father: {fileID: 1072815360622939745}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -417.3, y: -21}
+  m_AnchoredPosition: {x: -417.3, y: 788.18384}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6138216967750734507
@@ -12164,13 +12164,13 @@ MonoBehaviour:
   seatTutorialCircle: {fileID: 8550617147563302563}
   seatTutorialSteps:
   - targetGridPos: {x: 1, y: 0}
-    offset: {x: 2, y: -8.5, z: 0}
+    offset: {x: 0, y: 0.35, z: 0}
   - targetGridPos: {x: 2, y: 1}
-    offset: {x: 3, y: -7.1, z: 0}
+    offset: {x: 0, y: 0.35, z: 0}
   - targetGridPos: {x: 0, y: 0}
-    offset: {x: 1.35, y: -8.6, z: 0}
+    offset: {x: 0, y: 0.35, z: 0}
   - targetGridPos: {x: 2, y: 0}
-    offset: {x: 3, y: -8.6, z: 0}
+    offset: {x: 0, y: 0.35, z: 0}
   seatTutorialMoveDuration: 0.3
   pulseScale: 1.2
   seatTutorialActive: 0

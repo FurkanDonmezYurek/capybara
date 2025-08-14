@@ -1054,7 +1054,7 @@ public class UIManager : MonoBehaviour
 
         AudioManager.Instance.PlaySFX("AddCoin");
 
-        PlayCoinFlyEffect(new Vector3(2.5f, -4, 0));
+        PlayCoinFlyEffect(new Vector3(0, 2, 0));
 
         HideAllPanels();
     }
