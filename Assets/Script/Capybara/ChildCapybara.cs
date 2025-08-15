@@ -49,7 +49,6 @@ public class ChildCapybara : Capybara
             {
                 continue;
             }
-            Debug.Log("anan");
             if (
                 GameManager.Instance.IsCorrectMove(target, currentSlot)
                 && !target.transform.parent.CompareTag("AddSeat")

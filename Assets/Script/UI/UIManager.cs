@@ -1199,7 +1199,7 @@ public class UIManager : MonoBehaviour
     {
         if (!tutorialDict.ContainsKey(type))
         {
-            Debug.LogError($"Tutorial not found: {type}");
+            //Debug.LogError($"Tutorial not found: {type}");
             return;
         }
         else
