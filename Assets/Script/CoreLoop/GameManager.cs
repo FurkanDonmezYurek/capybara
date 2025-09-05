@@ -108,8 +108,10 @@ public class GameManager : MonoBehaviour
 
         if (correctMove)
             selectedCapybara.SitSeat(seat);
+        else
+            selectedCapybara.SitAnimation(); // Reset to sitting animation if can't move
 
-        //selectedCapybara.SetColor(selectedCapybara.color); // Reset color after move
+
         selectedCapybara.capybaraColorMaterialObject.layer = LayerMask.NameToLayer("Default");
         selectedCapybara = null;
         if (UIManager.Instance != null && UIManager.Instance.seatClickedTutorial)
