@@ -7896,9 +7896,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: HideAllPanels
+      - m_Target: {fileID: 7940042792384068037}
+        m_TargetAssemblyTypeName: IdleUIManager, Assembly-CSharp
+        m_MethodName: SetSelectedLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -1372,9 +1372,13 @@ public class UIManager : MonoBehaviour
     }
     public void NextLevel()
     {
+        int selectedLevelIndex= PlayerPrefs.GetInt("SelectedLevel");
         int LevelIndex = PlayerPrefs.GetInt("Level", 0);
-        LevelIndex++;
-        PlayerPrefs.SetInt("Level", LevelIndex);
+        if(selectedLevelIndex == -1)
+        {
+            LevelIndex++;
+            PlayerPrefs.SetInt("Level", LevelIndex);
+        }
         PlayCloudCloseTransition(0);
     }
     public void ReturnIdleScene()

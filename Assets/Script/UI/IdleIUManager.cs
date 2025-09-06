@@ -201,7 +201,12 @@ public class IdleUIManager : MonoBehaviour
         SetupStartLevelPanel();
         AnimateStartLevelPanel();
     }
-
+    public void ShowLevelCheckPointPanel(int levelSize)
+    {
+        PrepareTutorialAndUI();
+        SetupStartLevelPanel(levelSize);
+        AnimateStartLevelPanel();
+    }
     private void PrepareTutorialAndUI()
     {
         SetTutorialAsSeen();
@@ -209,9 +214,10 @@ public class IdleUIManager : MonoBehaviour
         HideAllPanels();
         AudioManager.Instance?.PlaySFX("OpeningImportantPanel");
     }
-    private void SetupStartLevelPanel()
+    private void SetupStartLevelPanel(int levelIndex=-1)
     {
-        selectedLevelIndex = VehicleManager.Instance.GetCurrentLevelIndex();
+        selectedLevelIndex = (levelIndex == -1) ? VehicleManager.Instance.GetCurrentLevelIndex() : levelIndex;
+        //selectedLevelIndex = VehicleManager.Instance.GetCurrentLevelIndex();
         selectedLevelText.text = $"LEVEL {selectedLevelIndex + 1}";
         startLevelPanel.SetActive(true);
         startLevelCG.alpha = 0f;
@@ -652,6 +658,11 @@ public class IdleUIManager : MonoBehaviour
     public void SetTutorialAsSeen()
     {
         PlayerPrefs.SetInt("HasSeenIdleTutorial", 1);
+        PlayerPrefs.Save();
+    }
+    public void SetSelectedLevel()
+    {
+        PlayerPrefs.SetInt("SelectedLevel", -1);
         PlayerPrefs.Save();
     }
     #endregion

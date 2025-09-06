@@ -26,7 +26,13 @@ public class VehicleSplineController : MonoBehaviour
 
         targetCheckpointIndex = vehicleManager.GetCurrentLevelIndex();
         currentCheckpointIndex = 0;
-        
+
+        for (int i = 0; i < levelCheckpoints.Count; i++)
+        {
+            levelCheckpoints[i].LevelIndex = i ;
+        }
+
+        SetSelectedLevel();
 
         for (int i = 0; i < targetCheckpointIndex; i++)
         {
@@ -117,5 +123,10 @@ public class VehicleSplineController : MonoBehaviour
             Events.VehiclePause?.Invoke(isPaused);
 
         }
+    }
+    public void SetSelectedLevel()
+    {
+        PlayerPrefs.SetInt("SelectedLevel", -1);
+        PlayerPrefs.Save();
     }
 }

@@ -30,6 +30,7 @@ public class VehicleManager : MonoBehaviour
                 {
                     if (!IdleUIManager.Instance.IsStartLevelPanelActive())
                     {
+                        GetSelectedLevelIndex();
                         IdleUIManager.Instance.OpenStartLevelPanel();
                     }
                 }
@@ -55,5 +56,9 @@ public class VehicleManager : MonoBehaviour
     public int GetCurrentLevelIndex()
     {
         return PlayerPrefs.GetInt("Level", 0);
+    }
+    public int GetSelectedLevelIndex()
+    {
+        return PlayerPrefs.GetInt("SelectedLevelIndex", -1);
     }
 }

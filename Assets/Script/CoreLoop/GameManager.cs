@@ -40,7 +40,9 @@ public class GameManager : MonoBehaviour
 
     public void LevelStart()
     {
-        LevelIndex = PlayerPrefs.GetInt("Level", 0);
+
+        LevelIndex = (PlayerPrefs.GetInt("SelectedLevel") == -1) ? PlayerPrefs.GetInt("Level", 0) : PlayerPrefs.GetInt("SelectedLevel");
+        //LevelIndex = PlayerPrefs.GetInt("Level", 0);
         levelManager.LoadLevelByIndex(LevelIndex);
         UIManager.UpdateLevel(LevelIndex);
 
