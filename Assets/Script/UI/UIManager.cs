@@ -410,10 +410,7 @@ public class UIManager : MonoBehaviour
     {
         HandleRewardsAndVibrations();
         HandleTimerState();
-        PreparePanelUI();
-
-        int currentLevel = GameManager.Instance.levelManager.GetCurrentLevelIndex();
-        PlayLevelCompleteSequence(currentLevel + 1);
+        StartCoroutine(ShowPanelAfterDelay());
     }
     private void HandleRewardsAndVibrations()
     {
@@ -430,6 +427,15 @@ public class UIManager : MonoBehaviour
         UpdateTimer(GameTimerManager.Instance.RemainingTime / GameTimerManager.Instance.totalTime);
         GameTimerManager.Instance.isRunning = false;
     }
+    private IEnumerator ShowPanelAfterDelay()
+    {
+        yield return new WaitForSeconds(0.3f);
+
+        PreparePanelUI();
+
+        int currentLevel = GameManager.Instance.levelManager.GetCurrentLevelIndex();
+        PlayLevelCompleteSequence(currentLevel + 1);
+    }
     private void PreparePanelUI()
     {
         HideAllPanels();
@@ -441,7 +447,7 @@ public class UIManager : MonoBehaviour
 
         levelCompleteNextButton.localScale = Vector3.zero;
 
-        UIAnimator.FadeIn(levelCompleteCG);
+        UIAnimator.FadeIn(levelCompleteCG,0.5f);
         UIAnimator.ScaleIn(levelCompleteHeader);
         UIAnimator.RotateLoop(levelCompleteShine.transform);
     }

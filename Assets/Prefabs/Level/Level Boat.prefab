@@ -634,12 +634,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11fd2a441fc909e449f28d31c87d4d25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sideTiltAngle: 2.5
-  sideTiltDuration: 2.2
-  frontBackAngle: 1.5
-  frontBackDuration: 2.6
-  floatHeight: 0.1
-  floatDuration: 2.4
+  sideTiltAngle: 2.25
+  sideTiltDuration: 4.4
+  frontBackAngle: 1.25
+  frontBackDuration: 5.2
+  floatHeight: 0.075
+  floatDuration: 4.8
 --- !u!1 &3721808986708124240
 GameObject:
   m_ObjectHideFlags: 0

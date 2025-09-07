@@ -6622,8 +6622,8 @@ MonoBehaviour:
   - Forest
   - Desert
   - Cave
-  - Snow
   - Waterfall
+  - Snow
   centerRegionCG: {fileID: 6777954539692098468}
   regionIconImage: {fileID: 4847315003410101223}
   regionSprites:

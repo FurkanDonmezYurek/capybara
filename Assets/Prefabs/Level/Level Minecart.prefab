@@ -1000,10 +1000,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e62d14abec85df4fae51327c4dfd815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounceHeight: 0.075
-  bounceDuration: 1
-  swayAngle: 1
-  swayDuration: 1.5
+  bounceHeight: 0.05
+  bounceDuration: 3
+  swayAngle: 0.5
+  swayDuration: 4
 --- !u!1 &6112439262216794730
 GameObject:
   m_ObjectHideFlags: 0
