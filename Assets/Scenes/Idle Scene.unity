@@ -96,8 +96,10 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: cb12b96c868d24c9796bf1fa12208889,
+    type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: b16030d25146f41d7ac90e14024c744a,
+    type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1046,6 +1048,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Ship Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1095,6 +1107,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -68.064
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -1228,7 +1245,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &78148380
 Transform:
@@ -1701,7 +1718,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &96206063
 Transform:
@@ -1730,6 +1747,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LCP  Car Area
+      objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -1780,6 +1807,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 35.277
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -2115,6 +2147,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Car Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.y
@@ -2169,6 +2211,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -3.954
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3375,7 +3422,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &202801861
 Transform:
@@ -3489,6 +3536,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Ship Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -3543,6 +3600,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -72.332
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -3664,7 +3726,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &233766750
 Transform:
@@ -3863,6 +3925,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Vagon Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -3917,6 +3989,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 42.661
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -4216,7 +4293,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &277232178
 Transform:
@@ -5738,6 +5815,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Tren Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -5792,6 +5879,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 63.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -7034,7 +7126,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -7098,7 +7190,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &416085396
 Transform:
@@ -7526,6 +7618,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Vagon Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -7580,6 +7682,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -17.182
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -7796,6 +7903,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Ship Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.y
@@ -7850,6 +7967,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 41.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -8136,6 +8258,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP  Car Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.y
@@ -8195,6 +8327,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -52.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -9668,7 +9805,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &576427146
 Transform:
@@ -10301,6 +10438,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Car Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -10360,6 +10507,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 42.932
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10757,6 +10909,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Vagon Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -10816,6 +10978,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 82.305
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -10943,7 +11110,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &646495968
 Transform:
@@ -11386,6 +11553,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Tren Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -11445,6 +11622,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 21.999
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -11655,6 +11837,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Ship Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -11714,6 +11906,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -43.084
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -12767,6 +12964,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Tren Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -12827,6 +13034,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 22.443
       objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: vehicleTypeIndex
@@ -12867,6 +13079,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LCP Tren Area
+      objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -12917,6 +13139,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 68.569
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -14913,6 +15140,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Ship Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -14972,6 +15209,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -15434,6 +15676,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Ship Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -15493,6 +15745,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 55.919
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -15713,6 +15970,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Vagon Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -15762,6 +16029,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 32.031
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -16140,6 +16412,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Vagon Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -16199,6 +16481,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 107.715
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -16325,7 +16612,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1000907578
 Transform:
@@ -18342,6 +18629,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP  Car Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18392,6 +18689,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -18.999
       objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: vehicleTypeIndex
@@ -18432,6 +18734,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LCP Tren Area
+      objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -18492,6 +18804,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -58.649
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -20386,7 +20703,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!114 &1366352638
 MonoBehaviour:
@@ -26847,6 +27164,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Tren Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.z
@@ -26902,6 +27229,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -39.258
       objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: vehicleTypeIndex
@@ -26942,6 +27274,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LCP Vagon Area
+      objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -26993,6 +27335,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 184.355
       objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: vehicleTypeIndex
@@ -27035,7 +27382,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1388057061
 Transform:
@@ -27150,7 +27497,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1391591772
 Transform:
@@ -27308,6 +27655,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Tren Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -27362,6 +27719,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -92.158
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -27572,6 +27934,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP  Car Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -27631,6 +28003,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -3.441
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -28015,7 +28392,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1475457938
 Transform:
@@ -28291,7 +28668,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1488297174
 Transform:
@@ -29073,7 +29450,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1532986136
 Transform:
@@ -29187,6 +29564,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Vagon Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -29236,6 +29623,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 147.947
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -29720,6 +30112,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Ship Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -29774,6 +30176,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -69.684
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -30242,6 +30649,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Vagon Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -30291,6 +30708,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 121.186
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -30422,6 +30844,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Tren Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.y
@@ -30476,6 +30908,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 79.141
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -30564,7 +31001,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1664120058
 Transform:
@@ -31424,6 +31861,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Vagon Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -31473,6 +31920,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -19.704
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -31917,6 +32369,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Ship Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -31977,6 +32439,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 88.166
       objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: vehicleTypeIndex
@@ -32019,7 +32486,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1787084499
 Transform:
@@ -32630,6 +33097,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Car Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -32689,6 +33166,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -40.738
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -33775,6 +34257,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Vagon Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.y
@@ -33835,6 +34327,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 41.534
       objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: vehicleTypeIndex
@@ -33883,7 +34380,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1870731173
 Transform:
@@ -34081,6 +34578,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Tren Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -34140,6 +34647,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -92.228
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -34606,6 +35118,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Ship Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -34660,6 +35182,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -53.554
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -34786,6 +35313,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP  Car Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -34845,6 +35382,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 17.712
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -35558,6 +36100,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Car Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -35617,6 +36169,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -58.616
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -35822,6 +36379,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Tren Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -35881,6 +36448,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -60.199
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -36091,6 +36663,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Car Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.z
@@ -36145,6 +36727,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 31.477
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -36892,6 +37479,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: LCP Ship Area
       objectReference: {fileID: 0}
+    - target: {fileID: 1058243226453046646, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2858719454046193712, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7547313040147717937, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -36951,6 +37548,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -33.767
+      objectReference: {fileID: 0}
+    - target: {fileID: 7743762525141902825, guid: cf943752ba7323649afdd6f7898f0451,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8607978259551017602, guid: cf943752ba7323649afdd6f7898f0451,
         type: 3}
@@ -38105,7 +38707,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -40086,7 +40688,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
+  m_StaticShadowCaster: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -41736,7 +42338,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 127
   m_IsActive: 1
 --- !u!33 &7743747004351601884
 MeshFilter:
