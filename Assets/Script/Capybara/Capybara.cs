@@ -47,8 +47,28 @@ public class Capybara : MonoBehaviour
         }
     }
 
+    private Renderer _capybaraRenderer;
+    private int _accessoryMaterialIndex = -1;
+    private static readonly int ColorPropertyID = Shader.PropertyToID("_BaseColor");
+
     public virtual void Start()
     {
+        if (capybaraColorMaterialObject != null)
+        {
+            _capybaraRenderer = capybaraColorMaterialObject.GetComponent<Renderer>();
+            if (_capybaraRenderer != null)
+            {
+                var materials = _capybaraRenderer.sharedMaterials;
+                for (int i = 0; i < materials.Length; i++)
+                {
+                    if (materials[i].name.Contains("Capybara_Accesoires"))
+                    {
+                        _accessoryMaterialIndex = i;
+                        break; // Materyali bulduk, döngüden çıkabiliriz.
+                    }
+                }
+            }
+        }
         CapybaraStateMachine = GetComponent<CapybaraStateMachine>();
         if (CapybaraStateMachine == null)
         {
@@ -143,17 +163,44 @@ public class Capybara : MonoBehaviour
         CapybaraStateMachine.SetState(CapybaraStateMachine.freezeState);
     }
 
-    public void SetColor(Color color)
+    public void SetColor(Color newColor)
     {
-        Material[] materials = capybaraColorMaterialObject.GetComponent<Renderer>().materials;
-        foreach (var mat in materials)
+        if (capybaraColorMaterialObject != null)
         {
-            if (mat.name.Contains("Capybara_Accesoires"))
+            _capybaraRenderer = capybaraColorMaterialObject.GetComponent<Renderer>();
+            if (_capybaraRenderer != null)
             {
-                this.color = color;
-                mat.color = color;
+                var materials = _capybaraRenderer.sharedMaterials;
+                for (int i = 0; i < materials.Length; i++)
+                {
+                    if (materials[i].name.Contains("Capybara_Accesoires"))
+                    {
+                        _accessoryMaterialIndex = i;
+                        break; // Materyali bulduk, döngüden çıkabiliriz.
+                    }
+                }
             }
         }
+        // Gerekli bileşenler bulunamadıysa veya materyal index'i geçersizse metottan çık.
+        if (_capybaraRenderer == null || _accessoryMaterialIndex == -1)
+        {
+            return;
+        }
+
+        this.color = newColor;
+
+        // 1. Yeni bir MaterialPropertyBlock oluştur.
+        MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
+
+        // 2. Renderer'dan mevcut özellikleri bu bloğa kopyala (önemli!).
+        // Bu sayede sadece rengi değiştirip diğer ayarları korumuş oluruz.
+        _capybaraRenderer.GetPropertyBlock(propertyBlock, _accessoryMaterialIndex);
+
+        // 3. Bloğun renk özelliğini ayarla.
+        propertyBlock.SetColor(ColorPropertyID, newColor);
+
+        // 4. Güncellenmiş bloğu sadece aksesuar materyali için renderer'a geri ata.
+        _capybaraRenderer.SetPropertyBlock(propertyBlock, _accessoryMaterialIndex);
     }
 
     public virtual void Freeze()
